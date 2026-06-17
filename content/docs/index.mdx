@@ -1,0 +1,40 @@
+---
+title: Open Fiscal
+description: "Base de conhecimento sobre documentos fiscais eletrônicos no Brasil: NF-e, NFC-e, CT-e, MDF-e e Reforma Tributária."
+---
+
+Base de conhecimento sobre os principais documentos fiscais eletrônicos do Brasil — seus layouts, regras de validação, manuais oficiais e notas técnicas.
+
+## Documentos cobertos
+
+| Documento | Modelo | O que é |
+|-----------|--------|---------|
+| **NF-e** | 55 | Nota Fiscal Eletrônica — operações entre empresas e transporte |
+| **NFC-e** | 65 | NF de Consumidor Eletrônica — venda no varejo ao consumidor final |
+| **CT-e** | 57 | Conhecimento de Transporte Eletrônico — prestação de serviço de transporte |
+| **MDF-e** | 58 | Manifesto Eletrônico de Documentos Fiscais — escolta de cargas |
+
+## Onde ficam os manuais oficiais
+
+| Portal | URL |
+|--------|-----|
+| NFe / NFCe | `https://dfe-portal.svrs.rs.gov.br/Nfe/Documentos` |
+| CTe | `https://dfe-portal.svrs.rs.gov.br/Cte/Documentos` |
+| MDFe | `https://dfe-portal.svrs.rs.gov.br/Mdfe/Documentos` |
+| Portal Nacional NFe | `https://www.nfe.fazenda.gov.br/portal/principal.aspx` |
+
+## Estrutura de cada documento
+
+Todo documento fiscal eletrônico segue a mesma lógica:
+
+```
+1. Emitente monta o XML conforme o leiaute (Anexo I do MOC)
+2. Assina digitalmente com certificado ICP-Brasil
+3. Transmite à SEFAZ autorizadora via Web Service (SOAP/HTTPS)
+4. SEFAZ retorna protocolo de autorização (ou rejeição com código)
+5. Emitente gera o documento auxiliar (DANFE / DACTE / DAMDFE)
+```
+
+## Sobre a Reforma Tributária
+
+A partir de 2026, a Reforma Tributária (IBS, CBS, IS) impacta o leiaute de todos os documentos. A seção [Reforma Tributária](/docs/reforma) cobre as Notas Técnicas de transição.

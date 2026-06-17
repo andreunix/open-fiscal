@@ -1,0 +1,48 @@
+---
+title: MDF-e — Manifesto Eletrônico de Documentos Fiscais
+description: Modelo 58. Manifesta o agrupamento de CT-es ou NF-es para o transporte de carga fracionada ou de carga própria por veículo.
+---
+
+O MDF-e (modelo 58) é o documento que **manifesta o carregamento de um veículo** com múltiplos CT-es ou NF-es. É obrigatório para transportadores que operam em mais de um município/estado com carga própria ou fracionada.
+
+## Quando o MDF-e é obrigatório
+
+- Transportador que emite CT-e e trafega com mais de um CT-e no veículo
+- Produtor rural ou empresa que emite NF-e de carga própria em operação interestadual ou intermunicipal
+- Transporte de carga fracionada (vários destinatários)
+
+## Versão atual
+
+| Item | Versão |
+|------|--------|
+| Leiaute (Anexo I) | **3.00b** |
+| MOC | **3.00b** (dez/2022) |
+| Schema principal | `mdfe_v3.00.xsd` |
+
+## Ciclo de vida
+
+```
+Emissão → Autorização → Início do percurso (evento: condutor) 
+→ Encerramento obrigatório ao chegar no destino final
+```
+
+O MDF-e deve ser **encerrado** ao final de cada viagem. Sem encerramento, o próximo MDF-e não pode ser autorizado para o mesmo veículo.
+
+## Documentos oficiais
+
+| Documento | Versão | Data |
+|-----------|--------|------|
+| MOC MDF-e 3.00b — Visão Geral | 3.00b | 07/12/2022 |
+| MOC MDF-e 3.00b — Anexo I: Leiaute e Regras | 3.00b | 07/12/2022 |
+| MOC MDF-e 3.00b — Anexo II: DAMDFE | 3.00b | 07/12/2022 |
+| Schemas NT 2025.001 v1.04 | — | 25/04/2026 |
+| NT 2026.001 — Validação CIOT | — | 29/05/2026 |
+| NT 2025.001 — Ajustes de leiaute | 1.03 | 21/08/2025 |
+| NT 2024.002 — Suporte CT-e Simplificado | 1.01 | 16/08/2024 |
+| NT 2023.002 — Integração InfraSA | — | 11/08/2023 |
+
+Portal: `dfe-portal.svrs.rs.gov.br/Mdfe/Documentos`
+
+---
+
+> Esta seção está em construção. Contribuições são bem-vindas.
