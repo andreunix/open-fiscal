@@ -16,6 +16,12 @@ description: Inutilização de faixas de numeração de NF-e que não serão usa
 
 Inutilizar é registrar oficialmente "estes números nunca viraram nota". É a solução quando o controle de numeração saltou um número (ex.: falha antes do envio) e a sequência fiscal precisa ficar íntegra.
 
+## Overlay de NTs
+
+| NT (vigente) | Delta na inutilização |
+|---|---|
+| 2025.002 v1.50 | No `retInutNFe`, `cStat` passa a aceitar **3–4 posições** e o protocolo deferido (`nProt`) passa de 15 para **15 ou 17 posições**. O `Id` assinado da resposta acompanha o comprimento do protocolo. 🔄 |
+
 ## Vigência
 
 - 🔄 Schema e regras versionados por NT.
@@ -27,4 +33,4 @@ Inutilizar é registrar oficialmente "estes números nunca viraram nota". É a s
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §5.3, p. 78–80 (Tabelas 5-9 a 5-12).
+MOC 7.0 — Visão Geral, §5.3, p. 78–80 (Tabelas 5-9 a 5-12). Overlay: NT 2025.002 v1.50 (03/06/2026).

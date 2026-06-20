@@ -43,6 +43,10 @@ Normalmente um CNPJ identifica um único estabelecimento (uma Inscrição Estadu
 
 Como a chave de acesso carrega o CPF mas **não** a Inscrição Estadual, a mesma numeração poderia colidir entre estabelecimentos. Solução do manual: usar **séries específicas por estabelecimento**, na faixa **920–969**.
 
+### Numeração de protocolos RTC 🔄
+
+A NT 2025.002 v1.50 amplia o protocolo de autorização de NF-e/NFC-e, inutilização e evento de **15 para 15 ou 17 posições**. A composição permanece `tipo autorizador (1) + UF (2) + ano (2)`, mas o sequencial anual passa de 10 para **12 dígitos** quando a autorizadora precisar da faixa ampliada. Nesta revisão, somente a SEFAZ-SP adota 17 posições para NFC-e. Preserve o protocolo como texto opaco: não converta para inteiro nem presuma comprimento fixo.
+
 ## Como interpretar
 
 A faixa de série responde a duas perguntas de uma vez: *quem assina* e *quem controla o número*. Escolher a faixa errada provoca rejeição mesmo com o XML bem formado.
@@ -52,6 +56,7 @@ A faixa de série responde a duas perguntas de uma vez: *quem assina* e *quem co
 - 🔄 Faixas 900–969 e o suporte a CPF vieram da **NT 2018.001**.
 - 🔄 A faixa NFF (000–999, `tpEmis=3`, `procEmi=3`) e a lei de formação da chave NFF vieram da **NT 2021.002**; a série da NFF foi estendida para 000–999 na v1.12.
 - 🔄 A faixa PAA (970–979, `procEmi=4`) entra em produção em **03/08/2026** pela NT 2026.001.
+- 🔄 Protocolos com 15 ou 17 posições e `cStat` com 3 ou 4 posições foram formalizados pela NT 2025.002 v1.50.
 - 📍 O uso de séries por estabelecimento rural depende da organização do produtor na UF.
 
 ## Implicação de implementação
@@ -60,4 +65,4 @@ A faixa de série responde a duas perguntas de uma vez: *quem assina* e *quem co
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.8, p. 21 (Tabela 2-4); §2.2.2 (NFA-e), p. 17. Overlay: NT 2021.002 v1.12 (28/01/2025), NT 2023.002 v1.01 (18/11/2025), NT 2026.001 v1.00 (22/04/2026).
+MOC 7.0 — Visão Geral, §2.2.8, p. 21 (Tabela 2-4); §2.2.2 (NFA-e), p. 17. Overlay: NT 2021.002 v1.12 (28/01/2025), NT 2023.002 v1.01 (18/11/2025), NT 2026.001 v1.00 (22/04/2026), NT 2025.002 v1.50 (03/06/2026).

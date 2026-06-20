@@ -192,12 +192,16 @@ Códigos introduzidos depois do corte do Anexo I 7.03 (lista parcial — confirm
 | `1184` | Rejeição: Emissão por PAA com assinatura RSA inválida | 2026.001 v1.00 |
 | `120` | Autorizado o uso da NF-e, com alerta | 2026.002 v1.00 |
 | `172` | Alerta: Situação do CNPJ destinatário inabilitado no momento da autorização | 2026.002 v1.00 |
+| `1000–1218` | Rejeições RTC de finalidade crédito/débito, IBS/CBS/IS, SUFRAMA/ALC, compras governamentais, referências, créditos e totais; use `xMotivo` e a regra indicada, pois a faixa não representa uma única causa | 2025.002 v1.50 |
+| `1200–1202` | `cClassTrib` incompatível com finalidade ou tipo de nota de débito/crédito | 2025.002 v1.50 |
+| `1219–1272` | Rejeições do leiaute monofásico reformulado: escolha temporal ad rem/ad valorem, grupos padrão/retenção/retido e cálculos de IBS/CBS e diferença de biocombustível | 2025.002 v1.50 |
 
 ## Vigência
 
 - 🔄 A lista reflete a versão 7.03 e deve ser complementada pelas Notas Técnicas posteriores. O erro **656 (consumo indevido)** vem da NT 2018.002 — ver [uso indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido).
+- 🔄 A NT 2025.002 amplia `cStat` para **3 ou 4 posições**. Não limite o parser a três dígitos; as rejeições exclusivas de IBS/CBS/IS usam a nova faixa de quatro dígitos.
 - ⚠️ O código **966** aparece com dois sentidos nas NTs: "Obrigatório o preenchimento da origem da mercadoria" (NT 2024.001) e "Valor do ICMS retido anteriormente difere do calculado" (regra `N45-10`, NT 2023.001). Confirme o `xMotivo` na resposta e na NT vigente.
 
 ## Fonte
 
-MOC 7.0 — Anexo I, §4.4 (Lista das Regras de Validação), p. 143–153. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2022.003 v1.11 (25/01/2023), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024), NT 2022.005 v1.11 (11/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2020.007 v1.40 (02/08/2024), NT 2015.001 v1.30 (06/12/2024), NT 2021.002 v1.12 (28/01/2025), NT 2021.003 v1.40 (26/02/2025), NT 2023.001 v1.60 (09/06/2025), NT 2018.005 v1.52 (10/07/2025), NT 2026.002 v1.00 (25/05/2026).
+MOC 7.0 — Anexo I, §4.4 (Lista das Regras de Validação), p. 143–153. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2022.003 v1.11 (25/01/2023), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024), NT 2022.005 v1.11 (11/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2020.007 v1.40 (02/08/2024), NT 2015.001 v1.30 (06/12/2024), NT 2021.002 v1.12 (28/01/2025), NT 2021.003 v1.40 (26/02/2025), NT 2023.001 v1.60 (09/06/2025), NT 2018.005 v1.52 (10/07/2025), NT 2026.002 v1.00 (25/05/2026), NT 2025.002 v1.50 (03/06/2026).

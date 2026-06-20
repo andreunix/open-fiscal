@@ -16,6 +16,8 @@ flowchart TD
     I --> COF[COFINS / COFINSST]
     I --> ISS[ISSQN]
     I --> DEV[impostoDevol]
+    I --> IS[IS]
+    I --> IBS[IBSCBS]
 ```
 
 > **Implementação:** não comece pelo campo. Comece pelo enquadramento tributário da operação e selecione o grupo correspondente.
@@ -64,6 +66,32 @@ Use ISSQN para item de serviço sujeito ao imposto municipal no cenário permiti
 
 O `cListServ` (Item da Lista de Serviços) passou a ser validado por tabela do Portal Nacional, e não só pelo schema (regra `U06-10`, NF-e e NFC-e). Uma nota com grupo de ISSQN (`U01`) sem nenhum grupo de ICMS (`N01`) é controlada por UF pela regra `U01-20` (rejeição 592). 🔄
 
+## IBS, CBS e Imposto Seletivo 🔄
+
+A NT 2025.002 v1.50 substitui a NT 2024.002-RTC no âmbito da NF-e/NFC-e e incorpora ao item os grupos `IS` e `IBSCBS`. O enquadramento não é local: `CST` + `cClassTrib` selecionam, por indicadores das tabelas vigentes, quais grupos são obrigatórios, permitidos ou vedados.
+
+| Grupo | Conteúdo principal |
+|---|---|
+| `IS` | `CSTIS`, `cClassTribIS`, base, alíquota percentual/específica, unidade/quantidade e `vIS` |
+| `IBSCBS/gIBSCBS` | base comum; IBS UF, IBS Município e CBS; diferimento, devolução e redução de alíquota |
+| `gTribRegular` | CST/classificação e valores regulares quando a operação usa tributação alternativa |
+| `gTribCompraGov` | composição sem o redutor da compra governamental |
+| `gTransfCred`, `gAjusteCompet`, `gEstornoCred` | transferência, ajuste de competência e estorno de crédito |
+| `gCredPresOper`, `gCredPresIBSZFM` | crédito presumido da operação e apropriação sobre saldo devedor na ZFM |
+| `gIBSCBSMono` | tributação monofásica de combustíveis, conforme a transição abaixo |
+
+### Monofasia de combustíveis na v1.50
+
+A v1.50 **reformula** o leiaute antigo: dentro de `gIBSCBSMono`, IBS e CBS têm ramos separados para **ad rem** e **ad valorem**. Cada ramo pode conter tributação padrão, retenção, valor retido anteriormente e `gpBioDiferenca` para EAC acima/abaixo do índice obrigatório (`cClassTrib` 620004/620005). Os totais do item ficam em `vTotIBSMonoItem` e `vTotCBSMonoItem`.
+
+| Ano da emissão | IBS monofásico | CBS monofásica |
+|---:|---|---|
+| 2026 | ad valorem | ad valorem |
+| 2027–2028 | ad valorem | ad rem |
+| 2029 em diante | ad rem | ad rem |
+
+Nos grupos ad rem, valide `valor = quantidade × alíquota ad rem`. Nos grupos ad valorem, valide `valor = base × alíquota percentual`; o IBS separa as parcelas estadual e municipal. As regras da família `UB85a`–`UB104b` escolhem o ramo pelo ano e pelos indicadores de `cClassTrib`, conferem valores com tolerância de R$ 0,01 e tratam retenção e diferença de mistura. Algumas fórmulas dependem de tabelas externas ainda “a publicar”.
+
 ## Totais nascem nos itens
 
 ```mermaid
@@ -98,6 +126,7 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 | 2024.003 v1.10 | **MEI e ativo imobilizado:** `N12a-70` não rejeita CSOSN 900 para emitente MEI (`CRT=4`) nas remessas de bem do ativo imobilizado com CFOP **5.551/6.551**; permanece a exceção estadual para CFOP 5.904/6.904. O grupo agropecuário `ZF` fica em [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais). 🔄 |
 | 2026.002 v1.00 | **Tributação no Tipo 2 (`tpImp=6`):** seguem as mesmas limitações da NFC-e: CST permitido **00/20/40/41/60/61** (90 a critério da UF) e CSOSN **102/103/300/400/500** (900 a critério da UF), com restrições de CFOP e MEI. São proibidos Partilha, Repasse ICMS-ST, `ICMSUFDest`, IPI, II, PIS-ST, COFINS-ST e devolução de tributos. 🔄 |
 | 2026.004 v1.01 | **CNPJ alfanumérico:** `CNPJProd` do grupo IPI (O03) passa a texto de 14 posições. Produção: **01/07/2026**. 🔄 |
+| 2025.002 v1.50 | **Reforma Tributária do Consumo:** cria `IS`/`IBSCBS`, as finalidades fiscais de crédito/débito e os grupos de diferimento, devolução, redução, tributação regular, compras governamentais, transferência/estorno/ajuste e créditos presumidos. `vIBS = vIBSUF + vIBSMun - vCredPres` quando `indDeduzCredPres=1`; IBS/CBS/IS são “por fora”. A obrigatoriedade geral de `IBSCBS` (`UB12-10`) começa em homologação em **01/07/2026** e produção em **03/08/2026** para CRT=3; Simples/MEI, em produção a partir de **04/01/2027**. A v1.50 separa a monofasia de combustíveis em IBS/CBS × ad rem/ad valorem e entra em homologação até **01/09/2026**, produção **03/11/2026**. 🔄 |
 - 🕒 Exemplos de partilha e alíquotas no MOC são históricos — ver [Cálculo interestadual](/docs/referencia/calculo-interestadual).
 
 ## Checklist
@@ -112,4 +141,4 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 
 ## Fonte
 
-MOC 7.0 — Anexo I, grupos M a UA, p. 25–57. Grupos de IBS/CBS/IS: Notas Técnicas da Reforma Tributária. Overlay: NT 2020.002 v1.01 (19/08/2022), NT 2020.005 v1.21 (15/10/2021), NT 2021.004 v1.35 (01/11/2022), NT 2022.003 v1.11 (25/01/2023), NT 2022.004 v1.10 (14/02/2023), NT 2023.003 v1.20 (08/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2023.001 v1.60 (09/06/2025), NT 2018.005 v1.52 (10/07/2025), NT 2019.001 v1.70 (18/08/2025), NT 2022.002 v1.30a (26/03/2026), NT 2024.003 v1.10 (11/05/2026), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026).
+MOC 7.0 — Anexo I, grupos M a UA, p. 25–57. Grupos de IBS/CBS/IS: Notas Técnicas da Reforma Tributária. Overlay: NT 2020.002 v1.01 (19/08/2022), NT 2020.005 v1.21 (15/10/2021), NT 2021.004 v1.35 (01/11/2022), NT 2022.003 v1.11 (25/01/2023), NT 2022.004 v1.10 (14/02/2023), NT 2023.003 v1.20 (08/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2023.001 v1.60 (09/06/2025), NT 2018.005 v1.52 (10/07/2025), NT 2019.001 v1.70 (18/08/2025), NT 2022.002 v1.30a (26/03/2026), NT 2024.003 v1.10 (11/05/2026), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026), NT 2025.002 v1.50 (03/06/2026).

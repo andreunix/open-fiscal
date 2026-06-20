@@ -35,6 +35,7 @@ A diferença prática é entre **estrutura** (estável, com algoritmo de DV que 
 - 🕒 Os valores do MOC 7.0 são de 2020.
 - 🔄 Tabelas atualizadas por Informes Técnicos (NCM, CFOP, ANP, FCP, meios de pagamento, `cClassTrib` da Reforma…). Ver os IT em `tmp/nfe/informes-tecnicos` e o Portal Nacional.
 - 🔄 Enquadramento Legal do IPI (`cEnq`): a NT 2020.002 v1.01 acrescentou os códigos **163, 164 e 165**. A tabela `tPag` (meios de pagamento) passou a ser externa, publicada no Portal Nacional (NT 2020.006).
+- 🔄 A NT 2025.002 v1.50 usa tabelas externas e versionadas para `CST`/`cClassTrib` do IBS/CBS, `CSTIS`/`cClassTribIS`, `cCredPres`, alíquotas, produtos monofásicos, índice obrigatório de biocombustível e valores de referência. Os indicadores dessas tabelas **ativam ou vedam grupos XML e regras de validação**; não basta validar a existência do código. NCM e `cClassTribIS` do Imposto Seletivo ainda constam como “a publicar” na revisão.
 
 ## Implicação de implementação
 
@@ -42,4 +43,4 @@ A diferença prática é entre **estrutura** (estável, com algoritmo de DV que 
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, capítulo 8 (Tabelas e Códigos), p. 129–147.
+MOC 7.0 — Visão Geral, capítulo 8 (Tabelas e Códigos), p. 129–147. Overlay: NT 2025.002 v1.50 (03/06/2026).

@@ -139,14 +139,14 @@ Orçamento alvo: ~100 páginas de PDF por estágio.
 | 2020.001 v1.60 | 19 | eventos/manifestacao-do-destinatario |
 | 2024.003 v1.10 | 14 | identificacao-e-atores · tributos · grupos-finais · codigos-de-retorno |
 
-### Estágio 9 — ~61 p (3 NTs)
+### Estágio 9 — ~61 p (3 NTs, concluído)
 | NT | p | Destino provável |
 |---|--:|---|
 | 2026.002 v1.00 | 22 | a confirmar |
 | 2026.003 v1.00 | 25 | a confirmar |
 | 2026.004 v1.01 | 14 | a confirmar |
 
-### Estágio 10 — ~97 p (1 NT)
+### Estágio 10 — ~97 p (1 NT, concluído)
 | NT | p | Destino provável |
 |---|--:|---|
 | 2025.002 v1.50 | 97 | a confirmar (vigente; v1.36 e v1.40 superadas — não ler). Ler em janelas de ≤20 p |
@@ -371,6 +371,32 @@ Para decidir o destino ao ler cada NT, use as páginas existentes:
   um novo processo de emissão. A NT 2024.003 usa grupo raiz ZF, por isso foi consolidada
   em grupos-finais, e não em itens-e-produtos.
 
-### Notas de execução dos próximos estágios
+### Estágio 9 — roteamento efetivo (concluído)
 
-- _(cada estágio anota aqui desvios de roteamento, NTs sem alvo claro, etc.)_
+- **2026.002 v1.00** → autorizacao (novo `cStat=120`, até 5 alertas em `PR13`, alerta
+  172) · contingencia/nfe (`tpEmis=9` no modelo 55) · danfe/simplificado-e-contingencia
+  (`tpImp=6`) · identificacao-e-atores (restrições da operação e referências 65/59) ·
+  itens-e-produtos/tributos/totais-e-fechamento (restrições herdadas da NFC-e) ·
+  grupos-finais (QR Code v3) · codigos-de-retorno (120/172).
+- **2026.003 v1.00** → danfe/simplificado-e-contingencia (divisões, papel, impressão,
+  QR Code online/offline e consulta) · contingencia/nfe (segunda via e mensagens).
+- **2026.004 v1.01** → chave-de-acesso + web-services (schemas com CNPJ/chaves texto) ·
+  identificacao-e-atores · itens-e-produtos · tributos · totais-e-fechamento ·
+  grupos-finais (campos CNPJ e chaves atingidos em cada grupo).
+- Desvio: as NTs 2026.002/003 são complementares e foram dobradas na mesma página de DANFE;
+  a 2026.004 complementa a NT Conjunta 2025.001 e foi roteada por campo/serviço, sem repetir
+  o algoritmo do CNPJ alfanumérico.
+
+### Estágio 10 — roteamento efetivo (concluído)
+
+- **2025.002 v1.50** → series-e-numeracao + autorizacao/ret-autorizacao/inutilizacao
+  (`cStat` 3–4 posições, `nProt` 15/17) · identificacao-e-atores (previsão de entrega,
+  município IBS, notas de crédito/débito, `cIndOp`, compras governamentais, antecipação e
+  `ISUFEmit`) · mapa-do-xml + itens-e-produtos (`tpCredPresIBSZFM`, bem usado e
+  `DFeReferenciado`) · tributos (IS/IBS/CBS e reformulação monofásica ad rem/ad valorem) ·
+  totais-e-fechamento (`ISTot`, `IBSCBSTot`, `vItem`, `vNFTot`) · codigos-de-retorno
+  (faixas RTC de 4 dígitos) · eventos/modelo-e-catalogo (eventos de apuração RTC) ·
+  tabelas-e-codigos (tabelas externas e indicadores).
+- Desvio: a NT é transversal e exigiu 12 páginas-alvo. Não se alterou página de DANFE,
+  porque a própria v1.50 informa que a exibição dos novos tributos ainda está em estudo.
+  A revisão **v1.50** foi a única lida; v1.36 e v1.40 permaneceram marcadas como superadas.

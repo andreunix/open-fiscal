@@ -44,6 +44,7 @@ description: Serviço de recepção do lote de NF-e — leiaute de entrada e ret
 | 2023.002 v1.01 | **NFC-e sem lote assíncrono:** a requisição assíncrona foi eliminada para a NFC-e — o lote do modelo 65 só pode conter **1 NFC-e** (`GAP03a-4`, rej. **126**/**961**). 🔄 |
 | 2025.001 v1.03 | **Resposta síncrona obrigatória no lote de 1 NF-e (mod. 55):** `GAP03a-3` rejeita `indSinc=0` (assíncrono) em lote com uma única NF-e (rej. **452**, produção 13/10/2025); `GAP03a-2` rejeita `indSinc=1` em UF que não oferece o síncrono (**776**). **Atraso da data de emissão:** o limite de tolerância caiu de **30 para 7 dias** — `B09-20` aceita atraso ≤ 7 dias com `cStat=100`, atraso > 7 dias com `cStat=150` ("autorização fora de prazo"); após 30 dias (ou limite da UF) só em contingência (`tpEmis=2,4,5`), rej. **228** quando configurado. 🔄 |
 | 2026.002 v1.00 | **Autorização com alerta:** regra não fatal não interrompe a validação nem exige retransmissão. A SEFAZ armazena até os **5 primeiros alertas** em ocorrências de `PR13`, com `cMsg`/`xMsg` (`PR14`/`PR15`); rejeições continuam prevalecendo, mas retornam os alertas encontrados até aquele ponto. Sem rejeição, havendo alerta, o protocolo usa `cStat=120`; ele também prevalece sobre o `150` quando a nota estiver fora de prazo. A primeira regra é `5E17-65`: na NFC-e, CNPJ destinatário bloqueado ou vedado no CCC gera alerta **172**, não rejeição. Produção: **05/10/2026**. 🔄 |
+| 2025.002 v1.50 | **Ampliação das respostas RTC:** `cStat` passa a aceitar **3 ou 4 posições** e `nProt`, **15 ou 17 posições**, tanto no `retEnviNFe` quanto no `protNFe`. Os códigos de 4 dígitos ficam reservados às rejeições de IBS/CBS/IS; o protocolo de 17 posições amplia o sequencial anual de 10 para 12 dígitos e, nesta revisão, só a **SEFAZ-SP** o adota para NFC-e. Produção do leiaute monofásico da v1.50: **03/11/2026**. 🔄 |
 
 ## Vigência
 
@@ -55,4 +56,4 @@ description: Serviço de recepção do lote de NF-e — leiaute de entrada e ret
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §5.1, p. 71–74 (Tabelas 5-1 a 5-4). Overlay: NT 2023.002 v1.01 (18/11/2025), NT 2025.001 v1.03 (29/09/2025), NT 2026.002 v1.00 (25/05/2026).
+MOC 7.0 — Visão Geral, §5.1, p. 71–74 (Tabelas 5-1 a 5-4). Overlay: NT 2023.002 v1.01 (18/11/2025), NT 2025.001 v1.03 (29/09/2025), NT 2026.002 v1.00 (25/05/2026), NT 2025.002 v1.50 (03/06/2026).

@@ -16,6 +16,12 @@ description: Consulta do resultado de processamento de um lote assíncrono pelo 
 
 O recibo é a chave para "buscar a resposta depois". Cada nota do lote tem seu próprio `protNFe` e seu próprio `cStat` — um lote pode misturar notas autorizadas e rejeitadas.
 
+## Overlay de NTs
+
+| NT (vigente) | Delta na consulta do recibo |
+|---|---|
+| 2025.002 v1.50 | O `protNFe` retornado por `retConsReciNFe` passa a aceitar `cStat` com **3–4 posições** e `nProt` com **15 ou 17 posições**. Não modele esses campos com os limites antigos: códigos de 4 dígitos identificam rejeições exclusivas de IBS/CBS/IS e o protocolo longo usa sequencial anual de 12 dígitos. 🔄 |
+
 ## Vigência
 
 - 🔄 Schemas e códigos versionados por NT.
@@ -26,4 +32,4 @@ O recibo é a chave para "buscar a resposta depois". Cada nota do lote tem seu p
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §5.2, p. 75–77 (Tabelas 5-5 a 5-8).
+MOC 7.0 — Visão Geral, §5.2, p. 75–77 (Tabelas 5-5 a 5-8). Overlay: NT 2025.002 v1.50 (03/06/2026).

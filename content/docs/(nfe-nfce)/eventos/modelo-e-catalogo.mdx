@@ -56,6 +56,29 @@ Todo evento é registrado pelo Web Service `nfeRecepcaoEvento` (ver [Mapa dos We
 | `411500–411503` | Resposta do Fisco ao pedido de prorrogação |
 | `610500/610501` | Registro de Passagem / cancelamento |
 
+### Eventos da Reforma Tributária 🔄
+
+A NT 2025.002 v1.50 cria eventos da NF-e modelo 55 para a apuração de IBS/CBS. Eles são autorizados pela **SVRS** e devem ser enviados individualmente; embora o Web Service ainda aceite lote com até 20 eventos, a NT recomenda não agrupar os novos eventos.
+
+| `tpEvento` | Autor | Finalidade |
+|---|---|---|
+| `112110` | emitente | informar pagamento integral e liberar crédito presumido do adquirente |
+| `112120` | emitente | informar importação em ALC/ZFM que não se converteu em isenção |
+| `112130` | emitente | perecimento/perda/roubo/furto no transporte contratado pelo fornecedor (CIF) |
+| `112140` | emitente | informar fornecimento não realizado após pagamento antecipado |
+| `112150` | emitente | atualizar `dPrevEntrega` |
+| `211110` | emitente ou destinatário | solicitar apropriação de crédito presumido, por item |
+| `211124` | destinatário | perecimento/perda/roubo/furto no transporte contratado pelo adquirente (FOB) |
+| `211128` | destinatário | aceitar ou recusar débito gerado por nota de crédito |
+| `211130` | destinatário | informar integração do item ao ativo imobilizado |
+| `211140` | destinatário | solicitar crédito de combustível consumido na atividade |
+| `211150` | destinatário | solicitar crédito dependente da atividade do adquirente |
+| `212110` / `212120` | empresa sucessora | aceitar transferência de crédito de IBS / CBS em sucessão |
+| `412120` / `412130` | Fisco | deferir ou não a transferência de crédito de IBS / CBS em sucessão |
+| `110001` | mesmo autor do evento original | cancelar qualquer evento RTC acima; informa `tpEventoAut` e `nProtEvento` |
+
+Os eventos por item levam `nItem` e os valores/quantidades afetados; as regras impedem exceder o IBS, a CBS ou a quantidade da NF-e vinculada. O retorno aceita `cStat` de 3–4 posições e protocolo de 15 ou 17 posições. O evento `211120` (destinação para consumo pessoal) é **histórico**: foi removido após a revogação do art. 57, §6º, da LC 214/2025 pela LC 227/2026. Os demais eventos devem ser registrados desde janeiro de 2026 quando ocorrer a hipótese legal.
+
 Há ainda **eventos propagados** automaticamente (de CT-e, MDF-e) e eventos de **outros órgãos** (Suframa, averbação de exportação).
 
 > O **Comprovante de Entrega da NF-e** (`110130`, NT 2021.001) registra a entrega com `hashComprovante`, data/hora, `nProt` da NF-e e, opcionalmente, coordenadas `latGPS`/`longGPS` do ponto de entrega; serve para instruir processos administrativos e judiciais. O par `110131` cancela esse registro. 🔄
@@ -79,4 +102,4 @@ Um evento nunca altera a NF-e autorizada — ele acrescenta um registro sobre a 
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5). Overlay: NT 2021.001 v1.01 (06/07/2022), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024).
+MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5). Overlay: NT 2021.001 v1.01 (06/07/2022), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024), NT 2025.002 v1.50 (03/06/2026).
