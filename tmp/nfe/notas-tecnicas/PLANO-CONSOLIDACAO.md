@@ -1,6 +1,7 @@
-# Plano de consolidação das Notas Técnicas (não implementadas)
+# Plano de consolidação das Notas Técnicas posteriores ao MOC 7.0
 
-Objetivo: dobrar as **39 NTs não implementadas** de `lista.md` para dentro das páginas
+Objetivo: dobrar as **39 entradas pós-MOC** de `lista.md` — **36 revisões vigentes** e
+**3 revisões superadas** — para dentro das páginas
 já existentes em `content/docs/(nfe-nfce)/`, **sem encher o contexto**. A estratégia é
 dividir o trabalho em **estágios isolados**: cada estágio roda em um contexto novo
 (`/clear` ou nova sessão), lê **apenas** o seu lote de PDFs, aplica as edições, registra
@@ -153,11 +154,11 @@ Orçamento alvo: ~100 páginas de PDF por estágio.
 
 ---
 
-## Estágio 11 — fechamento (1 contexto)
+## Estágio 11 — fechamento (concluído)
 
 1. Confira que as 36 NTs ativas estão `[x]` em `lista.md` e as 3 superadas marcadas.
 2. Atualize a tabela de contagem em `referencia/notas-tecnicas.mdx` se o critério mudou
-   (hoje: 65 implementadas / 39 não implementadas).
+   (fechamento: 65 compiladas no MOC / 36 overlays vigentes).
 3. Revise `proveniencia.mdx`: todas as NTs dobradas listadas, com versão e data vigentes.
 4. `pnpm`/build de docs (ver `package.json`) para validar MDX/links. Corrija quebras.
 5. Relate divergências de roteamento nas “Notas de execução”.
@@ -400,3 +401,18 @@ Para decidir o destino ao ler cada NT, use as páginas existentes:
 - Desvio: a NT é transversal e exigiu 12 páginas-alvo. Não se alterou página de DANFE,
   porque a própria v1.50 informa que a exibição dos novos tributos ainda está em estudo.
   A revisão **v1.50** foi a única lida; v1.36 e v1.40 permaneceram marcadas como superadas.
+
+### Estágio 11 — fechamento (concluído)
+
+- Checklist auditado: **36 revisões vigentes** marcadas com `[x]` e **3 revisões
+  superadas** mantidas sem marcação e com sucessora explícita.
+- `referencia/notas-tecnicas.mdx` corrigida de 104 para **101 documentos vigentes**:
+  **65** compilados no MOC 7.0 e **36** overlays posteriores já incorporados. As três
+  revisões superadas foram removidas da contagem e preservadas em nota histórica.
+- `proveniencia.mdx` contém as 36 NTs dobradas, com revisão e data vigentes. Para a
+  **NT Conjunta 2025.001**, manteve-se a data da própria revisão (**25/04/2025**), embora
+  o arquivo tenha sido publicado no Portal em 08/05/2025.
+- `bun run build` validou MDX, cliente e SSR. O Wrangler apenas não conseguiu gravar o
+  log em `~/Library/Preferences` por restrição do sandbox; a geração terminou com sucesso.
+- Divergências de roteamento estão registradas nos estágios 1–10; nenhuma divergência
+  adicional foi encontrada no fechamento.
