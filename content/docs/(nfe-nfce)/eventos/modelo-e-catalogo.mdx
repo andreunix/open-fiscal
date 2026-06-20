@@ -1,0 +1,70 @@
+---
+title: Modelo e catálogo
+description: O Sistema de Registro de Eventos e o catálogo completo de eventos da NF-e por autor (emitente, destinatário, fisco, propagados e outros órgãos).
+---
+
+## O que o manual diz
+
+Os eventos da NF-e modelo 55 são regrados na **Cláusula 15ª-A do Ajuste SINIEF 07/05**. Para a **NFC-e modelo 65**, o Ajuste SINIEF 19/16 prevê apenas **Cancelamento** e **EPEC**.
+
+Todo evento é registrado pelo Web Service `nfeRecepcaoEvento` (ver [Mapa dos Web Services](/docs/emissao-e-comunicacao/web-services)), com uma parte geral comum e uma área específica por tipo:
+
+| Campo (parte geral) | Conteúdo |
+|---|---|
+| `Id` | `ID` + `tpEvento` + chave + `nSeqEvento` |
+| `cOrgao` | UF ou `91` = Ambiente Nacional |
+| `chNFe` | chave da NF-e vinculada |
+| `tpEvento` | código do evento |
+| `nSeqEvento` | sequência do evento para aquela chave |
+| `dhEvento` | data/hora (UTC) |
+
+> Novos eventos podem ser criados por Nota Técnica antes de entrarem em uma versão do manual. 🔄
+
+### Eventos do emitente
+
+| `tpEvento` | Nome | Origem |
+|---|---|---|
+| `110110` | Carta de Correção Eletrônica | NT 2010.008 |
+| `110111` | Cancelamento | NT 2011.006 |
+| `110112` | Cancelamento por substituição (NFC-e, ≤168h) | NT 2018.004 |
+| `110140` | EPEC — Emissão em Contingência | NT 2014.001 |
+| `110150` | Ator interessado — Transportador | NT 2020.007 |
+| `111500/111501` | Pedido de prorrogação 1º/2º prazo 📍 | NT 2015.001 |
+| `111502/111503` | Cancelamento de pedido de prorrogação 📍 | NT 2015.001 |
+
+### Eventos do destinatário
+
+| `tpEvento` | Nome |
+|---|---|
+| `210200` | Confirmação da Operação |
+| `210210` | Ciência da Operação (Ciência da Emissão) |
+| `210220` | Desconhecimento da Operação |
+| `210240` | Operação não Realizada |
+
+### Eventos do Fisco
+
+| `tpEvento` | Nome |
+|---|---|
+| `400200/400201` | Documento Fiscal Inidôneo / cancelamento |
+| `400300` | Visto Eletrônico do Fisco |
+| `411500–411503` | Resposta do Fisco ao pedido de prorrogação |
+| `610500/610501` | Registro de Passagem / cancelamento |
+
+Há ainda **eventos propagados** automaticamente (de CT-e, MDF-e) e eventos de **outros órgãos** (Suframa, averbação de exportação).
+
+## Como interpretar
+
+Um evento nunca altera a NF-e autorizada — ele acrescenta um registro sobre a chave. O `nSeqEvento` ordena registros do mesmo tipo, e o catálogo é dividido por **quem** tem competência para registrar.
+
+## Vigência
+
+- 🔄 O catálogo cresce por NT/BT; trate `tpEvento` como tabela versionada, não como enum fixo.
+- 🕒 O evento "Registro de Saída" foi descontinuado, substituído por outros eventos de circulação.
+
+## Implicação de implementação
+
+> **Implementação:** modele eventos como um log append-only por chave, com `tpEvento` + `nSeqEvento`. Não tente "editar" a nota; o estado atual é uma **projeção** dos eventos registrados.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5).

@@ -1,0 +1,67 @@
+---
+title: Responsável técnico, CSRT e hashCSRT
+description: O grupo do responsável técnico, o Código de Segurança do Responsável Técnico (CSRT) e o algoritmo de geração do hashCSRT.
+---
+
+O **responsável técnico** é a empresa que desenvolve ou mantém o sistema emissor. O grupo `infRespTec` identifica quem responde tecnicamente, ajudando o Fisco a detectar uso indevido e a contatar o desenvolvedor.
+
+> Em sistema de desenvolvimento próprio, o responsável técnico é o **próprio contribuinte**.
+
+## O que o manual diz
+
+### CSRT — Código de Segurança do Responsável Técnico
+
+- 📍 A critério da UF (estados que exigem credenciamento de software emissor), pode ser exigido o **CSRT**.
+- É um código alfanumérico de **16 a 36 bytes**, conhecido **apenas** pela SEFAZ da UF do emitente e pela empresa responsável pelo software.
+- É solicitado, consultado ou revogado em **página web** da SEFAZ da UF (opcionalmente por Web Service).
+- Cada empresa pode ter no máximo **5 CSRT válidos por UF** simultaneamente. Para obter um sexto, é preciso **revogar** um dos anteriores.
+
+### Geração do hashCSRT
+
+O `hashCSRT` garante a autoria do software, pois só o desenvolvedor e o Fisco conhecem o CSRT.
+
+1. **Concatenar** o CSRT com a chave de acesso da nota.
+2. Aplicar **SHA-1** sobre a concatenação → 20 bytes (40 caracteres hex).
+3. Converter para **Base64** → string de 28 caracteres.
+4. Montar `infRespTec` com `idCSRT` (identificador do CSRT) e `hashCSRT` (resultado do passo 3).
+
+### Exemplo
+
+```text
+Chave:  41180678393592000146558900000006041028190697
+CSRT:   G8063VRTNDMO886SFNK5LDUDEI24XJ22YIPO
+idCSRT: 01
+
+Passo 1: G8063VRTNDMO886SFNK5LDUDEI24XJ22YIPO41180678393592000146558900000006041028190697
+Passo 2 (SHA-1 hex): 696bfa2de10ce17eaee3ea8123639867c82b8a0c
+Passo 3 (Base64):    aWv6LeEM4X6u4+qBI2OYZ8grigw=
+```
+
+```xml
+<infRespTec>
+  <CNPJ>99999999999999</CNPJ>
+  <xContato>Nome do Contato</xContato>
+  <email>email@empresaficticia.com.br</email>
+  <fone>41999999999</fone>
+  <idCSRT>01</idCSRT>
+  <hashCSRT>aWv6LeEM4X6u4+qBI2OYZ8grigw=</hashCSRT>
+</infRespTec>
+```
+
+## Como interpretar
+
+O `hashCSRT` é uma assinatura leve de **autoria do software**, separada da assinatura digital do documento. Como depende da chave de acesso, ele é diferente em cada nota — não é um valor fixo por empresa.
+
+## Vigência
+
+- 🔄 Responsável técnico instituído pela **NT 2018.005**.
+- 🕒 O algoritmo especificado é **SHA-1**; é a especificação do MOC 7.0 — confronte com a NT vigente antes de implementar.
+- 📍 A exigência do CSRT depende da UF.
+
+## Implicação de implementação
+
+> **Implementação:** guarde os CSRT por (empresa × UF) com seu `idCSRT`, respeitando o limite de 5. Gere o `hashCSRT` por nota, no momento da emissão, usando a chave já formada. Trate o CSRT como segredo (não logar em claro).
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §2.2.10, p. 22–24.

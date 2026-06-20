@@ -1,0 +1,64 @@
+---
+title: Proveniência das fontes
+description: Versões, datas de corte e erratas conhecidas dos manuais usados nesta documentação. Base de rastreabilidade das demais páginas.
+---
+
+Esta documentação adapta manuais oficiais do Portal Nacional da NF-e. Cada página de referência cita sua fonte na seção `## Fonte`. Esta página registra **o que cada fonte é, quando foi publicada e o que nela já se sabe estar incorreto ou desatualizado**.
+
+> Os manuais são fotografias de um momento. Trate datas, algoritmos e tabelas como retrato da época da fonte e confronte com a Nota Técnica vigente antes de implementar. 🔄
+
+## Manuais usados
+
+| Fonte | Versão / data declarada | Páginas | Escopo |
+|---|---|---|---|
+| MOC 7.0 — Visão Geral | 7.00 (capa) / 7.03 — out. 2020 (controle interno) | 150 | conceitos, comunicação, serviços, eventos, distribuição, consulta, tabelas, cálculo |
+| Anexo I — Leiaute e Regras de Validação | 7.00 / 7.03 — out. 2020 | — | estrutura do XML e validações |
+| Anexo II — DANFE e Código de Barras | — | — | representação gráfica da NF-e |
+| Anexo III — Contingência NF-e | — | — | SVC, EPEC, FS-DA |
+| Anexo IV — Contingência NFC-e | — | — | contingência off-line da NFC-e |
+| Manual do DANFE NFC-e e QR Code | 2025-03-24 | — | DANFE NFC-e e QR Code |
+| Manual de Boas Práticas NFC-e | BP 2018.001 — v1.0 | — | operação da NFC-e |
+| Especificações da Contingência Off-line | v2.0 | — | contingência off-line |
+| Manuais operacionais (emissor, SVRS, SVAN) | vários | — | credenciamento e operação regional |
+| MOC NF-e ABI — Visão Geral | 1.00 — out. 2025 (minuta) | 34 | modelo 77, chave de acesso, comunicação, eventos, Web Services |
+| MOC NF-e ABI — Anexo I | Minuta 2.00 — mar. 2026 | 45 | leiaute XML, evento de pagamento de parcela e validações |
+| MOC NFAg — Visão Geral | 1.00k — 11 mar. 2026 | 58 | modelo 75, comunicação, eventos, QR Code, consulta e contingência |
+| MOC NFAg — Anexo I | 1.00k — 11 mar. 2026 | 50 | leiaute XML, regras de validação, faturamento, IBS/CBS e totais |
+| MOC NFAg — Anexo II DANFAG | 1.01 — jan. 2026 | 20 | documento auxiliar da NFAg, divisões impressas e modelos |
+| MOC NFGas — Visão Geral | 1.00f — 11 mar. 2026 | 58 | modelo 76, comunicação, eventos, QR Code, consulta e contingência |
+| MOC NFGas — Anexo I | 1.00f — 11 mar. 2026 | 50 | leiaute XML, regras de validação, CFOP, faturamento, IBS/CBS e totais |
+| MOC NFGas — Anexo II DANFGas | 1.00 — mar. 2026 | 16 | documento auxiliar da NFGas, divisões impressas e modelos |
+
+> **Legenda de vigência** (usada em todo o conteúdo): 🕒 histórico · 📍 depende de UF · 🔄 atualizado por NT.
+
+## O MOC 7.0 Visão Geral em números
+
+- ~60,3 mil palavras de texto extraído (≈ 150 páginas).
+- Abrangência declarada: NF-e modelo 55 e NFC-e modelo 65.
+- Atualização declarada: Notas Técnicas publicadas até **outubro de 2020**.
+
+Por ser de 2020, o documento registra valores e algoritmos da época que **não** devem ser apresentados como vigentes — ver as marcações 🕒 nas páginas de [Emissão e comunicação](/docs/emissao-e-comunicacao) e [Referência](/docs/referencia/calculo-interestadual).
+
+## Erratas conhecidas da fonte
+
+Divergências internas do próprio PDF do MOC 7.0. Onde elas aparecem no conteúdo, há uma nota editorial corrigindo:
+
+1. **§2.2.5 (p. 18)** atribui o DANFE NFC-e e o QR Code ao "MOC — Anexo III". O correto, pelo capítulo 1 e pelo manual específico, é que o DANFE NFC-e e QR Code tem **manual próprio**.
+2. **§2.3.2.2 (p. 26)** chama o manual de contingência da NF-e de "Anexo IV" e o da NFC-e de "Anexo V". O correto é **Anexo III (NF-e)** e **Anexo IV (NFC-e)**.
+3. O sumário repete o título "Controle do Ambiente de Contingência do EPEC" nas §3.3.6 e §3.3.8. As páginas aqui são nomeadas pelo conteúdo efetivo.
+4. O controle de versões tem repetições e grafias irregulares de NTs — transcrito como registro documental, não como lista normalizada de vigência.
+5. O capítulo 9 usa exemplos e percentual de partilha de **2016** — históricos. 🕒
+6. O capítulo 4 registra **RSA-SHA1, digest SHA-1 e chave de 1024 bits** — especificação do MOC 7.0, a confrontar com schemas e atos vigentes antes de qualquer recomendação. 🕒
+
+## Limite desta adaptação
+
+Estas páginas ajudam a **entender** o processo e localizar regras. Elas **não substituem**:
+
+- o Anexo I e os schemas XSD vigentes (campos, ocorrências, tipos);
+- os manuais de DANFE e contingência na íntegra;
+- as Notas Técnicas publicadas depois das fontes;
+- a legislação de cada UF.
+
+## Fonte
+
+`tmp/nfe/manuais/` (PDFs originais) e `tmp/nfe/_txt/` (texto extraído). Diagnóstico detalhado em `tmp/nfe/revisao-moc-7.0-visao-geral.md`.

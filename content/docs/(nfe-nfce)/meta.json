@@ -1,0 +1,20 @@
+{
+  "title": "NF-e e NFC-e",
+  "description": "Documentação técnica da NF-e e NFC-e, reorganizada por tarefa a partir dos manuais oficiais.",
+  "pagesIndex": "nfe-nfce",
+  "pages": [
+    "nfe-nfce",
+    "comece-aqui",
+    "fundamentos",
+    "emissao-e-comunicacao",
+    "leiaute-e-rejeicoes",
+    "eventos",
+    "danfe",
+    "contingencia",
+    "nfe-abi",
+    "nfag",
+    "nfgas",
+    "operacao",
+    "referencia"
+  ]
+}

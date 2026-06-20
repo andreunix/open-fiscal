@@ -1,0 +1,28 @@
+---
+title: NfeStatusServico
+description: Verificação da disponibilidade e do tempo médio de resposta da autorizadora.
+---
+
+**Função:** consultar o **status do serviço** da autorizadora. **Método:** `nfeStatusServicoNF`. **Processo:** síncrono.
+
+## O que o manual diz
+
+- Entrada: `consStatServ` com `tpAmb`, `cUF` e `xServ = STATUS`.
+- Retorno: `retConsStatServ` com `cStat`/`xMotivo`, `tMed` (tempo médio de resposta) e, em caso de indisponibilidade, `dhRetorno` (previsão de retorno) e `xObs`.
+- `cStat = 107` indica serviço em operação.
+
+## Como interpretar
+
+É o "ping fiscal": diz se vale a pena enviar agora e quão lento o serviço está. Indisponibilidade aqui é o gatilho legítimo para acionar [contingência](/docs/contingencia).
+
+## Vigência
+
+- 🔄 Schema `consStatServ` versionado por NT.
+
+## Implicação de implementação
+
+> **Implementação:** consulte o status com parcimônia (não a cada nota) e respeite o `dhRetorno` quando o serviço estiver fora — _polling_ agressivo é exatamente o padrão que dispara [consumo indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido). Use o resultado para decidir entre enviar, aguardar ou entrar em contingência.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §5.5, p. 84–86 (Tabelas 5-17 a 5-20).

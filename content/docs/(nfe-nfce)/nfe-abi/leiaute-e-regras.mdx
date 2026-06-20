@@ -1,0 +1,85 @@
+---
+title: Leiaute e regras da NF-e ABI
+description: Mapa do XML da NF-e ABI, evento de pagamento de parcela, regras gerais de preenchimento, QR Code e validações do Anexo I.
+---
+
+O **Anexo I da NF-e ABI** define o XML do modelo 77 e as validações de autorização. A versão incorporada aqui é a **Minuta 2.00, março de 2026**.
+
+## O que o manual diz
+
+### Grupos do XML
+
+| Grupo | Conteúdo |
+|---|---|
+| `A` | dados da NF-e ABI e atributo de versão |
+| `B` | identificação da nota: UF, `cNF`, modelo `77`, série, número, emissão, ambiente, finalidade e contingência |
+| `BA` | NF-e ABI referenciada |
+| `C` | emitente |
+| `E` | transmitentes, vendedores ou cedentes |
+| `F` | adquirentes, compradores ou cessionários |
+| `G` | identificação do imóvel |
+| `GA` | autorização para obter XML |
+| `H` | informações da operação imobiliária |
+| `U` | tributação IBS/CBS |
+| `Y` | detalhes de pagamento |
+| `W` | totais |
+| `Z` | informações adicionais |
+| `ZD` | responsável técnico |
+| `ZX` | informações suplementares, incluindo QR Code |
+| `ZZ` | assinatura digital |
+
+### Campos estruturantes
+
+| Campo | Regra de atenção |
+|---|---|
+| `mod` | deve identificar a NF-e ABI como modelo `77` |
+| `tpEmis` | prevê emissão normal, emissão NFF e contingência off-line |
+| `tpEmit` | classifica quem emite: vendedor, comprador, leiloeiro, tabelionato, junta comercial, instituição financeira, fundo patrimonial, credor fiduciário, consórcio, sucessora ou outros |
+| `indDeclarante` | identifica o declarante entre transmitentes ou adquirentes, com regras por modalidade |
+| `cClassTrib` | condiciona grupos e campos do IBS/CBS e de informações imobiliárias |
+| `qrCode` | segue URL própria da consulta da NF-e ABI, com parâmetros separados por barra vertical |
+
+### Evento de pagamento de parcela
+
+O Anexo I inclui o evento de **Pagamento de Parcela**. Ele é vinculado à operação imobiliária e possui validações próprias para modalidade, venda inicial de lote ou imóvel na planta e rateio de valores individuais.
+
+## Regras de preenchimento
+
+| Tipo de campo | Como preencher |
+|---|---|
+| códigos como CNPJ, CPF, CEP e CST | tamanho fixo, sem máscara, preservando zeros à esquerda |
+| valores e quantidades | tamanho variável, sem separador de milhar, com ponto decimal quando houver fração |
+| campos alfanuméricos | evitar acentos, símbolos especiais e espaços no início/fim |
+| datas | formato `AAAA-MM-DD` |
+| tags opcionais sem conteúdo | não informar a tag |
+
+## Validações gerais
+
+As validações do Web Service passam por camadas:
+
+| Grupo | Validação |
+|---|---|
+| `A` | certificado de transmissão no TLS |
+| `B` | mensagem inicial, tamanho máximo de 500 KB, XML malformado, serviço e UF atendida |
+| `D` | schema, namespace, codificação UTF-8 e extração de eventos |
+| `E` | certificado de assinatura |
+| `F` | assinatura digital e vínculo do certificado ao emitente |
+| regras específicas | chave de acesso, dados da NF-e ABI, participantes, imóvel, tributação, pagamento, QR Code e evento |
+
+## Como interpretar
+
+O Anexo I mistura três camadas que devem ficar separadas no sistema:
+
+| Camada | Responsabilidade |
+|---|---|
+| schema XSD | forma do XML, tipos, ocorrência e tamanho |
+| validação técnica | certificado, assinatura, namespace, UTF-8 e tamanho da mensagem |
+| regra de negócio | modalidade da operação, imóvel, IBS/CBS, pagamentos, QR Code e evento |
+
+## Implicação de implementação
+
+> **Implementação:** modele a NF-e ABI por versão de schema. As regras do Anexo I dependem de tabelas externas, especialmente CST, `cClassTrib` e códigos próprios da NF-e ABI; portanto, o validador precisa receber data de emissão, ambiente, versão de schema e versão das tabelas.
+
+## Fonte
+
+MOC NF-e ABI — Anexo I, Leiaute e Regras de Validação, versão Minuta 2.00 — março de 2026, p. 5–45.

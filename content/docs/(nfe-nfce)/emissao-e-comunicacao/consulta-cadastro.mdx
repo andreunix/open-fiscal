@@ -1,0 +1,29 @@
+---
+title: NfeConsultaCadastro
+description: Consulta da situação cadastral de um contribuinte na UF (CCC).
+---
+
+**Função:** consultar a **situação cadastral** de um contribuinte. **Método:** `consultaCadastro`. **Processo:** síncrono.
+
+## O que o manual diz
+
+- Entrada: `ConsCad` com `xServ = CONS-CAD`, a `UF` e **um** dos identificadores: `IE`, `CNPJ` ou `CPF`.
+- Retorno: `retConsCad` com os dados cadastrais — situação (`cSit`), Inscrição Estadual, CNPJ/CPF, endereço e o vínculo CNPJ↔IE, consultados no [CCC](/docs/fundamentos/cadastros-e-beneficios).
+- 📍 Nem toda UF disponibiliza a consulta por todos os identificadores.
+
+## Como interpretar
+
+É a forma de validar **antes do envio** se a IE do destinatário existe, está habilitada e bate com o CNPJ — evitando rejeições cadastrais na autorização (ver [CCC](/docs/fundamentos/cadastros-e-beneficios)).
+
+## Vigência
+
+- 📍 Disponibilidade e identificadores aceitos variam por UF.
+- 🔄 Schema `consCad` versionado por NT.
+
+## Implicação de implementação
+
+> **Implementação:** consulte o cadastro do destinatário em operações interestaduais e **cacheie** o resultado por um período razoável — não consulte a cada nota para o mesmo destinatário (risco de consumo indevido).
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §5.6, p. 87–89 (Tabelas 5-21 a 5-24).

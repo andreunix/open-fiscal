@@ -1,0 +1,69 @@
+---
+title: DANFAG
+description: Documento Auxiliar da Nota Fiscal de Água e Saneamento Eletrônica, conforme o Anexo II v1.01.
+---
+
+O **DANFAG** é a representação gráfica resumida da NFAg, impressa em papel comum ou enviada eletronicamente quando a legislação permitir. Ele representa a conta mensal de consumo, mas não substitui o XML autorizado.
+
+## O que o manual diz
+
+O Anexo II v1.01 define os requisitos mínimos do Documento Auxiliar da Nota Fiscal da Água e Saneamento Eletrônica.
+
+| Regra | Conteúdo |
+|---|---|
+| origem dos dados | deve ser gerado a partir do XML da NFAg |
+| informação externa permitida | protocolo de autorização |
+| XML ao consumidor | dispensado, salvo solicitação prévia |
+| envio eletrônico | pode ser facultado por legislação, por e-mail ou SMS |
+| modelos diferentes | dependem da concordância da agência reguladora |
+| durabilidade | legibilidade e papel por no mínimo 12 meses |
+
+## Divisões do DANFAG
+
+| Divisão | Conteúdo |
+|---|---|
+| I | cabeçalho e dados do emitente |
+| II | destinatário e localização do acessante |
+| III | identificação da NFAg, chave, protocolo, consulta e QR Code |
+| IV | itens faturados |
+| retenções e taxas | PIS, COFINS, IRPJ, CSLL, TFS e TFU quando aplicável |
+| leituras | leituras, consumo medido, consumo faturado, dias e origem do consumo |
+| unidades atendidas | informações de unidades atendidas |
+| histórico de consumo | consumo por mês e medidor, conforme regulação |
+| qualidade da água | análises, amostras, referência e conclusão |
+| aviso | informações de destaque vindas de `infAdic/infCpl` |
+| complementares | informações complementares vindas do XML |
+| pagamento | vencimento, valor, débito automático, código de barras e PIX |
+
+## Identificação e QR Code
+
+A divisão de identificação deve trazer número, série, data de emissão, chave de acesso em 11 blocos de quatro dígitos, endereço de consulta pública, protocolo de autorização e QR Code.
+
+Em contingência, o protocolo de autorização é suprimido. O QR Code deve ter tamanho mínimo de **25 mm por 25 mm**, com área útil de 22 mm e margem segura de 3 mm; para tamanhos maiores, a margem segura deve acompanhar 10% da dimensão total.
+
+## Itens e valores
+
+Os itens devem exibir descrição, valor e, quando aplicável, unidade, quantidade, preço unitário, IBS estadual, IBS municipal e CBS. Valores impressos usam vírgula como separador decimal e ponto como separador de milhar.
+
+Itens de classificação negativa podem aparecer com sinal negativo no DANFAG mesmo quando o valor no XML é positivo. Se o item indicar devolução, a descrição deve receber a indicação de devolução.
+
+## Modelos de leiaute
+
+O manual apresenta modelos de:
+
+| Modelo | Uso |
+|---|---|
+| DANFAG Bobina — opção 1 | impressão em bobina |
+| DANFAG Bobina — opção 2 | alternativa em bobina |
+| DANFAG Bobina — cofaturamento | impressão em bobina com cofaturamento |
+| DANFAG A4 — opção 1 | impressão A4 |
+| DANFAG A4 — opção 2 | alternativa A4 |
+| DANFAG A4 — cofaturamento | A4 com cofaturamento |
+
+## Implicação de implementação
+
+> **Implementação:** gere o DANFAG como uma projeção do XML autorizado. Separe componentes por divisão, preserve regras de sigilo de CNPJ/CPF quando aplicável e mantenha campos condicionados por regulação como configuração por UF/agência, não como layout fixo global.
+
+## Fonte
+
+MOC NFAg — Anexo II, DANFAG, versão 1.01 — janeiro de 2026, p. 4–20.

@@ -1,0 +1,50 @@
+---
+title: NfeAutorizacao
+description: Serviço de recepção do lote de NF-e — leiaute de entrada e retorno, processamento síncrono e assíncrono e compactação GZip.
+---
+
+**Função:** recepção de mensagens de lote de NF-e. **Método:** `nfeAutorizacaoLote`. **Processo:** síncrono **ou** assíncrono.
+
+## O que o manual diz
+
+### Entrada (`enviNFe_v4.00.xsd`)
+
+| Campo | Ocor. | Observação |
+|---|---|---|
+| `enviNFe` / `versao` | 1-1 | versão do leiaute |
+| `idLote` | 1-1 | identificador do lote; gerado e controlado **pelo contribuinte** |
+| `indSinc` | 1-1 | `0` = assíncrono; `1` = solicita processamento **síncrono** |
+| `NFe` | 1-50 | até **50 NF-e** por lote (Anexo I) |
+
+- Tamanho médio de uma NF-e ≈ **10 KB**.
+- O lote pode ser **compactado**: método `NfeAutorizacaoLoteZip`, parâmetro `nfeDadosMsgZip` (GZip → Base64). Falha de descompactação → erro **416**.
+- O **síncrono** só ocorre se a empresa solicitar (`indSinc=1`), houver **uma única NF-e** no lote **e** a autorizadora implementar essa modalidade.
+
+### Retorno (`retEnviNFe_v4.00.xsd`)
+
+| Campo | Observação |
+|---|---|
+| `tpAmb`, `verAplic`, `cStat`, `xMotivo`, `cUF`, `dhRecbto` | cabeçalho da resposta |
+| `infRec` / `nRec` | **recibo** — só no processamento **assíncrono** aceito |
+| `tMed` | tempo médio de resposta dos últimos 5 min |
+| `protNFe` | **protocolo** — só no processamento **síncrono** |
+
+- Assíncrono aceito → `cStat = 103` "Lote recebido com Sucesso" + recibo (`nRec`), usado depois em [RetAutorizacao](/docs/emissao-e-comunicacao/ret-autorizacao).
+- Síncrono → o `protNFe` já vem na resposta.
+- Erro de lote → resposta só com ambiente, versão e código/descrição do erro.
+
+## Como interpretar
+
+`indSinc` decide o ciclo: com `1`, você recebe o protocolo direto (uma nota por lote); com `0`, recebe um recibo e consulta depois. O `idLote` é seu — a SEFAZ não o usa para nada além de eco.
+
+## Vigência
+
+- 🔄 Schemas `enviNFe`/`retEnviNFe` versionados (4.00 na fonte); o limite de 50 NF-e e os códigos podem mudar por NT.
+
+## Implicação de implementação
+
+> **Implementação:** correlacione cada lote por `idLote` + chaves enviadas. Em timeout no envio, **não** reenvie cego: se foi assíncrono e você tem o recibo, consulte `RetAutorizacao`; se não tem recibo, consulte a situação por chave em [ConsultaProtocolo](/docs/emissao-e-comunicacao/consulta-protocolo) antes de retransmitir.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §5.1, p. 71–74 (Tabelas 5-1 a 5-4).

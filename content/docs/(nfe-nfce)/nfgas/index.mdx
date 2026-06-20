@@ -1,0 +1,33 @@
+---
+title: NFGas
+description: Nota Fiscal Eletrônica do Gás, modelo 76, conforme o MOC NFGas v1.00f e o Anexo II do DANFGas.
+---
+
+A **NFGas** é a Nota Fiscal Eletrônica do Gás. Ela é tratada nos manuais como **modelo 76** e documenta a prestação de serviços de distribuição de gás canalizado.
+
+> 🔄 Esta seção começa pelos três manuais baixados: **MOC NFGas — Visão Geral v1.00f**, **MOC NFGas — Anexo I v1.00f** e **MOC NFGas — Anexo II DANFGas v1.00**. Confira schemas, tabelas, CFOPs permitidos e atos vigentes antes de implementar.
+
+## Nesta seção
+
+| Tema | Página |
+|---|---|
+| conceito, chave de acesso, comunicação, eventos, QR Code e contingência | [Visão geral](/docs/nfgas/visao-geral) |
+| validações, grupos do XML, CFOP, faturamento, IBS/CBS e totais | [Leiaute e regras](/docs/nfgas/leiaute-e-regras) |
+| documento auxiliar, divisões impressas, QR Code e modelos de impressão | [DANFGas](/docs/nfgas/danfgas) |
+
+## O que muda em relação à NF-e/NFC-e
+
+| Ponto | NFGas |
+|---|---|
+| Modelo fiscal | `76` |
+| Operação documentada | distribuição de gás canalizado |
+| Emissão | serviço síncrono, uma nota por requisição |
+| Documento auxiliar | DANFGas |
+| Namespace XML | `http://www.portalfiscal.inf.br/nfgas` |
+| Contingência | off-line, com QR Code assinado |
+
+## Fonte
+
+- `tmp/nfe/manuais/MOC_NFGas_VisaoGeral_v1.00f.pdf`
+- `tmp/nfe/manuais/MOC_NFGas_Anexo I_Leiaute e Regras de Validação_v1.00f.pdf`
+- `tmp/nfe/manuais/MOC_NFGas_Anexo II_DANFGas_v1.00.pdf`

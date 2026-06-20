@@ -1,0 +1,39 @@
+---
+title: Boas práticas NFC-e
+description: Recomendações operacionais para software emissor de NFC-e, do Manual de Boas Práticas BP 2018.001.
+---
+
+O Manual de Boas Práticas da NFC-e reúne recomendações para o software emissor no varejo. As mais relevantes:
+
+## O que o manual diz
+
+1. **Seguir os padrões** dos Manuais, Notas Técnicas e Pacote de Liberação dos schemas.
+2. **Usar homologação exaustivamente** antes de produzir — previne rejeições na frente de caixa.
+3. **Cadastrar produtos com validação:** testar o produto em homologação ao cadastrar; "NCM inexistente" é uma das rejeições mais comuns. Ver [GTIN e CCG](/docs/fundamentos/gtin-e-ccg).
+4. **Venda rápida:** permitir vender sem cadastrar o consumidor (facultado informar CPF/CNPJ).
+5. **Identificar o destinatário** apenas quando exigido por legislação. 📍
+6. **Calcular tributos automaticamente** para agilizar o caixa.
+7. **Transmitir o XML assinado** conforme o MOC.
+8. **Suportar certificado A1 e/ou A3**, com alerta de vencimento **1 mês** antes (A3 costuma ser inviável no varejo).
+9. **Respeitar o tempo de transmissão/autorização** do MOC.
+10. **Manter histórico e status** de cada NFC-e (autorizada, cancelada, inutilizada, rejeitada com motivo).
+11. **Imprimir o DANFE NFC-e** com QR Code, nas formas completa e resumida; usar impressora comum (não matricial, pela dificuldade com o QR Code).
+12. **Backup** dos dados (NFC-e, clientes, produtos).
+13. **Enviar a NFC-e por e-mail** (procNFe + DANFE) quando o consumidor aceitar.
+14. **Não emitir sem CSC cadastrado** (e seu identificador) — usado no hash do QR Code v2.00; o CSC de produção difere do de homologação. Ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode). 📍
+
+## Como interpretar
+
+O fio condutor é o **tempo de caixa**: tudo que evita travar a venda (homologação prévia, cadastro validado, cálculo automático, contingência off-line) é recomendado. A maior parte das rejeições vem de **cadastro de produto**, não de montagem do XML.
+
+## Vigência
+
+- 🕒 Manual BP 2018.001 v1.0; o QR Code v3.00 (2025) dispensa CSC — ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode).
+
+## Implicação de implementação
+
+> **Implementação:** trate cadastro de produto como ponto crítico de qualidade — valide NCM/CEST/GTIN no cadastro, não só na venda. Monitore as rejeições mais frequentes e crie testes de regressão a partir delas — ver [Testes e homologação](/docs/operacao/testes-e-homologacao).
+
+## Fonte
+
+Manual de Boas Práticas NFC-e — BP 2018.001, v1.0.

@@ -1,0 +1,46 @@
+---
+title: GTIN e Cadastro Centralizado de GTIN
+description: O que é o GTIN, o Cadastro Centralizado de GTIN (CCG) e as validações que podem rejeitar a nota.
+---
+
+O **GTIN** (Global Trade Item Number) é o identificador comercial do produto, mantido pela **GS1**. Na NF-e ele aparece em `cEAN` (do produto) e `cEANTrib` (da unidade tributável).
+
+## O que o manual diz
+
+- O GTIN pode ter **8, 12, 13 ou 14** dígitos.
+- O **Cadastro Centralizado de GTIN (CCG)** (NT 2017.001) é um banco com um conjunto reduzido de dados dos produtos com GTIN, integrado ao Cadastro Nacional de Produtos da GS1 (CNP).
+- Os Ajustes SINIEF 07/05 e 19/16 determinam que os autorizadores **validem o GTIN** e **rejeitem** a nota quando estiver em desacordo com o CCG.
+- Manter os dados é responsabilidade do **dono da marca**, no CNP (`cnp.gs1br.org`).
+
+### Informações obrigatórias no CCG
+
+GTIN · marca · tipo de GTIN · descrição · classificação (segmento, família, classe, subclasse) · país de destino principal · CEST (quando houver) · NCM · peso bruto e unidade · foto. Para **GTIN-14** (agrupamento), também o GTIN contido e a quantidade.
+
+### Principais validações que rejeitam
+
+| Campo | Motivo de rejeição |
+|---|---|
+| GTIN | dígito de controle inválido |
+| Descrição | genérica demais ("A definir", "Disponível", "Não informado") |
+| Dono da marca | CNPJ/CPF inválido |
+| NCM | ausente ou inexistente |
+| CEST | ausente, inexistente ou incompatível com o NCM |
+| GPC | classificação ausente, inexistente ou incompatível |
+| GTIN contido (GTIN-14) | ausente ou com dígito inválido |
+
+## Como interpretar
+
+A validação do GTIN **não** é só de formato: o autorizador compara contra um cadastro externo (CCG). Um produto pode ter GTIN sintaticamente válido e ainda ser rejeitado porque o dono da marca não atualizou o CNP.
+
+## Vigência
+
+- 🔄 CCG instituído pela **NT 2017.001**; entrada em vigor por **cronograma** previsto na legislação.
+- 📍 O conteúdo do cadastro depende da manutenção pelo dono da marca, fora do controle do emitente.
+
+## Implicação de implementação
+
+> **Implementação:** se o produto não possui GTIN, siga o valor previsto no leiaute vigente (ex.: `SEM GTIN`) — não invente código. Trate rejeição de GTIN como problema de **cadastro do produto**, não de montagem do XML, e oriente o cliente a corrigir no CNP.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §2.2.9, p. 21–22 (Tabela 2-5).

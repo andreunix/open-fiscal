@@ -1,0 +1,64 @@
+---
+title: Arquitetura de comunicação
+description: Padrões técnicos da comunicação com a SEFAZ — XML UTF-8, namespace, TLS, SOAP, certificado digital e assinatura XML.
+---
+
+A comunicação é sempre **iniciada pelo contribuinte**, que envia uma mensagem XML a um Web Service e recebe a resposta na mesma conexão.
+
+## O que o manual diz
+
+### Documento XML
+
+- Codificação **UTF-8**; toda a mensagem inicia com `<?xml version="1.0" encoding="UTF-8"?>`. Em um lote, há **uma única** declaração no início.
+- **Namespace** único no elemento raiz: `http://www.portalfiscal.inf.br/nfe`. É **vedado** usar prefixo de namespace (otimização de tamanho).
+- O namespace da assinatura fica na própria tag `<Signature>`.
+- **Otimização:** não inclua tag de campo opcional com conteúdo zero/vazio. Se um campo condicional se tornar obrigatório pela legislação, inclua-o; os demais, elimine.
+- **Caracteres especiais** usam escape XML (contam como 1 caractere para o tamanho):
+
+| Caractere | Escape |
+|---|---|
+| `<` | `&lt;` |
+| `>` | `&gt;` |
+| `&` | `&amp;` |
+| `"` | `&quot;` |
+| `'` | `&#39;` |
+
+### Comunicação
+
+- Meio físico: Internet com **TLS 1.2 ou superior**, **autenticação mútua** (identifica servidor e cliente por certificado, dispensando usuário/senha).
+- Padrão **SOAP 1.2**, estilo `Document/Literal`, perfil WS-I Basic Profile.
+- A mensagem vai no parâmetro `nfeDadosMsg`; a versão do leiaute vai em `versaoDados` (no `nfeCabecMsg` do SOAP Header).
+
+### Certificado digital
+
+ICP-Brasil **A1 ou A3**, com CNPJ no `OtherName OID = 2.16.76.1.3.3` (ou CPF no `OID = 2.16.76.1.3.1`). Exigido em **dois momentos**:
+
+| Momento | Requisito |
+|---|---|
+| **Assinatura** das mensagens (NF-e, cancelamento, inutilização, eventos…) | CNPJ/CPF de um estabelecimento da emissora; "uso da chave" para assinatura |
+| **Transmissão** (TLS) | CNPJ do responsável pela transmissão (não necessariamente o emissor); Extended Key Usage "Autenticação Cliente" |
+
+### Assinatura XML
+
+- Padrão **XML Digital Signature**, formato **Enveloped**.
+- Assina-se a tag `<infNFe>` pelo atributo `Id` (literal `NFe` + chave de acesso); o `Reference URI` usa `#NFe...`.
+- Cadeia: **EndCertOnly** (só o certificado do usuário final).
+- Não inclua `<X509SubjectName>`, `<X509IssuerSerial>`, `<KeyValue>` etc. — vêm do certificado.
+- Não envie a lista de certificados revogados: cada SEFAZ monta e valida a sua na conferência.
+
+## Como interpretar
+
+O fluxo é stateless por chamada: você abre conexão TLS mútua, envia um XML SOAP e recebe outro. Toda a identidade (quem assina, quem transmite, qual ambiente, qual versão) viaja **dentro** da mensagem e do certificado — não há sessão.
+
+## Vigência
+
+- 🕒 A Tabela 4-2 do MOC 7.0 registra **RSA-SHA1**, **digest SHA-1** e **chave de 1024 bits**. É a especificação de 2020 — **confronte com o schema e os atos vigentes** antes de implementar. Ver [Proveniência](/docs/referencia/proveniencia).
+- 🔄 A versão de leiaute (`versaoDados`) e os schemas mudam por NT.
+
+## Implicação de implementação
+
+> **Implementação:** isole a camada de assinatura/transporte por versão. Não copie o algoritmo de 2020 como "boas práticas de segurança"; leia a especificação criptográfica vigente. Trate o certificado de transmissão e o de assinatura como configurações **distintas** — podem ter CNPJs diferentes.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, capítulo 4 (§4.1–§4.2), p. 49–55 (Tabelas 4-1 e 4-2).

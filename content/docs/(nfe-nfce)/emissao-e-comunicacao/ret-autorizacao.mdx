@@ -1,0 +1,29 @@
+---
+title: NfeRetAutorizacao
+description: Consulta do resultado de processamento de um lote assíncrono pelo número do recibo.
+---
+
+**Função:** consultar o resultado do processamento de um lote enviado de forma **assíncrona**. **Método:** `nfeRetAutorizacao`. **Processo:** síncrono.
+
+## O que o manual diz
+
+- Entrada: `consReciNFe` com `tpAmb`, `versao` e o **`nRec`** (recibo) devolvido por [NfeAutorizacao](/docs/emissao-e-comunicacao/autorizacao).
+- Retorno: `retConsReciNFe` com `cStat`/`xMotivo` do lote e, quando processado, **um `protNFe` por NF-e** do lote (autorização, rejeição ou denegação individual).
+- O resultado do lote fica disponível por **no mínimo 24h** após o processamento. Depois disso, a situação de cada nota é obtida individualmente por [ConsultaProtocolo](/docs/emissao-e-comunicacao/consulta-protocolo).
+- Há regras de validação **genéricas** (estrutura, ambiente) e **específicas** (recibo inexistente, lote ainda em processamento).
+
+## Como interpretar
+
+O recibo é a chave para "buscar a resposta depois". Cada nota do lote tem seu próprio `protNFe` e seu próprio `cStat` — um lote pode misturar notas autorizadas e rejeitadas.
+
+## Vigência
+
+- 🔄 Schemas e códigos versionados por NT.
+
+## Implicação de implementação
+
+> **Implementação:** faça _polling_ com _backoff_ respeitando o `tMed` recebido; não entre em loop de consulta (risco de [consumo indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido), erro 656). Se a janela de 24h expirar sem você ter colhido o resultado, migre para consulta por chave.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §5.2, p. 75–77 (Tabelas 5-5 a 5-8).

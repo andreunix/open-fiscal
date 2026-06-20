@@ -1,0 +1,51 @@
+---
+title: NFeDistribuicaoDFe
+description: Distribuição de documentos e resumos de interesse de um ator, consultados por NSU no Ambiente Nacional.
+---
+
+**Função:** distribuir DF-e e informações resumidas **de interesse de um ator** (emitente, destinatário, transportador ou terceiro). **Método:** `nfeDistDFeInteresse`. **Processo:** síncrono.
+
+## O que o manual diz
+
+- Consumido por **qualquer ator** (PJ ou PF) com certificado. PJ é autenticada pelo **CNPJ base**: pode consultar qualquer CNPJ da empresa desde que o CNPJ base bata com o do certificado.
+- Os documentos ficam disponíveis por **até 3 meses** após a recepção pelo **Ambiente Nacional**.
+- Entrada (`distDFeInt_v...xsd`): `tpAmb`, `cUFAutor`, `CNPJ`/`CPF` do interessado e **um** dos modos de consulta:
+
+| Modo | Campo | Uso |
+|---|---|---|
+| por NSU sequencial | `distNSU` / `ultNSU` | trazer o que há de novo desde o último NSU recebido |
+| por NSU específico | `consNSU` | rebuscar um NSU pontual |
+| por chave | `consChNFe` | obter o documento completo de uma chave |
+
+- Retorno: lote de documentos, cada um com seu **NSU**, em `docZip` (Base64/GZip), podendo ser DF-e completo ou **resumo** (de NF-e, de eventos de CT-e/MDF-e, registro de passagem etc.).
+
+### O que cada ator recebe
+
+A disponibilidade depende do papel e, para o destinatário, da **manifestação** (ver nota):
+
+| Documento | Emitente | Destinatário¹ | Transportador² | Terceiros³ |
+|---|:---:|:---:|:---:|:---:|
+| NF-e (completa) | Não | Sim | Sim | Sim |
+| Evento de cancelamento | Não | Sim | Sim | Sim |
+| Carta de correção | Não | Sim | Sim | Sim |
+| Manifestação do destinatário | Sim | Não | Não | Sim |
+| EPEC | Não | Sim | Sim | Não |
+| Resumo de NF-e | Não | Sim | Não | Não |
+
+¹ A NF-e completa só fica disponível ao destinatário **após** ele manifestar ("Ciência", "Confirmação" ou "Operação não Realizada"); antes, só o **Resumo de NF-e** e o cancelamento. ² Só o transportador identificado no grupo `transp`. ³ Só CNPJ/CPF informado em `autXML`.
+
+## Como interpretar
+
+Distribuição **não** é a mesma coisa que a distribuição do capítulo 6: lá é o *compartilhamento do `procNFe`* após a autorização; aqui é a *consulta ativa por NSU* de tudo o que é de seu interesse no Ambiente Nacional. O NSU é um contador sequencial **por ator** — você guarda o último e pede o próximo.
+
+## Vigência
+
+- 🔄 Schema `distDFeInt` versionado; a tabela de documentos cresce por NT/BT (averbação, comprovante de entrega etc.).
+
+## Implicação de implementação
+
+> **Implementação:** persista o `ultNSU` por ator e avance sequencialmente; **nunca** re-puxe NSUs já obtidos em loop — é a causa clássica do erro **656 (consumo indevido)**. Para o destinatário, lembre que obter a NF-e completa exige manifestar antes (ver [Manifestação](/docs/eventos/manifestacao-do-destinatario)).
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §5.7 (e §6 sobre `procNFe`), p. 90–98 (Tabelas 5-25 a 5-29).

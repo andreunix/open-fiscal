@@ -1,0 +1,74 @@
+---
+title: Leiaute e regras da NFAg
+description: Validações e mapa do XML da NFAg, modelo 75, conforme o Anexo I v1.00k.
+---
+
+O **Anexo I da NFAg** define o leiaute do XML do modelo 75 e as regras de validação aplicadas ao serviço de recepção síncrono.
+
+## O que o manual diz
+
+A versão incorporada aqui é a **1.00k, de 11 de março de 2026**, com implantação indicada para homologação em **06/04/2026** e produção em **04/05/2026**.
+
+### Grupos do XML
+
+| Grupo ou tag | Conteúdo |
+|---|---|
+| `infNFAg` | informações principais da NFAg |
+| `ide` | identificação da nota, ambiente, emissão, finalidade e compras governamentais |
+| `emit` | emitente |
+| `dest` | destinatário |
+| `gSub` | informações de substituição |
+| `gMed` | medidores |
+| `gFatConjunto` | faturamento conjunto |
+| `det` | detalhamento de produtos e serviços |
+| `gMedicao` / `gMedida` | medição e medidas vinculadas ao item |
+| `IBSCBS` | IBS e CBS por item |
+| `total` | totais da NFAg |
+| `IBSCBSTot` | totais de IBS e CBS |
+| `gFat` | controle da fatura |
+| `infAdic` | informações adicionais |
+| `infNFAgSupl` | informações suplementares, incluindo QR Code |
+| `Signature` | assinatura digital |
+
+### Validações por tema
+
+| Tema | Exemplos de validação |
+|---|---|
+| ambiente e autorização | `tpAmb`, `cUF`, UF autorizadora e site autorizador |
+| contingência | `dhCont` e `xJust` obrigatórios em off-line e proibidos na emissão normal |
+| chave de acesso | literal `NFAg`, ano, DV, modelo `75` e composição do `Id` |
+| emitente e destinatário | CNPJ, CPF, IE, município, UF e credenciamento |
+| data de emissão | tolerância de 5 minutos para emissão futura e atraso de 120 horas na emissão normal |
+| duplicidade | chave natural, documento cancelado, substituído ou já autorizado |
+| substituição | grupo `gSub`, chave substituída e compatibilidade de emitente/destinatário |
+| faturamento | normal, faturado por terceiro e faturamento conjunto |
+| produtos e serviços | `cClass`, quantidade, valor unitário, valor do item e devolução |
+| IBS/CBS | CST, `cClassTrib`, redução, diferimento, compras governamentais e estorno |
+| totais | somatórios por item, valores negativos proibidos e `vTotDFe` |
+| QR Code | URL prevista, chave, `sign` em contingência e assinatura calculada |
+
+## Faturamento e marcações
+
+A NFAg diferencia tipos de faturamento, incluindo faturamento por terceiro e faturamento conjunto. Quando documentos ficam relacionados, o fisco pode gerar eventos de marcação automaticamente, como autorização, cancelamento ou substituição de NFAg de faturamento conjunto.
+
+## Totais
+
+O total do documento fiscal (`vTotDFe`) é calculado como:
+
+```text
+vTotDFe = total/vNF + IBSCBSTot/gIBS/vIBS + IBSCBSTot/gCBS/vCBS
+```
+
+Os demais totais devem conferir com a soma dos respectivos campos dos itens, considerando a natureza do código de classificação do produto (`cClass`), que pode somar ou deduzir valores.
+
+## Como interpretar
+
+O Anexo I combina regra fiscal, regra de schema e regra operacional. Uma rejeição pode vir de forma XML, certificado, assinatura, credenciamento, vínculo entre documentos, cálculo tributário ou inconsistência de total.
+
+## Implicação de implementação
+
+> **Implementação:** implemente a validação em camadas: schema e assinatura primeiro; depois contexto de autorização; depois regras de negócio por finalidade, faturamento, item, IBS/CBS e totais. O validador precisa receber versão do schema, versão das tabelas (`cClass`, CST, `cClassTrib`), ambiente, UF e data de emissão.
+
+## Fonte
+
+MOC NFAg — Anexo I, Leiaute e Regras de Validação, versão 1.00k — 11 de março de 2026, p. 4–50.

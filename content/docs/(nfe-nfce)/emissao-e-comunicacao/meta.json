@@ -1,0 +1,16 @@
+{
+  "title": "Emissão e comunicação",
+  "pages": [
+    "index",
+    "arquitetura",
+    "web-services",
+    "autorizacao",
+    "ret-autorizacao",
+    "inutilizacao",
+    "consulta-protocolo",
+    "status-servico",
+    "consulta-cadastro",
+    "distribuicao-dfe",
+    "recibo-e-uso-indevido"
+  ]
+}

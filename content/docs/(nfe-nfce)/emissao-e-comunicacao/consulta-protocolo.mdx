@@ -1,0 +1,28 @@
+---
+title: NfeConsultaProtocolo
+description: Consulta da situação atual de uma NF-e pela chave de acesso.
+---
+
+**Função:** consultar a **situação atual** de uma NF-e. **Método:** `nfeConsultaNF`. **Processo:** síncrono.
+
+## O que o manual diz
+
+- Entrada: `consSitNFe` com `tpAmb`, `xServ = CONSULTAR` e a **chave de acesso** (`chNFe`, 44 dígitos).
+- Retorno: `retConsSitNFe` com `cStat`/`xMotivo` da consulta e a situação da nota — incluindo o **`protNFe`** (autorização/denegação) e, quando houver, os **eventos** vinculados (cancelamento, CC-e, manifestação etc.).
+- É a fonte oficial para saber o que aconteceu com uma chave quando a resposta do envio se perdeu.
+
+## Como interpretar
+
+Esta é a consulta de **recuperação**: depois de um timeout, ela diz se a nota foi autorizada, rejeitada, denegada ou se simplesmente não existe. É por chave, então independe de recibo ou lote.
+
+## Vigência
+
+- 🔄 Schema `consSitNFe` versionado (NT 2016.003 e posteriores ajustam o retorno de eventos).
+
+## Implicação de implementação
+
+> **Implementação:** use esta consulta como **árbitro de estado incerto**, não como _polling_ de rotina. Após timeout no envio, consulte por chave antes de decidir armazenar, corrigir ou retransmitir — ver [Roteiro de implementação](/docs/comece-aqui/roteiro-de-implementacao). Consultas repetidas da mesma chave já resolvida podem disparar [consumo indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido).
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §5.4, p. 81–83 (Tabelas 5-13 a 5-16).

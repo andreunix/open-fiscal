@@ -1,0 +1,86 @@
+---
+title: Glossário
+description: Siglas e termos essenciais da NF-e e NFC-e em linguagem direta.
+---
+
+Consulta rápida. A definição completa fica no capítulo correspondente.
+
+| Termo | Significado |
+|---|---|
+| **AN** | Ambiente Nacional, responsável por serviços e compartilhamentos nacionais |
+| **BACEN** | Banco Central do Brasil |
+| **CCC** | Cadastro Centralizado de Contribuintes |
+| **CCG** | Cadastro Centralizado de GTIN |
+| **CC-e** | Carta de Correção Eletrônica |
+| **CFOP** | Código Fiscal de Operações e Prestações |
+| **CNPJ** | Cadastro Nacional da Pessoa Jurídica |
+| **CPF** | Cadastro de Pessoas Físicas |
+| **CRT** | Código de Regime Tributário do emitente |
+| **CSC** | Código de Segurança do Contribuinte (hash do QR Code da NFC-e) |
+| **CSOSN** | Código de Situação da Operação no Simples Nacional |
+| **CST** | Código de Situação Tributária |
+| **CSRT** | Código de Segurança do Responsável Técnico |
+| **DANFE** | Documento Auxiliar da NF-e; representação da nota, não o documento fiscal |
+| **DF-e** | Documento Fiscal eletrônico |
+| **DIFAL** | Diferencial de Alíquota do ICMS interestadual |
+| **EPEC** | Evento Prévio de Emissão em Contingência |
+| **FCP** | Fundo de Combate à Pobreza |
+| **FS-DA** | Formulário de Segurança para Documento Auxiliar |
+| **GTIN** | identificador global de item comercial |
+| **IBS / CBS / IS** | tributos da Reforma Tributária (Imposto sobre Bens e Serviços, Contribuição sobre Bens e Serviços, Imposto Seletivo) |
+| **ICP-Brasil** | Infraestrutura de Chaves Públicas Brasileira |
+| **MOC** | Manual de Orientação do Contribuinte |
+| **NF-e** | Nota Fiscal Eletrônica; quando especificado, modelo 55 |
+| **NF-e ABI** | Nota Fiscal Eletrônica de Alienação de Bens Imóveis, modelo 77 |
+| **NFA-e** | Nota Fiscal Avulsa Eletrônica |
+| **NFC-e** | Nota Fiscal de Consumidor Eletrônica, modelo 65 |
+| **NCM** | Nomenclatura Comum do Mercosul |
+| **NFAg** | Nota Fiscal de Água e Saneamento Eletrônica, modelo 75 |
+| **NFGas** | Nota Fiscal Eletrônica do Gás, modelo 76 |
+| **NSU** | Número Sequencial Único usado na distribuição de documentos |
+| **NVE** | Nomenclatura de Valor Aduaneiro e Estatística |
+| **procNFe** | XML que combina a NF-e autorizada com o protocolo |
+| **RECOPI** | sistema de registro de operações com papel imune |
+| **SEFAZ** | Secretaria de Fazenda |
+| **SOAP** | protocolo de troca de mensagens usado pelos Web Services |
+| **SRE** | Sistema de Registro de Eventos |
+| **SVAN** | Sefaz Virtual do Ambiente Nacional |
+| **SVC** | SEFAZ Virtual de Contingência |
+| **SVRS** | Sefaz Virtual do Rio Grande do Sul |
+| **TLS** | protocolo de segurança da conexão |
+| **UF** | Unidade da Federação |
+| **WSDL** | descrição formal da interface de um Web Service |
+| **XSD** | schema que define a estrutura válida de um XML |
+| **XMLDSig** | padrão de assinatura digital XML |
+
+## Campos de resposta
+
+| Campo | O que representa |
+|---|---|
+| `cStat` | código do resultado do processamento |
+| `xMotivo` | descrição textual associada ao resultado |
+| `nProt` | número do protocolo, quando gerado |
+| `nRec` | número do recibo de lote assíncrono |
+| `tMed` | tempo médio indicado para nova consulta |
+
+> Nunca decida apenas por `xMotivo`. Use `cStat` como chave e preserve ambos no diagnóstico.
+
+## Ambientes e modelos
+
+| Campo | Valor | Significado |
+|---|---:|---|
+| `tpAmb` | `1` | produção |
+| `tpAmb` | `2` | homologação |
+| `mod` | `55` | NF-e |
+| `mod` | `65` | NFC-e |
+| `tpEmis` | `1` | emissão normal |
+| `tpEmis` | `4` | EPEC |
+| `tpEmis` | `5` | FS-DA |
+| `tpEmis` | `9` | off-line (NFC-e) |
+
+## Próximos passos
+
+- [Fundamentos](/docs/fundamentos)
+- [Emissão e comunicação](/docs/emissao-e-comunicacao)
+- [Leiaute e rejeições](/docs/leiaute-e-rejeicoes)
+- [Eventos](/docs/eventos)

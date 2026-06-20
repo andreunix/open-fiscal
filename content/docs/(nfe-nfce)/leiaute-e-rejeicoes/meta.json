@@ -1,0 +1,15 @@
+{
+  "title": "Leiaute e rejeições",
+  "pages": [
+    "index",
+    "como-ler-o-leiaute",
+    "mapa-do-xml",
+    "identificacao-e-atores",
+    "itens-e-produtos",
+    "tributos",
+    "totais-e-fechamento",
+    "grupos-finais",
+    "pipeline-de-validacao",
+    "codigos-de-retorno"
+  ]
+}

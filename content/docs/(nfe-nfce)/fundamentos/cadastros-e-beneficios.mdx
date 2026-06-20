@@ -1,0 +1,41 @@
+---
+title: Cadastros e benefícios
+description: O código de benefício fiscal (cBenef) e o Cadastro Centralizado de Contribuintes (CCC), usados em validações cadastrais e estaduais.
+---
+
+Duas peças cadastrais que a SEFAZ consulta durante a validação: o **cBenef** (estadual) e o **CCC** (situação cadastral do contribuinte).
+
+## cBenef — código de benefício fiscal
+
+### O que o manual diz
+
+- O `cBenef` trata de **situações particulares de cada UF**; sua definição é especificada **pela própria UF** que o utiliza. 📍
+- As UFs que usam a tabela disponibilizam, em suas páginas, os endereços para download das tabelas **"cBenef × CST"**.
+- No Portal Nacional da NF-e, na área **Diversos** da aba Documentos, há um arquivo com os **endereços** dessas tabelas por UF.
+
+### Implicação de implementação
+
+> **Implementação:** a relação entre `cBenef` e CST depende de tabela **estadual** versionada. Não fixe valores no código; carregue a tabela da UF e versione-a junto com as regras de validação.
+
+## CCC — Cadastro Centralizado de Contribuintes
+
+### O que o manual diz
+
+As SEFAZ mantêm um cadastro centralizado de todos os contribuintes da UF — pessoa jurídica (CNPJ + IE) e pessoa física (CPF + IE). O CCC é usado para:
+
+- verificar se a **IE do destinatário** existe na UF de destino (operação interestadual);
+- confirmar se o contribuinte está **habilitado**;
+- validar se o **CNPJ informado está vinculado à IE** informada — em qualquer ambiente de autorização (SEFAZ autorizadora ou SEFAZ Virtual).
+
+### Como interpretar
+
+O CCC é o motivo de rejeições por "IE do destinatário" mesmo com a IE digitada corretamente: o que importa é o **vínculo** CNPJ↔IE e a **situação** cadastral na UF de destino, não só o formato.
+
+## Vigência
+
+- 📍 Tanto `cBenef` quanto o conteúdo do CCC dependem de cada UF e mudam fora do controle do emitente.
+- 🔄 Regras de validação associadas evoluem por Nota Técnica.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §2.2.11 (cBenef) e §2.2.12 (CCC), p. 24–25.

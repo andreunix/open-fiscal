@@ -1,0 +1,48 @@
+---
+title: Conceitos essenciais
+description: O que são NF-e, NFC-e, NFA-e, DANFE e DANFE NFC-e, e a base legal de cada documento.
+---
+
+## Guarde estas quatro ideias
+
+1. A nota fiscal eletrônica é o **arquivo XML autorizado**, não o papel.
+2. O DANFE é uma **representação auxiliar**. Ele não substitui o XML.
+3. A validade jurídica exige **duas** condições: assinatura digital do emitente **e** Autorização de Uso da SEFAZ.
+4. Sem Autorização de Uso, a emissão normal ainda não foi concluída.
+
+## O que o manual diz
+
+| Termo | Definição |
+|---|---|
+| **NF-e, modelo 55** | documento de existência exclusivamente digital para documentar circulação de mercadorias e prestações no campo do ICMS e do IPI. Substitui as notas modelo 1/1-A e a Nota de Produtor modelo 4. Base: Ajuste SINIEF 07/2005. |
+| **NFA-e, modelo 55** | NF-e **avulsa**, emitida por sistema da própria administração tributária, assinada com o certificado da SEFAZ. |
+| **NFC-e, modelo 65** | documento eletrônico para venda a consumidor final. Substitui a Nota de Venda a Consumidor modelo 2, o Cupom Fiscal (ECF) e o CF-e-SAT. Base: Ajuste SINIEF 19/2016. |
+| **DANFE** | documento auxiliar impresso da NF-e; contém a chave de acesso e permite consultar a nota. Não é nota fiscal e não a substitui. |
+| **DANFE NFC-e** | representação simplificada da NFC-e, impressa em impressora comum a partir do XML, com QR Code para consulta. |
+
+> No manual, "NF-e" é usado para o que vale para os **dois** modelos (55 e 65). Quando uma regra é específica, o texto diz "NF-e modelo 55" ou "NFC-e modelo 65". Esta documentação segue a mesma convenção.
+
+### NFA-e — o que muda em relação à NF-e comum
+
+- os dados do **emitente** (grupo `emit`) são do remetente; os dados do Fisco vão no grupo `avulsa`;
+- a **série** (`serie`) define se a chave usa o CNPJ da SEFAZ, o CNPJ ou o CPF do emitente (ver [Séries e numeração](/docs/fundamentos/series-e-numeracao));
+- o **número** (`nNF`) é controlado pela SEFAZ;
+- `procEmi = 1` (emissão avulsa pelo Fisco) e `tpEmis = 1` (normal — **não** há contingência para NFA-e);
+- a assinatura é feita com o certificado da **SEFAZ**.
+
+## Como interpretar
+
+A "nota" é o XML. Tudo o que o usuário vê — DANFE, QR Code, espelho na tela — é derivado dele. Por isso o XML autorizado e o protocolo são o registro fiscal a guardar; o resto é reproduzível.
+
+## Vigência
+
+- 🕒 A possibilidade de **emitente pessoa física (CPF)** na chave veio com a versão 4.00 (NT 2018.001); antes só `e-CNPJ`.
+- 📝 **Errata da fonte:** a §2.2.5 do MOC 7.0 diz que o DANFE NFC-e e o QR Code estão no "Anexo III". Está incorreto — eles têm **manual próprio** (ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode)). Registrado em [Proveniência](/docs/referencia/proveniencia).
+
+## Implicação de implementação
+
+> **Implementação:** modele `modelo`, `tpAmb` e `tpEmis` como campos explícitos do objeto fiscal — eles mudam regras de validação, chave e contingência. Nunca trate o DANFE como fonte dos dados fiscais.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §2.1 e §2.2 (Conceitos), p. 16–18.

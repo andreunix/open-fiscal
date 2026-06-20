@@ -1,0 +1,52 @@
+---
+title: Código de barras
+description: O código de barras CODE-128C do DANFE da NF-e — quando usar um ou dois códigos, dimensões e o dígito verificador por módulo 103.
+---
+
+## O que o manual diz
+
+O padrão é **CODE-128C**. Quantidade de códigos no DANFE:
+
+| Cenário | Códigos |
+|---|---|
+| operação normal ou contingência via **SVC-AN** | **um** código (chave de acesso) |
+| **demais** hipóteses de contingência | **dois** códigos (chave + dados da NF-e em contingência) |
+
+### Dimensões mínimas (código da chave, 44 posições)
+
+| Parâmetro | Valor |
+|---|---|
+| Largura total (não impacto: laser/jato) | 6 cm |
+| Largura total (impacto: matricial/linha) | 11,5 cm |
+| Altura mínima da barra | 0,8 cm |
+| Largura mínima da barra/módulo | 0,02 cm |
+
+Estrutura da simbologia: `Margem clara · Start C · Dados · DV · Stop · Margem clara`.
+
+### Dígito verificador (módulo 103)
+
+O DV usa **módulo 103**: soma ponderada dos valores dos caracteres (incluindo o caractere de **start** = 105 no Code C), e o **resto** da divisão por 103 é o DV.
+
+```text
+Exemplo (chave hipotética de 8 dígitos: 09758364)
+Soma ponderada = (1×105)+(1×9)+(2×75)+(3×83)+(4×64) = 769
+769 / 103 = 7, resto 48  →  DV = 48
+```
+
+> Atenção: este é o DV **da simbologia CODE-128C**, diferente do DV da chave de acesso (módulo 11) — ver [Chave de acesso](/docs/fundamentos/chave-de-acesso).
+
+## Como interpretar
+
+O código de barras existe para **capturar a chave** rapidamente em postos fiscais e consultas. O segundo código (em certas contingências) carrega dados extras para registrar o trânsito enquanto a nota não está autorizada normalmente.
+
+## Vigência
+
+- 🕒 O cenário "um código" cita o Sistema de Contingência do Ambiente Nacional (SVC-AN); confronte modalidades vigentes em [Contingência](/docs/contingencia).
+
+## Implicação de implementação
+
+> **Implementação:** use uma biblioteca CODE-128C testada e valide o DV da simbologia separadamente do DV da chave. Respeite a margem clara — é causa comum de leitura falha.
+
+## Fonte
+
+MOC 7.0 — Anexo II, §2 (Código de Barras), p. 6–7 (Anexo III.01).

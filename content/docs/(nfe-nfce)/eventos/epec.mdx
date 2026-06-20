@@ -1,0 +1,30 @@
+---
+title: EPEC
+description: O Evento Prévio de Emissão em Contingência (110140) — registrar a emissão antes de autorizar a NF-e quando o autorizador está indisponível.
+---
+
+O **EPEC** (`110140`) é, ao mesmo tempo, um **evento** e uma **modalidade de contingência**. Esta página o trata como evento; a operação completa está em [Contingência da NF-e](/docs/contingencia/nfe).
+
+## O que o manual diz
+
+- O EPEC permite registrar o **"Evento Prévio de Emissão em Contingência"** **antes** da emissão do documento em si, com um **leiaute mínimo** de informações da NF-e.
+- É transmitido ao **Web Service de Registro de Eventos do Ambiente Nacional (AN)**.
+- Pode ser adotado por qualquer emissor impossibilitado de transmitir a NF-e ao autorizador normal.
+- Após o EPEC recebido, imprime-se o **DANFE em papel comum** com a expressão "DANFE impresso em contingência – EPEC regularmente recebida pela Receita…".
+- A NF-e que originou a contingência deve ser transmitida normalmente depois; sua **chave de acesso é exatamente a mesma** do EPEC autorizado.
+
+## Como interpretar
+
+O EPEC inverte a ordem: primeiro você registra (no AN) que vai emitir em contingência, com dados mínimos; depois, quando o serviço volta, transmite a NF-e completa com a **mesma chave**. É a ponte que dá validade à operação enquanto a autorizadora está fora.
+
+## Vigência
+
+- 🔄 NT 2014.001 (NF-e) e NT 2014.003; há EPEC específico para **NFC-e**. `tpEmis` indica a modalidade.
+
+## Implicação de implementação
+
+> **Implementação:** ao gerar o EPEC, fixe a chave (incluindo `tpEmis` de EPEC) e reutilize-a na NF-e definitiva — não gere chave nova. Concilie EPEC → NF-e autorizada na normalização. Ver [Recuperação e conciliação](/docs/contingencia/recuperacao-e-conciliacao).
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §3.3, p. 35–44.

@@ -1,0 +1,47 @@
+---
+title: DANFE da NF-e
+description: Objetivos, papel, fontes e modos de impressão do Documento Auxiliar da NF-e (modelo 55), com base no Anexo II.
+---
+
+## O que o manual diz
+
+O **DANFE** é o documento auxiliar impresso da NF-e, com os objetivos de:
+
+- acompanhar o trânsito de mercadorias;
+- colher a firma do destinatário como comprovação de entrega;
+- prover representações impressas previstas em legislação;
+- auxiliar a escrituração pelo destinatário não credenciado.
+
+Regras de impressão:
+
+- impresso em **qualquer tipo de papel, exceto papel jornal**;
+- em **uma única via**, salvo disposição em contrário;
+- em ambiente de **homologação**, deve conter "**SEM VALOR FISCAL**" em destaque ou marca d'água;
+- quando a NF-e for emitida **em contingência**, o DANFE deve indicar isso em destaque (ver [DANFE de contingência](/docs/danfe/simplificado-e-contingencia));
+- o **Valor Aproximado dos Tributos** pode aparecer opcionalmente em `infAdProd` (V01) e/ou `infCpl` (Z03).
+
+### Formatos
+
+| Formato | Modo |
+|---|---|
+| A-4 retrato | folhas soltas ou formulário contínuo |
+| A-4 paisagem | folhas soltas ou formulário contínuo |
+
+O Anexo II define tamanho do papel, padrões de caracteres (fontes) e a disposição dos quadros.
+
+## Como interpretar
+
+O DANFE é **derivado** do XML autorizado: ele facilita o trânsito e a consulta, mas o documento fiscal é o XML. Toda informação impressa deve existir no XML (mais os dados do retorno da autorização).
+
+## Vigência
+
+- 🔄 Leiautes e regras de impressão evoluem por NT; o "Valor Aproximado dos Tributos" segue legislação própria.
+- 📍 Detalhes de exigência (vias, marcas) podem variar por UF.
+
+## Implicação de implementação
+
+> **Implementação:** gere o DANFE a partir do mesmo `procNFe` armazenado. Marque a origem (normal/homologação/contingência) e renderize a marca correspondente automaticamente, sem campo manual.
+
+## Fonte
+
+MOC 7.0 — Anexo II, capítulo 3 (DANFE), p. 8–17.

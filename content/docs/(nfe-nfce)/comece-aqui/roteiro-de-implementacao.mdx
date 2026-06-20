@@ -1,0 +1,93 @@
+---
+title: Roteiro de implementação
+description: Etapas para transformar uma regra fiscal em XML autorizado, documento auxiliar e armazenamento confiável.
+---
+
+Implemente o documento como um **processo verificável**. A autorização é uma etapa, não o fim do ciclo.
+
+## Fluxo completo
+
+```mermaid
+flowchart TD
+    R[1. Resolver regra fiscal] --> D[2. Normalizar dados]
+    D --> X[3. Montar XML]
+    X --> V[4. Validar schema e negócio]
+    V --> A[5. Assinar]
+    A --> T[6. Transmitir]
+    T --> S{7. Resultado}
+    S -->|Autorizado| P[8. Anexar protocolo]
+    S -->|Rejeitado| C[Corrigir a causa]
+    S -->|Incerto| Q[Consultar situação]
+    P --> I[9. Gerar documento auxiliar]
+    I --> G[10. Armazenar e distribuir]
+```
+
+## 1. Regra fiscal
+
+Produza uma decisão estruturada antes do XML: modelo e finalidade; natureza da operação e CFOP; emitente, destinatário e locais; itens, quantidades, preços e descontos; tributação e memória de cálculo; documentos referenciados; forma de pagamento; modo de emissão normal ou contingência.
+
+## 2. Modelo interno
+
+Não monte o XML diretamente de telas ou tabelas do banco. Crie um objeto fiscal validado e imutável para a emissão.
+
+```mermaid
+flowchart LR
+    ERP[Pedidos, cadastro e fiscal] --> N[Normalização]
+    N --> O[Objeto fiscal]
+    O --> X[Serializador XML]
+    O --> M[Memória de cálculo]
+    O --> L[Logs de decisão]
+```
+
+> **Implementação:** trate chaves, documentos, códigos e séries como texto. Use decimal exato para valores; evite ponto flutuante binário.
+
+## 3. XML e validação local
+
+Valide em camadas:
+
+| Camada | Exemplos |
+|---|---|
+| estrutura | ordem das tags, tipos, tamanhos e ocorrências |
+| domínio | códigos permitidos, UF, município, CFOP e classificações |
+| negócio | condições entre campos, datas, finalidade e totalização |
+| segurança | certificado, cadeia, assinatura, digest e referência |
+| autorização | cadastro, duplicidade, situação e regras externas |
+
+O sistema local não reproduzirá todas as consultas do autorizador, mas deve impedir erros determinísticos antes do envio. Detalhe das validações em [Pipeline de validação](/docs/leiaute-e-rejeicoes/pipeline-de-validacao).
+
+## 4. Transmissão idempotente
+
+Associe cada tentativa a uma identidade fiscal estável. Se houver timeout, **consulte antes** de gerar outro número ou retransmitir.
+
+```mermaid
+sequenceDiagram
+    participant E as Emissor
+    participant A as Autorizador
+    E->>A: Envia documento
+    Note over E,A: conexão termina sem resposta
+    E->>A: Consulta chave/recibo
+    A-->>E: situação oficial
+    E->>E: decide armazenar, corrigir ou retransmitir
+```
+
+## 5. Pós-autorização
+
+- combine XML e protocolo no formato `procNFe` correspondente;
+- gere [DANFE](/docs/danfe) a partir do XML final;
+- distribua pelos canais permitidos;
+- armazene XML, protocolo, eventos e respostas originais;
+- monitore cancelamentos, inutilizações e manifestações;
+- preserve rastreabilidade entre pedido, documento e lançamento contábil.
+
+## Definição mínima de pronto
+
+- [ ] cenário normal autorizado em homologação;
+- [ ] rejeições traduzidas sem ocultar o código original;
+- [ ] timeout não causa duplicidade;
+- [ ] documento auxiliar confere com o XML;
+- [ ] eventos atualizam o estado do documento;
+- [ ] contingência testada e conciliada;
+- [ ] certificado renovável sem alteração de código;
+- [ ] schemas e regras com versão identificável.
+
+Para a estratégia de testes e versionamento, veja [Operação](/docs/operacao).

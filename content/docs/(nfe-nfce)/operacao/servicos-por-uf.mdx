@@ -1,0 +1,280 @@
+---
+title: Serviços por UF
+description: Portais estaduais, autorizadores, SVC, endpoints de Web Services e versão de schema por UF, conforme o Portal Nacional da NF-e.
+---
+
+Esta página cruza três coisas que precisam ficar separadas no emissor: **UF do emitente**, **autorizador técnico** e **pacote de schema**.
+
+> 🔄 Fonte consultada em **20/06/2026**: Portal Nacional da NF-e, página principal e [Relação de Serviços Web](https://www.nfe.fazenda.gov.br/portal/webServices.aspx?tipoConteudo=OUC/YVNWZfo=). A página oficial usa cookie ASP.NET; os HTMLs capturados para esta revisão estão em `tmp/nfe/portal-principal.html` e `tmp/nfe/webServices.html`.
+
+## Como ler
+
+| Coluna | Significado |
+|---|---|
+| Portal estadual | link oficial listado no Portal Nacional para a página NF-e da UF |
+| Autorizador NF-e | ambiente técnico normal para autorização, evento, consulta, inutilização e status |
+| Consulta cadastro | serviço `NfeConsultaCadastro`, quando o Portal Nacional indica endpoint técnico |
+| SVC | ambiente de contingência da UF |
+| Schema | versão técnica publicada nos serviços; o XSD é nacional, não um XSD por estado |
+
+## Mapa por UF
+
+| UF | Portal estadual | Autorizador NF-e | Consulta cadastro | SVC | Schema |
+|---|---|---|---|---|---|
+| AC | [Acre](<http://sefaznet.ac.gov.br/nfe/>) | [SVRS](#svrs) | [SVRS](#svrs) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| AL | [Alagoas](<http://www.sefaz.al.gov.br/nfe/>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| AM | [Amazonas](<http://sistemas.sefaz.am.gov.br/nfeweb/portal/index.do>) | [AM](#am) | [AM](#am) | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| AP | [Amapá](<https://www.sefaz.ap.gov.br/index.php/nf-e>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| BA | [Bahia](<http://www.sefaz.ba.gov.br/scripts/default/nfiscal.asp>) | [BA](#ba) | [BA](#ba) | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| CE | [Ceará](<http://nfe.sefaz.ce.gov.br/>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| DF | [Distrito Federal](<http://dec.fazenda.df.gov.br/>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| ES | [Espírito Santo](<http://internet.sefaz.es.gov.br/informacoes/nfe/>) | [SVRS](#svrs) | [SVRS](#svrs) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| GO | [Goiás](<https://www.economia.go.gov.br/receita-estadual/documentos-fiscais/nfe.html>) | [GO](#go) | [GO](#go) | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| MA | [Maranhão](<https://sistemas1.sefaz.ma.gov.br/portalsefaz/jsp/pagina/pagina.jsf?codigo=11>) | [SVAN](#svan) | ver SEFAZ/CCC | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| MG | [Minas Gerais](<http://www.sped.fazenda.mg.gov.br/>) | [MG](#mg) | [MG](#mg) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| MS | [Mato Grosso do Sul](<https://www.sefaz.ms.gov.br/documentos-fiscais-eletronicos/nf-e/>) | [MS](#ms) | [MS](#ms) | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| MT | [Mato Grosso](<http://www.sefaz.mt.gov.br/portal/nfe/>) | [MT](#mt) | [MT](#mt) | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| PA | [Pará](<http://www.sefa.pa.gov.br/index.php/component/banners/click/7>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| PB | [Paraíba](<https://www.sefaz.pb.gov.br/servirtual/documentos-fiscais/nf-e/consulta-completa>) | [SVRS](#svrs) | [SVRS](#svrs) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| PE | [Pernambuco](<https://www.sefaz.pe.gov.br/Servicos/Nota-Fiscal-Eletronica/Paginas/Apresentacao.aspx>) | [PE](#pe) | [PE](#pe) | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| PI | [Piauí](<http://portal.sefaz.pi.gov.br/documentoseletronicos/portal/efd/index.php>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| PR | [Paraná](<http://www.sped.fazenda.pr.gov.br/modules/conteudo/conteudo.php?conteudo=1>) | [PR](#pr) | [PR](#pr) | [SVC-RS](#svc-rs) | NF-e `4.00`, XSD nacional |
+| RJ | [Rio de Janeiro](<http://www.fazenda.rj.gov.br/sefaz/faces/webcenter/faces/owResource.jspx?z=oracle.webcenter.doclib%21UCMServer%21UCMServer%2523dDocName%253A100998>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| RN | [Rio Grande do Norte](<http://www.set.rn.gov.br/contentProducao/Aplicacao/SET_v2/nfe/gerados/inicio.asp>) | [SVRS](#svrs) | [SVRS](#svrs) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| RO | [Rondônia](<https://www.sefin.ro.gov.br/conteudo.jsp?idCategoria=524>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| RR | [Roraima](<https://www.sefaz.rr.gov.br/empresa/consultar-internamento-nf>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| RS | [Rio Grande do Sul](<http://receita.fazenda.rs.gov.br/lista/2933/nf-e-(nota-fiscal-eletronica)>) | [RS](#rs) | [RS](#rs) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| SC | [Santa Catarina](<http://nfe.sef.sc.gov.br/>) | [SVRS](#svrs) | [SVRS](#svrs) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| SE | [Sergipe](<http://nfe.sefaz.se.gov.br/>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| SP | [São Paulo](<http://www.fazenda.sp.gov.br/nfe/>) | [SP](#sp) | [SP](#sp) | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+| TO | [Tocantins](<http://www.sefaz.to.gov.br/>) | [SVRS](#svrs) | ver SEFAZ/CCC | [SVC-AN](#svc-an) | NF-e `4.00`, XSD nacional |
+
+## O que é estadual e o que é nacional
+
+| Camada | Dono prático | O que varia |
+|---|---|---|
+| XSD da NF-e/NFC-e | nacional | pacote de liberação e NT vigente |
+| URL de Web Service | UF ou autorizador virtual | domínio, caminho, disponibilidade e WSDL |
+| credenciamento | SEFAZ da UF | entrada em homologação e produção |
+| CSC/CSRT/cBenef | SEFAZ da UF | emissão, QR Code, responsável técnico e benefícios fiscais |
+| CCC | cadastro centralizado | situação cadastral consultada pelas autorizadoras |
+| SVC | contingência nacional ou SVRS | ativação por indisponibilidade ou agendamento |
+
+> **Implementação:** a chave de roteamento mínima é `(modelo, UF, serviço, ambiente, tipo de emissão)`. O schema deve ser resolvido por `(modelo, versão do leiaute, pacote XSD, data de emissão)`. Não crie um diretório de XSD diferente por UF: crie um catálogo de endpoints por UF e um catálogo de schemas nacional versionado.
+
+## Schemas vigentes no repositório
+
+| Uso | Pacote local | Observação |
+|---|---|---|
+| NF-e/NFC-e base | `tmp/nfe/esquemas-xml/PL_010c_NT2022_002v1.30.zip` | contém `nfe_v4.00.xsd`, `leiauteNFe_v4.00.xsd` e tipos básicos |
+| CNPJ alfanumérico | `tmp/nfe/esquemas-xml/CNPJ Alfanumérico - NT2026.004.v.1.01 PL Eventos e Cad Consulta Cadastro CCC.zip` | publicado em 08/06/2026 com PL da NF-e, eventos e consulta cadastro |
+| Consulta situação | `tmp/nfe/esquemas-xml/ConSitNFe_v2.01.zip` | schema específico de consulta protocolo/situação |
+| Distribuição DF-e | `tmp/nfe/esquemas-xml/PL_NFeDistDFe_103.zip` | Ambiente Nacional, serviço `NFeDistribuicaoDFe` versão `1.00` |
+| Eventos | pacotes `Evento_*` em `tmp/nfe/esquemas-xml/` | cada evento tem schema próprio e versão própria |
+| NFAg | `tmp/nfe/esquemas-xml/PL_NFAg_1.00j.zip` | modelo 75, namespace próprio |
+| NFGas | `tmp/nfe/esquemas-xml/PL_NFGas_1.00e.zip` | modelo 76, namespace próprio |
+
+## Fisco e operação fiscal
+
+O Portal Nacional expõe três blocos operacionais relevantes para fiscalização e suporte:
+
+| Bloco | Como usar |
+|---|---|
+| [Consultar NF-e](https://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=resumo&tipoConteudo=7PhJ+gAVw2g=) | consulta pública por chave, útil para suporte e conferência |
+| [Consultar Inutilização](https://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=inutilizacao&tipoConteudo=nDmpH/MjKrg=) | confirma se uma faixa foi inutilizada |
+| [Consultar Disponibilidade](https://www.nfe.fazenda.gov.br/portal/disponibilidade.aspx?versao=0.00&tipoConteudo=P2c98tUpxrI=) | acompanha disponibilidade dos autorizadores |
+| [Manifestação Destinatário](https://www.nfe.fazenda.gov.br/portal/manifestacaoDestinatario.aspx?tipoConteudo=o9MkXc+hmKs=) | entrada pública para manifestação do destinatário |
+| [Área Restrita do Fisco](https://www.nfe.fazenda.gov.br/arearestrita/inicial/autenticacao.aspx) | área autenticada do fisco, não é endpoint de emissão do contribuinte |
+
+Na captura de 20/06/2026, a página principal do Portal Nacional também indicava todas as UFs como integrantes do **Cadastro Centralizado de Contribuintes**: AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP e TO.
+
+## Endpoints por autorizador
+
+### AM
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao4>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefaz.am.gov.br/services2/services/NfeConsulta4>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefaz.am.gov.br/services2/services/NfeStatusServico4>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.sefaz.am.gov.br/services2/services/CadConsultaCadastro4>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento4>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.am.gov.br/services2/services/NfeAutorizacao4>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.am.gov.br/services2/services/NfeRetAutorizacao4>) |
+
+### BA
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefaz.ba.gov.br/webservices/NFeInutilizacao4/NFeInutilizacao4.asmx>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefaz.ba.gov.br/webservices/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefaz.ba.gov.br/webservices/NFeStatusServico4/NFeStatusServico4.asmx>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.sefaz.ba.gov.br/webservices/CadConsultaCadastro4/CadConsultaCadastro4.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefaz.ba.gov.br/webservices/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.ba.gov.br/webservices/NFeAutorizacao4/NFeAutorizacao4.asmx>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.ba.gov.br/webservices/NFeRetAutorizacao4/NFeRetAutorizacao4.asmx>) |
+
+### GO
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefaz.go.gov.br/nfe/services/NFeInutilizacao4?wsdl>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefaz.go.gov.br/nfe/services/NFeConsultaProtocolo4?wsdl>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefaz.go.gov.br/nfe/services/NFeStatusServico4?wsdl>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.sefaz.go.gov.br/nfe/services/CadConsultaCadastro4?wsdl>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefaz.go.gov.br/nfe/services/NFeRecepcaoEvento4?wsdl>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.go.gov.br/nfe/services/NFeAutorizacao4?wsdl>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.go.gov.br/nfe/services/NFeRetAutorizacao4?wsdl>) |
+
+### MG
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.fazenda.mg.gov.br/nfe2/services/CadConsultaCadastro4>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4>) |
+
+### MS
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefaz.ms.gov.br/ws/NFeInutilizacao4>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefaz.ms.gov.br/ws/NFeConsultaProtocolo4>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefaz.ms.gov.br/ws/NFeStatusServico4>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.sefaz.ms.gov.br/ws/CadConsultaCadastro4>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefaz.ms.gov.br/ws/NFeRecepcaoEvento4>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.ms.gov.br/ws/NFeAutorizacao4>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.ms.gov.br/ws/NFeRetAutorizacao4>) |
+
+### MT
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao4?wsdl>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta4?wsdl>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico4?wsdl>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro4?wsdl>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento4?wsdl>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao4?wsdl>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetAutorizacao4?wsdl>) |
+
+### PE
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeInutilizacao4>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeConsultaProtocolo4>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeStatusServico4>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro4?wsdl>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeRecepcaoEvento4>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeAutorizacao4>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeRetAutorizacao4>) |
+
+### PR
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefa.pr.gov.br/nfe/NFeInutilizacao4?wsdl>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefa.pr.gov.br/nfe/NFeConsultaProtocolo4?wsdl>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefa.pr.gov.br/nfe/NFeStatusServico4?wsdl>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.sefa.pr.gov.br/nfe/CadConsultaCadastro4?wsdl>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefa.pr.gov.br/nfe/NFeRecepcaoEvento4?wsdl>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefa.pr.gov.br/nfe/NFeAutorizacao4?wsdl>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefa.pr.gov.br/nfe/NFeRetAutorizacao4?wsdl>) |
+
+### RS
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta4.asmx>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro4.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx>) |
+
+### SP
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx>) |
+
+### SVAN
+
+UF normal indicada pelo portal: **MA**.
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeStatusServico4/NFeStatusServico4.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeRetAutorizacao4/NFeRetAutorizacao4.asmx>) |
+
+### SVRS
+
+UFs normais indicadas pelo portal para os demais serviços NF-e: **AC, AL, AP, CE, DF, ES, PA, PB, PI, RJ, RN, RO, RR, SC, SE e TO**.
+
+Para `NfeConsultaCadastro`, o Portal Nacional lista **AC, ES, RN, PB e SC**.
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta4.asmx>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx>) |
+| NfeConsultaCadastro | 4.00 | [endpoint](<https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro4.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx>) |
+
+### SVC-AN
+
+UFs em contingência indicadas pelo portal: **AC, AL, AP, CE, DF, ES, MG, PA, PB, PI, RJ, RN, RO, RR, RS, SC, SE, SP e TO**.
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeInutilizacao | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx>) |
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeStatusServico4/NFeStatusServico4.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://www.sefazvirtual.fazenda.gov.br/NFeRetAutorizacao4/NFeRetAutorizacao4.asmx>) |
+
+### SVC-RS
+
+UFs em contingência indicadas pelo portal: **AM, BA, GO, MA, MS, MT, PE e PR**.
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NfeConsultaProtocolo | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta4.asmx>) |
+| NfeStatusServico | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx>) |
+| NFeAutorizacao | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx>) |
+| NFeRetAutorizacao | 4.00 | [endpoint](<https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx>) |
+
+### AN
+
+O **Ambiente Nacional** não substitui a SEFAZ autorizadora da UF para autorização normal. Ele concentra serviços nacionais, como distribuição DF-e e alguns eventos.
+
+| Serviço | Versão | URL |
+|---|---:|---|
+| NFeDistribuicaoDFe | 1.00 | [endpoint](<https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx>) |
+| RecepcaoEvento | 4.00 | [endpoint](<https://www.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx>) |
+
+## Fonte
+
+- Portal Nacional da NF-e — [página principal](https://www.nfe.fazenda.gov.br/portal/principal.aspx).
+- Portal Nacional da NF-e — [Relação de Serviços Web](https://www.nfe.fazenda.gov.br/portal/webServices.aspx?tipoConteudo=OUC/YVNWZfo=).
+- `tmp/nfe/index.tsv`, `tmp/nfe/portal-principal.html`, `tmp/nfe/webServices.html` e pacotes em `tmp/nfe/esquemas-xml/`.

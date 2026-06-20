@@ -1,4 +1,7 @@
 {
   "title": "Open Fiscal",
-  "pages": ["index", "nfe", "nfce", "cte", "mdfe", "reforma"]
+  "pages": [
+    "index",
+    "(nfe-nfce)"
+  ]
 }

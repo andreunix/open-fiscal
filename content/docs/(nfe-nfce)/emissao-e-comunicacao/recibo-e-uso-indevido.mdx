@@ -1,0 +1,62 @@
+---
+title: Recibo, protocolo e uso indevido
+description: Como se formam o número do recibo e o número do protocolo, o tempo médio de resposta e as regras de consumo indevido (erro 656).
+---
+
+Três estruturas operacionais que atravessam todos os serviços: o **recibo** (lote assíncrono), o **protocolo** (resultado de cada nota) e os controles de **uso indevido**.
+
+## O que o manual diz
+
+### Número do recibo de lote
+
+Gerado pela SEFAZ no envio assíncrono. **15 posições**:
+
+| Parte | Tam. | Conteúdo |
+|---|---|---|
+| Código da UF | 2 | IBGE |
+| Tipo de autorizador | 1 | 0/1 = SEFAZ normal · 2 = SCAN-RFB · 3 = SVRS · 4 = SVAN-RFB |
+| Sequencial | 12 | numérico |
+
+### Número do protocolo (`nProt`)
+
+Identifica **univocamente** cada transação de autorização, denegação, cancelamento e inutilização. **15 posições**:
+
+| Parte | Tam. | Conteúdo |
+|---|---|---|
+| Tipo de autorizador | 1 | 1 = SEFAZ · 2 = RFB · 3 = SVRS · 4 = SVAN-RFB |
+| Código da UF | 2 | IBGE |
+| Ano | 2 | |
+| Sequencial no ano | 10 | |
+
+### Tempo médio de resposta (`tMed`)
+
+Média, dos **últimos 5 minutos**, do tempo de processamento por NF-e. Se ficar abaixo de 1s, é informado como **1s** (frações arredondadas para cima). Vem no recibo do lote.
+
+### Ambientes
+
+Homologação (`tpAmb=2`, sem valor fiscal) e produção (`tpAmb=1`, com efeito fiscal). O acesso a cada ambiente depende de **credenciamento** prévio na UF — ver [Credenciamento e ambientes](/docs/comece-aqui/credenciamento-e-ambientes).
+
+### Uso indevido (NT 2018.002)
+
+Comportamentos que sobrecarregam o autorizador podem ser bloqueados, a critério da SEFAZ, pelas regras de **Consumo Indevido**. O caso mais comum é a aplicação em **loop**, reenviando requisições ou rebuscando registros já obtidos.
+
+- Novas tentativas indevidas são rejeitadas com **"656 – Rejeição: Consumo Indevido"**.
+- Rejeição é resposta **definitiva** ao conteúdo: corrija a causa antes de reenviar; não reenvie em loop.
+- O contribuinte pode sofrer penalidades previstas na legislação da UF. 📍
+
+## Como interpretar
+
+Recibo identifica um **lote**; protocolo identifica o **resultado de uma nota** (ou inutilização). Confundir os dois leva a consultar o serviço errado. O erro 656 quase nunca é da SEFAZ — é sinal de loop ou de _polling_ sem _backoff_ na sua aplicação.
+
+## Vigência
+
+- 🕒 Os códigos de tipo de autorizador citam SCAN-RFB (descontinuado) — histórico.
+- 🔄 Regras de consumo indevido evoluem por NT; 📍 aplicação fica a critério da UF.
+
+## Implicação de implementação
+
+> **Implementação:** trate **rejeição ≠ timeout**. Rejeição é definitiva (corrija); timeout é estado desconhecido (consulte). Implemente _backoff_ exponencial e deduplicação de consultas; nunca rebusque NSU/recibo/chave já resolvidos. Logue `cStat`, `nRec`, `nProt` e `tMed` de forma estruturada — ver [Testes e operação](/docs/operacao/testes-e-homologacao).
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §4.3.4 a §4.3.8, p. 60–62 (Tabelas 4-7 a 4-9); §5.7.7.1, p. 99.

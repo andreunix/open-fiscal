@@ -1,0 +1,44 @@
+---
+title: Tabelas e códigos
+description: Estrutura e algoritmos das tabelas e identificadores do MOC (UF, município, país, SUFRAMA, RECOPI, NVE), com os dígitos de controle.
+---
+
+Esta página documenta a **estrutura e os algoritmos** das tabelas do MOC. Os **valores** (listas de UF, municípios, NCM, CFOP…) mudam por Informe Técnico e não são reproduzidos aqui.
+
+> 🔄 Não trate listas de 2020 como cadastros vigentes. Baixe as tabelas atuais no Portal Nacional e versione-as — ver [Versionamento](/docs/operacao/versionamento).
+
+## O que o manual diz
+
+### Códigos com dígito de controle
+
+| Identificador | Estrutura | Validação |
+|---|---|---|
+| **UF (IBGE)** | 2 dígitos | tabela fechada do IBGE |
+| **Município (IBGE)** | 7 dígitos | os 6 primeiros + **dígito de controle** calculável |
+| **País (BACEN)** | código BACEN | possui **dígito de controle** |
+| **SUFRAMA** | inscrição | composição própria + **DV** |
+| **RECOPI** | identificador | composição própria + **DV** |
+| **NVE** | Nomenclatura de Valor Aduaneiro e Estatística | códigos, sem DV |
+
+O MOC traz, para município, país, SUFRAMA e RECOPI, o **algoritmo e um exemplo** de cálculo do dígito de controle/verificador.
+
+### Outras tabelas e regras do capítulo 8
+
+UF, município, país, SUFRAMA, RECOPI, NVE, classes e selos de IPI, enquadramento legal de IPI, CFOP específicos, produtos ANP e NCM específicos.
+
+## Como interpretar
+
+A diferença prática é entre **estrutura** (estável, com algoritmo de DV que você implementa) e **conteúdo** (volátil, que você carrega de fora). O DV de município, por exemplo, permite validar localmente antes de enviar, mas a existência do município depende da tabela vigente.
+
+## Vigência
+
+- 🕒 Os valores do MOC 7.0 são de 2020.
+- 🔄 Tabelas atualizadas por Informes Técnicos (NCM, CFOP, ANP, FCP, meios de pagamento, `cClassTrib` da Reforma…). Ver os IT em `tmp/nfe/informes-tecnicos` e o Portal Nacional.
+
+## Implicação de implementação
+
+> **Implementação:** implemente os algoritmos de DV (município, país, SUFRAMA, RECOPI) como validação local; carregue os **valores** de tabelas versionadas com data de vigência e fonte. Nunca embuta listas grandes no código.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, capítulo 8 (Tabelas e Códigos), p. 129–147.

@@ -1,0 +1,40 @@
+---
+title: Prorrogação de ICMS
+description: Os eventos de pedido de prorrogação do prazo de retorno de industrialização por encomenda com suspensão do ICMS, e as respostas do Fisco.
+---
+
+## O que o manual diz
+
+Em remessa para **industrialização por encomenda com suspensão do ICMS**, o prazo de retorno pode ser prorrogado por eventos (NT 2015.001):
+
+| `tpEvento` | Evento |
+|---|---|
+| `111500` | Pedido de prorrogação — 1º prazo |
+| `111501` | Pedido de prorrogação — 2º prazo |
+| `111502` | Cancelamento do pedido — 1º prazo |
+| `111503` | Cancelamento do pedido — 2º prazo |
+
+As respostas do **Fisco** são eventos próprios:
+
+| `tpEvento` | Evento |
+|---|---|
+| `411500/411501` | Resposta do Fisco ao pedido 1º/2º prazo |
+| `411502/411503` | Resposta do Fisco ao cancelamento 1º/2º prazo |
+
+> 📍 A implementação desses eventos é **a critério da UF**.
+
+## Como interpretar
+
+É um diálogo de eventos: o emitente pede (`1115xx`), o Fisco responde (`4115xx`). Há precedência temporal — a resposta vigente é a do último ciclo válido, e o cancelamento desfaz o pedido correspondente.
+
+## Vigência
+
+- 🔄 NT 2015.001; 📍 disponível apenas nas UFs que implementaram.
+
+## Implicação de implementação
+
+> **Implementação:** vincule pedido e resposta por chave + prazo (1º/2º). Não assuma deferimento automático — aguarde o evento de resposta do Fisco antes de tratar o prazo como prorrogado.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §3.1 (Tabelas 3-1 e 3-3) e §3.4, p. 28–29 e 44–46.

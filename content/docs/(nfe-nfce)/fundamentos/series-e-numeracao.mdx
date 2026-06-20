@@ -1,0 +1,43 @@
+---
+title: Séries e numeração
+description: As faixas de série reservadas, o papel de procEmi e a numeração da NF-e por estabelecimento de produtor rural.
+---
+
+A **série** (`serie`, B07) não é só um agrupador: junto com `procEmi` (B26), ela identifica o **processo de emissão** e quem controla a numeração.
+
+## O que o manual diz
+
+### Faixas de série reservadas
+
+| Faixa de série | Emitente | Processo / assinatura | Numeração |
+|---|---|---|---|
+| **000–889** | CNPJ | aplicativo da empresa ou Programa Emissor, `procEmi ≠ 1,2`, `e-CNPJ` | sequencial por CNPJ, controlada pelo emitente |
+| **890–899** | CNPJ/CPF | site SEFAZ (NFA-e), `e-CNPJ` da SEFAZ, `procEmi = 1` | sequencial pela SEFAZ |
+| **900–909** | CNPJ | site SEFAZ, `procEmi = 1` (SEFAZ) ou `2` (emitente) | sequencial por CNPJ, controlada pela SEFAZ |
+| **910–919** | CPF | site SEFAZ, `e-CNPJ` SEFAZ (`procEmi=1`) ou `e-CPF` (`procEmi=2`) | sequencial por CPF, controlada pela SEFAZ |
+| **920–969** | CPF | aplicativo da empresa, `e-CPF`, `procEmi ≠ 1,2` | sequencial por CPF, controlada pelo emitente |
+
+As faixas 900–969 foram reservadas a partir da **NT 2018.001** (suporte a emitente pessoa física).
+
+### Numeração do produtor rural
+
+Normalmente um CNPJ identifica um único estabelecimento (uma Inscrição Estadual). No **produtor primário** isso muda: o mesmo CNPJ — e, mais comumente, o mesmo **CPF** — pode participar de vários estabelecimentos (várias IE) na mesma UF.
+
+Como a chave de acesso carrega o CPF mas **não** a Inscrição Estadual, a mesma numeração poderia colidir entre estabelecimentos. Solução do manual: usar **séries específicas por estabelecimento**, na faixa **920–969**.
+
+## Como interpretar
+
+A faixa de série responde a duas perguntas de uma vez: *quem assina* e *quem controla o número*. Escolher a faixa errada provoca rejeição mesmo com o XML bem formado.
+
+## Vigência
+
+- 🔄 Faixas 900–969 e o suporte a CPF vieram da **NT 2018.001**.
+- 📍 O uso de séries por estabelecimento rural depende da organização do produtor na UF.
+
+## Implicação de implementação
+
+> **Implementação:** modele a numeração como (emitente × série × ambiente), não apenas por emitente. Para produtor rural com várias IE no mesmo CPF, atribua uma série da faixa 920–969 por estabelecimento e mantenha contadores separados.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §2.2.8, p. 21 (Tabela 2-4); §2.2.2 (NFA-e), p. 17.

@@ -1,0 +1,63 @@
+---
+title: DANFGas
+description: Documento Auxiliar da Nota Fiscal Eletrônica do Gás, conforme o Anexo II v1.00.
+---
+
+O **DANFGas** é a representação gráfica resumida da NFGas, impressa em papel comum ou enviada eletronicamente quando a legislação permitir. Ele representa a conta mensal de consumo do serviço de distribuição de gás canalizado, mas não substitui o XML autorizado.
+
+## O que o manual diz
+
+O Anexo II v1.00 define os requisitos mínimos do Documento Auxiliar da Nota Fiscal Eletrônica do Gás.
+
+| Regra | Conteúdo |
+|---|---|
+| origem dos dados | deve ser gerado a partir do XML da NFGas |
+| informação externa permitida | protocolo de autorização |
+| XML ao consumidor | dispensado, salvo solicitação prévia |
+| envio eletrônico | pode substituir a impressão quando a legislação permitir |
+| modelos diferentes | dependem da concordância da agência reguladora |
+| campos opcionais | podem ser exigidos por regulação específica |
+| durabilidade | legibilidade e papel por no mínimo 12 meses |
+
+## Divisões do DANFGas
+
+| Divisão | Conteúdo |
+|---|---|
+| emitente | razão social, CNPJ, endereço, IE, logotipo opcional e identificação do documento auxiliar |
+| destinatário | nome, CNPJ/CPF ou outro identificador, IE, endereço, instalação, cliente, tipo de instalação e segmento de consumo |
+| identificação | número, série, modelo, data de emissão, finalidade, tipo de faturamento, chave, protocolo, consulta pública e QR Code |
+| substituição | número, chave e motivo da NFGas substituída quando aplicável |
+| leituras | equipamento, medidor, leitura anterior, leitura atual e consumo medido |
+| itens faturados | produtos, serviços, valores e dados tributários |
+| histórico de consumo | consumo mensal e demais dados exigidos pela regulação |
+| aviso | informações de destaque vindas dos campos de informações adicionais |
+| complementares | informações complementares e de interesse do fisco |
+
+## Identificação e QR Code
+
+A divisão de identificação deve trazer número, série, modelo, data de emissão, chave de acesso em 11 blocos de quatro dígitos, endereço de consulta pública, protocolo de autorização e QR Code.
+
+Em contingência, o protocolo de autorização é suprimido. O QR Code deve ter tamanho mínimo de **25 mm por 25 mm**, com área útil de 22 mm e margem segura de 3 mm; para tamanhos maiores, a margem segura deve acompanhar 10% da dimensão total.
+
+## Dados do consumidor
+
+O DANFGas pode mascarar dados do destinatário conforme as regras do manual e da regulação aplicável. A implementação deve tratar CNPJ, CPF e identificadores alternativos como dados sensíveis na impressão e na versão eletrônica.
+
+## Modelos de leiaute
+
+O manual apresenta modelos de:
+
+| Modelo | Uso |
+|---|---|
+| DANFGas A4 — opção 1 | impressão A4 |
+| DANFGas A4 — opção 2 | alternativa A4 |
+| DANFGas Bobina — opção 1 | impressão em bobina |
+| DANFGas Bobina — opção 2 | alternativa em bobina |
+
+## Implicação de implementação
+
+> **Implementação:** gere o DANFGas como uma projeção do XML autorizado. Separe componentes por divisão, preserve regras de sigilo de CNPJ/CPF quando aplicável e mantenha campos condicionados por regulação como configuração por UF/agência, não como layout fixo global.
+
+## Fonte
+
+MOC NFGas — Anexo II, DANFGas, versão 1.00 — março de 2026, p. 4–16.

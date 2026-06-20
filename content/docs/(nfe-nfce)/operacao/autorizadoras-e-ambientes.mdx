@@ -1,0 +1,38 @@
+---
+title: Autorizadoras e ambientes
+description: As SEFAZ autorizadoras, os ambientes virtuais SVRS e SVAN, a SVC de contingência e como o tipo de autorizador aparece em recibos e protocolos.
+---
+
+## O que o manual diz
+
+Cada UF tem uma SEFAZ autorizadora, mas muitas delegam a operação a **ambientes virtuais compartilhados**:
+
+| Ambiente | Papel |
+|---|---|
+| **SEFAZ autorizadora própria** | UF que opera seu próprio ambiente (ex.: SP, MG, RS, PR…) |
+| **SVRS** (Sefaz Virtual do RS) | autoriza para diversas UFs que aderiram |
+| **SVAN** (Sefaz Virtual do AN) | autoriza para outras UFs |
+| **SVC** (Sefaz Virtual de Contingência) | entra em operação quando a origem está indisponível — ver [Contingência](/docs/contingencia/nfe) |
+
+O **tipo de autorizador** aparece embutido em recibos e protocolos (ver [Recibo e protocolo](/docs/emissao-e-comunicacao/recibo-e-uso-indevido)): `1` = SEFAZ, `2` = RFB, `3` = SVRS, `4` = SVAN/RFB.
+
+O **credenciamento** é por UF e quem credencia é sempre a administração tributária do **Estado do contribuinte**, mesmo quando a operação é num ambiente virtual — ver [Credenciamento e ambientes](/docs/comece-aqui/credenciamento-e-ambientes).
+
+Consulte a matriz atual em [Serviços por UF](/docs/operacao/servicos-por-uf): ela lista portais estaduais, autorizador normal, `NfeConsultaCadastro`, SVC e endpoints publicados pelo Portal Nacional.
+
+## Como interpretar
+
+A mesma empresa, com estabelecimentos em UFs diferentes, pode falar com **autorizadoras diferentes** para cada um. O endpoint correto depende de (UF × serviço × ambiente), não da empresa.
+
+## Vigência
+
+- 🔄 A relação UF → autorizadora muda; as URLs e WSDL estão no Portal Nacional.
+- 🕒 Ambientes legados (SCAN-RFB) foram descontinuados.
+
+## Implicação de implementação
+
+> **Implementação:** mantenha um catálogo de endpoints por (serviço × UF/autorizador × ambiente × versão), com data de validade e fonte — ver [Versionamento](/docs/operacao/versionamento). Resolva a autorizadora pela UF do emitente; resolva a SVC pela ativação da origem.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §4.3 e capítulo 8; Manuais de credenciamento SVRS e de utilização SVAN.

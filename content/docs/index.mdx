@@ -1,9 +1,17 @@
 ---
 title: Open Fiscal
-description: "Base de conhecimento sobre documentos fiscais eletrônicos no Brasil: NF-e, NFC-e, CT-e, MDF-e e Reforma Tributária."
+description: "Base de conhecimento do MOC e da documentação técnica da NF-e e NFC-e."
 ---
 
-Base de conhecimento sobre os principais documentos fiscais eletrônicos do Brasil — seus layouts, regras de validação, manuais oficiais e notas técnicas.
+Base de conhecimento sobre os principais documentos fiscais eletrônicos do Brasil — seus leiautes, regras de validação, manuais oficiais e notas técnicas.
+
+## Tópicos por família documental
+
+| Tópico | Origem e escopo |
+|---|---|
+| [NF-e e NFC-e](/docs/nfe-nfce) | conteúdo coletado no Portal Nacional da NF-e: modelos 55 e 65, MOC 7.0 e documentos auxiliares |
+
+CT-e, MDF-e, NFGas e o material isolado da Reforma Tributária estão temporariamente arquivados em `tmp/arc`.
 
 ## Documentos cobertos
 
@@ -11,30 +19,28 @@ Base de conhecimento sobre os principais documentos fiscais eletrônicos do Bras
 |-----------|--------|---------|
 | **NF-e** | 55 | Nota Fiscal Eletrônica — operações entre empresas e transporte |
 | **NFC-e** | 65 | NF de Consumidor Eletrônica — venda no varejo ao consumidor final |
-| **CT-e** | 57 | Conhecimento de Transporte Eletrônico — prestação de serviço de transporte |
-| **MDF-e** | 58 | Manifesto Eletrônico de Documentos Fiscais — escolta de cargas |
 
 ## Onde ficam os manuais oficiais
 
 | Portal | URL |
 |--------|-----|
 | NFe / NFCe | `https://dfe-portal.svrs.rs.gov.br/Nfe/Documentos` |
-| CTe | `https://dfe-portal.svrs.rs.gov.br/Cte/Documentos` |
-| MDFe | `https://dfe-portal.svrs.rs.gov.br/Mdfe/Documentos` |
 | Portal Nacional NFe | `https://www.nfe.fazenda.gov.br/portal/principal.aspx` |
 
 ## Estrutura de cada documento
 
 Todo documento fiscal eletrônico segue a mesma lógica:
 
-```
-1. Emitente monta o XML conforme o leiaute (Anexo I do MOC)
-2. Assina digitalmente com certificado ICP-Brasil
-3. Transmite à SEFAZ autorizadora via Web Service (SOAP/HTTPS)
-4. SEFAZ retorna protocolo de autorização (ou rejeição com código)
-5. Emitente gera o documento auxiliar (DANFE / DACTE / DAMDFE)
+```mermaid
+flowchart TD
+    A[1. Montar o XML conforme o leiaute] --> B[2. Validar e assinar]
+    B --> C[3. Transmitir à SEFAZ]
+    C --> D{4. Resposta}
+    D -->|Autorização| E[5. Guardar XML + protocolo e gerar DANFE]
+    D -->|Rejeição| F[Corrigir e reenviar]
+    D -->|Falha de comunicação| G[Consultar antes de repetir]
 ```
 
-## Sobre a Reforma Tributária
+## Escopo atual
 
-A partir de 2026, a Reforma Tributária (IBS, CBS, IS) impacta o leiaute de todos os documentos. A seção [Reforma Tributária](/docs/reforma) cobre as Notas Técnicas de transição.
+O conteúdo ativo está concentrado no ecossistema do Portal Nacional da NF-e. Alterações de IBS, CBS e IS são tratadas nos capítulos do documento afetado, conforme a versão da Nota Técnica e do schema.

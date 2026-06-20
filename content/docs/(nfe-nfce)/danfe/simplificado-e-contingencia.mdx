@@ -1,0 +1,43 @@
+---
+title: DANFE simplificado e de contingência
+description: O DANFE Simplificado (e etiqueta) da NF-e e as regras de impressão do DANFE quando a nota é emitida em contingência.
+---
+
+## DANFE Simplificado
+
+### O que o manual diz
+
+O **DANFE Simplificado** é uma versão reduzida do DANFE da NF-e, com um conjunto mínimo de campos obrigatórios, em papel e fontes próprios. A **NT 2020.004** introduziu também o **DANFE Simplificado — Etiqueta**, com tipo/tamanho de papel e fontes específicos para impressão em etiqueta.
+
+> Não confunda com o **DANFE NFC-e** (modelo 65), que tem [manual próprio](/docs/danfe/danfe-nfce-qrcode). O Simplificado aqui é da **NF-e modelo 55**.
+
+## DANFE de contingência
+
+### O que o manual diz
+
+Quando a NF-e é emitida em **contingência**, o DANFE deve indicar essa condição **em destaque**. O número de códigos de barras muda conforme a modalidade (ver [Código de barras](/docs/danfe/codigo-de-barras)):
+
+| Modalidade | Códigos de barras no DANFE |
+|---|---|
+| normal ou **SVC-AN** | um (chave) |
+| **EPEC** | um (chave) + frase "DANFE impresso em contingência – EPEC regularmente recebida pela Receita…" |
+| demais contingências (ex.: **FS-DA**) | dois (chave + dados da NF-e em contingência) |
+
+As regras detalhadas de cada modalidade estão em [Contingência](/docs/contingencia).
+
+### Como interpretar
+
+A impressão do DANFE em contingência é parte do **fluxo formal**: ela comunica ao trânsito que a nota ainda não passou pelo autorizador normal, e os dados extras (segundo código) permitem registrar o trânsito até a normalização.
+
+## Vigência
+
+- 🔄 DANFE Simplificado — Etiqueta: NT 2020.004.
+- 🕒 A relação modalidade × códigos cita SVC-AN; confronte com as modalidades vigentes.
+
+## Implicação de implementação
+
+> **Implementação:** o renderizador do DANFE deve escolher o **template** (completo, simplificado, etiqueta, contingência) a partir de `tpImp`, `tpEmis` e ambiente — não por opção manual do operador.
+
+## Fonte
+
+MOC 7.0 — Anexo II, §3.9 (contingência), §3.11 e §3.12 (simplificado e etiqueta), p. 18–23. Detalhes de contingência: Anexos III e IV.

@@ -1,0 +1,50 @@
+---
+title: Contingência da NF-e
+description: As modalidades de contingência da NF-e modelo 55 — FS-DA, SVC e EPEC — segundo o Anexo III.
+---
+
+## O que o manual diz
+
+### FS-DA — Formulário de Segurança (`tpEmis = 5`)
+
+Modalidade mais simples, com menor dependência de infraestrutura. Procedimentos:
+
+- atribuir **novo número** às NF-e pendentes de retorno;
+- alterar `tpEmis` para **5**;
+- informar **motivo, data e hora (com minutos e segundos)** da entrada em contingência, impressos no DANFE;
+- **regerar o XML** com outro número (e eventualmente série) se a NF-e já havia sido transmitida com `tpEmis=1`;
+- imprimir **ao menos duas vias** do DANFE em Formulário de Segurança com a frase "DANFE em Contingência - impresso em decorrência de problemas técnicos" (uma via para o trânsito/destinatário, outra para o emitente);
+- transmitir as NF-e à SEFAZ de origem **quando cessarem** os problemas.
+
+### SVC — Sefaz Virtual de Contingência (`tpEmis = 6`/`7`)
+
+A NF-e é transmitida a uma **Sefaz Virtual de Contingência**. O DANFE sai em **papel comum** e **não** há necessidade de retransmitir à SEFAZ de origem depois. A SVC só entra em operação quando **ativada** pela SEFAZ de origem (que está com problemas).
+
+### EPEC — Evento Prévio de Emissão em Contingência (`tpEmis = 4`)
+
+Registro **prévio** de um resumo das NF-e, que permite imprimir o DANFE em **papel comum**. A validade fica condicionada à **posterior transmissão** da NF-e à SEFAZ de origem. Ver [EPEC como evento](/docs/eventos/epec).
+
+### Quadro resumo
+
+| Modalidade | DANFE | Retransmite à origem? | Depende de |
+|---|---|---|---|
+| FS-DA | Formulário de Segurança, ≥2 vias | **Sim** | estoque de formulário |
+| SVC | papel comum | **Não** | ativação pela SEFAZ de origem |
+| EPEC | papel comum (com frase) | **Sim** | registro no Ambiente Nacional |
+
+## Como interpretar
+
+A diferença prática é **quem autoriza depois** e **em que papel** se imprime. SVC resolve na hora (outro autorizador) e não exige retransmissão; FS-DA e EPEC permitem operar sem autorizador, mas exigem regularização posterior.
+
+## Vigência
+
+- 🕒 FS-DA convive com formulários de impressor autônomo até o fim do estoque (legislação até 2010).
+- 📍 Disponibilidade de cada modalidade depende da UF.
+
+## Implicação de implementação
+
+> **Implementação:** em FS-DA, gere **novo número** quando a nota original já saiu com `tpEmis=1` (evita duplicidade na conciliação). Em SVC, só acione quando a origem ativar. Em todos, registre `dhCont`/`xJust` e concilie depois — ver [Recuperação e conciliação](/docs/contingencia/recuperacao-e-conciliacao).
+
+## Fonte
+
+MOC 7.0 — Anexo III, §2.1.1 a §2.1.5, p. 6–16.

@@ -1,0 +1,66 @@
+---
+title: Cálculo interestadual (EC 87/2015)
+description: Exemplo histórico e auditável da sistemática de cálculo do DIFAL em venda interestadual a consumidor final, com as fórmulas e os campos do XML.
+---
+
+> 🕒 **Conteúdo histórico.** O MOC 7.0 (2020) ilustra a EC 87/2015 com **partilha de 2016 (40% destino / 60% origem)**. Hoje a partilha do DIFAL é **100% destino**. Use este exemplo para entender a **mecânica e as fórmulas**, não os percentuais vigentes.
+
+## O que o manual diz
+
+Para **venda interestadual a consumidor final não contribuinte** (EC 87/2015, Convênio ICMS 93/2015, NT 2015.003):
+
+| Sigla | Significado |
+|---|---|
+| BC | base de cálculo do ICMS |
+| ALQ INTER | alíquota interestadual (4%, 7% ou 12%) |
+| ALQ INTRA | alíquota interna na UF de destino |
+| FCP | Fundo de Combate à Pobreza do destino |
+| DIFAL | diferença entre a alíquota interna do destino e a interestadual |
+
+### Fórmulas
+
+```text
+ICMS origem  = BC × ALQ INTER
+DIFAL        = (BC × ALQ INTRA) − (BC × ALQ INTER)   (truncar o resultado)
+vFCPUFDest   = BC × ALQ FCP
+```
+
+### Exemplo (alíquota interestadual de 7%, item 18% + FCP 2%)
+
+```text
+BC = 1.000,00 · ALQ INTER = 7% · ALQ INTRA = 18% · FCP = 2%
+ICMS origem = 70,00
+DIFAL = 180,00 − 70,00 = 110,00
+vFCPUFDest = 20,00
+Partilha 2016: destino 40% = 44,00 · origem 60% = 66,00   🕒
+```
+
+### Campos no XML
+
+| Grupo | Campo | Valor do exemplo |
+|---|---|---|
+| `ICMSUFDest` | `vBCUFDest` | 1.000,00 |
+| | `pICMSUFDest` | 18% |
+| | `pICMSInter` | 7% |
+| | `pICMSInterPart` | 40% 🕒 |
+| | `pFCPUFDest` / `vFCPUFDest` | 2% / 20,00 |
+| | `vICMSUFDest` (partilha destino) | 44,00 |
+| | `vICMSUFRemet` (partilha origem) | 66,00 🕒 |
+| `ICMSTot` | `vFCPUFDest`, `vICMSUFDest`, `vICMSUFRemet` | somatório dos itens |
+
+## Como interpretar
+
+A nota leva os valores **já partilhados** entre destino e remetente; o XML não "calcula", ele **declara** o resultado. O `truncar` no DIFAL é parte da regra — arredondar para cima diverge da SEFAZ.
+
+## Vigência
+
+- 🕒 `pICMSInterPart` e a partilha origem/destino do exemplo são de 2016; a transição da EC 87/2015 terminou (100% destino).
+- 🔄 Alíquotas internas, interestaduais e FCP mudam por UF e por Informe Técnico — ver [Tabelas e códigos](/docs/referencia/tabelas-e-codigos).
+
+## Implicação de implementação
+
+> **Implementação:** parametrize a partilha por **data de vigência** (não fixe 40/60). Trate alíquotas e FCP como tabelas versionadas por UF. Reproduza o **truncamento** do DIFAL exatamente como o manual.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, capítulo 9 (Sistemática de Cálculo em Operações Interestaduais — EC 87/2015), p. 148–150.

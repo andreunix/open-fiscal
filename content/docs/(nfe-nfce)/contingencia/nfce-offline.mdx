@@ -1,0 +1,45 @@
+---
+title: Contingência da NFC-e
+description: A contingência off-line da NFC-e (tpEmis 9) e o EPEC da NFC-e — regras de emissão, prazo de transmissão e conciliação.
+---
+
+A NFC-e tem duas modalidades de contingência: **off-line** (`tpEmis = 9`) e **EPEC** (`tpEmis = 4`). A off-line é a característica do varejo, pensada para a frente de caixa.
+
+## O que o manual diz
+
+### Por que existe
+
+No varejo, o consumidor está presente e a autorização precisa responder em poucos segundos. Quando o tempo de resposta não é adequado, a NFC-e é **gerada, assinada e o DANFE NFC-e impresso sem autorização prévia**; depois, superado o problema, transmite-se para autorização.
+
+### Regras da off-line (`tpEmis = 9`)
+
+- **Não** exige série específica nem papel especial.
+- **Prazo de transmissão:** até o **final do primeiro dia útil subsequente** à emissão.
+- A informação de **operação em contingência** deve ser impressa no DANFE NFC-e.
+- Campos **obrigatórios** nas contingências 4 e 9: `dhCont` (data/hora da entrada em contingência, B28) e `xJust` (justificativa, B29) — **não** impressos no DANFE.
+- O **QR Code** da NFC-e em contingência contém **data e hora** de emissão, para a consulta indicar tratar-se de contingência e o prazo máximo.
+- **Recomenda-se avançar um número** na sequência ao entrar em contingência, para evitar rejeição por **duplicidade**.
+- Na transmissão posterior, deve-se **manter a mesma chave de acesso**, inclusive o **mesmo `cNF` (B03)** original.
+
+> A off-line é de **uso exclusivo** como alternativa de contingência e deve ser tratada como **exceção**. O contribuinte **assume o risco** de perda da NFC-e (e da operação) se ela for posteriormente rejeitada. A UF pode bloquear o uso abusivo.
+
+### EPEC da NFC-e (`tpEmis = 4`)
+
+Mesma lógica do [EPEC](/docs/eventos/epec): registro prévio no Ambiente Nacional antes da emissão definitiva, com a mesma chave.
+
+## Como interpretar
+
+A diferença entre off-line e EPEC: na off-line você imprime e vende **sem nenhum registro prévio** (assumindo o risco), regularizando até o 1º dia útil seguinte; no EPEC há um **registro prévio** no AN. Em ambos, a chave (com `tpEmis` da contingência) é fixada na emissão e **mantida** na transmissão.
+
+## Vigência
+
+- 🔄 Especificações da Contingência Off-line **v2.0** e Anexo IV.
+- 📍 O uso da off-line é **decisão exclusiva da UF**.
+
+## Implicação de implementação
+
+> **Implementação:** ao entrar em off-line, fixe `tpEmis=9`, `dhCont`, `xJust`, avance o número e **preserve `cNF`** para retransmitir com a mesma chave. Implemente um job que garanta a transmissão dentro do prazo (1º dia útil seguinte) e trate rejeição como **perda potencial da venda** — alertando a operação.
+
+## Fonte
+
+Especificações Técnicas da Contingência Off-line v2.0, §1–§3; MOC 7.0 — Anexo IV.

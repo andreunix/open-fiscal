@@ -1,0 +1,31 @@
+---
+title: Carta de correção
+description: A Carta de Correção Eletrônica (110110) — o que pode e o que não pode ser corrigido sem reemitir a nota.
+---
+
+## O que o manual diz
+
+A **Carta de Correção Eletrônica (CC-e, `110110`)** corrige informações da NF-e **dentro dos limites previstos na legislação**. É um evento do emitente, com texto da correção (`xCorrecao`) e número sequencial.
+
+A legislação **não** permite corrigir por CC-e, entre outros:
+
+- variáveis que determinam o **valor do imposto** (base de cálculo, alíquota, valor da operação);
+- a **correção de dados cadastrais** que implique mudança do **remetente ou do destinatário**;
+- a **data de emissão** ou de saída.
+
+## Como interpretar
+
+A CC-e serve para ajustes que não mudam o cálculo nem as partes da operação (ex.: corrigir uma informação complementar). Se o que está errado afeta tributo ou identifica outra pessoa, o caminho é **cancelar e reemitir**, não corrigir.
+
+## Vigência
+
+- 🔄 NT 2011.003 consolidou a CC-e; os limites do que pode ser corrigido seguem a legislação vigente.
+- 📍 A NFC-e, em regra, **não** usa CC-e (o Ajuste 19/16 prevê só cancelamento e EPEC).
+
+## Implicação de implementação
+
+> **Implementação:** valide localmente o que a CC-e pode tocar antes de oferecer a funcionalidade ao usuário. Cada CC-e tem `nSeqEvento` próprio; a última CC-e não apaga as anteriores — todas ficam no histórico da chave.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §3.1.1 (Tabela 3-1, evento 110110), p. 28.

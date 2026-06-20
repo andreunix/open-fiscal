@@ -1,0 +1,83 @@
+---
+title: DANFE NFC-e e QR Code
+description: O DANFE NFC-e (impressão simplificada) e as versões 2.00 (com CSC) e 3.00 (com assinatura) do QR Code, online e em contingência off-line.
+---
+
+Esta página corrige uma **errata do MOC**: o DANFE NFC-e e o QR Code têm **manual próprio** (não pertencem ao "Anexo III", como a §2.2.5 do MOC sugere). Ver [Proveniência](/docs/referencia/proveniencia).
+
+## DANFE NFC-e — o documento
+
+### O que o manual diz
+
+- Representação **simplificada em papel** da venda no varejo, impressa pelo aplicativo do contribuinte em **impressora comum (não fiscal)**, a partir do XML.
+- **Não** deve conter informação que não esteja no XML, exceto dados do retorno da autorização (protocolo, `cMsg`, `xMsg`).
+- Pode ser **resumido/ecológico** (sem detalhe de itens), se a UF permitir e o consumidor aceitar; o consumidor pode depois pedir o completo, sem custo, dentro do prazo de garantia.
+- Legibilidade e durabilidade garantidas por, no mínimo, **6 meses**.
+
+### Divisões do leiaute
+
+| Divisão | Conteúdo |
+|---|---|
+| I | cabeçalho: CNPJ/CPF e nome do emitente, endereço, título do documento |
+| II | detalhe de produtos/serviços (opcional se a UF permitir): `cProd`, `xProd`, `qCom`, `uCom`, `vUnCom`, `vProd` |
+| III | totais e forma de pagamento |
+| IV | informações da consulta via **chave de acesso** |
+| V | informações da consulta via **QR Code** |
+
+## O QR Code
+
+A URL do QR Code tem **duas partes**: o endereço de consulta da SEFAZ da UF + os parâmetros separados por `|`. Os endereços por UF estão no Portal Nacional da NFC-e.
+
+### Versão 2.00 — com CSC
+
+Parâmetros (online): chave, versão, ambiente, **identificador do CSC** e o **hash**. O **CSC** (Código de Segurança do Contribuinte) é um código alfanumérico de **16 a 36 bytes**, conhecido só pelo Fisco e pelo emissor.
+
+Geração do hash (online): concatenar os parâmetros 1–4, **adicionar o CSC ao final**, aplicar **SHA-1** e converter para hexadecimal. Em contingência off-line, entram também dia da emissão, valor total e o **DigestValue** da NFC-e.
+
+```text
+...qrcode?p=<chave>|<versao=2>|<tpAmb>|<idCSC>|<hash-SHA1-hex>
+```
+
+### Versão 3.00 — com assinatura (sem CSC)
+
+> Na versão 3.00 **não é necessário CSC**. A autenticidade é garantida pela **assinatura** dos parâmetros, incluída no próprio QR Code. Recomendada para **Produtor Rural PF** (evita controlar CSC por CPF/UF) e opcional para PJ.
+
+**Online** — apenas 3 parâmetros:
+
+```text
+...qrcode?p=<chave_acesso>|3|<tpAmb>
+```
+
+**Off-line (contingência)** — 8 parâmetros, sendo o último a **assinatura**:
+
+| Pos. | Parâmetro |
+|---|---|
+| 1 | chave de acesso (44) |
+| 2 | versão do QR Code (`3`) |
+| 3 | ambiente (`tpAmb`) |
+| 4 | dia da emissão (2 dígitos) |
+| 5 | valor total (`vNF`, ponto decimal) |
+| 6 | tipo de id. do destinatário (1=CNPJ, 2=CPF, 3=estrangeiro; vazio se não identificado) |
+| 7 | identificação do destinatário (vazio se não identificado) |
+| 8 | **assinatura** RSA-SHA1 (Base64) da concatenação 1–7, com o **mesmo certificado que assina a NFC-e** |
+
+### Dimensões
+
+Mínimo **25 mm × 25 mm**, impresso com padrões residentes de impressoras de não impacto (térmica, laser, deskjet).
+
+## Como interpretar
+
+A grande diferença entre 2.00 e 3.00 é **o que prova a autenticidade**: na 2.00, um hash baseado em um **segredo compartilhado** (CSC) que a empresa precisa obter e controlar (máx. ativos por UF); na 3.00, uma **assinatura digital** com o certificado da NFC-e, eliminando a gestão de CSC.
+
+## Vigência
+
+- 🔄 Manual do DANFE NFC-e e QR Code, versão **2025-03-24**, que **inclui a versão 3.00** do QR Code. A versão 1.00 foi descontinuada (fim da concomitância em 2018). 🕒
+- 📍 Endereços de consulta e permissão de DANFE resumido dependem da UF.
+
+## Implicação de implementação
+
+> **Implementação:** prefira o **QR Code v3.00** em novos projetos (sem gestão de CSC). Se usar v2.00, trate o CSC como segredo e controle `idCSC` por UF. Em contingência off-line v3.00, assine os parâmetros com o mesmo certificado da nota. Resolva o endereço de consulta por UF a partir da tabela oficial, não fixe no código.
+
+## Fonte
+
+Manual de Especificações Técnicas do DANFE NFC-e e QR Code (2025-03-24), capítulos 2–4.

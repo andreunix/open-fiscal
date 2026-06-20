@@ -1,0 +1,80 @@
+---
+title: Leiaute e regras da NFGas
+description: Validações e mapa do XML da NFGas, modelo 76, conforme o Anexo I v1.00f.
+---
+
+O **Anexo I da NFGas** define o leiaute do XML do modelo 76 e as regras de validação aplicadas ao serviço de recepção síncrono.
+
+## O que o manual diz
+
+A versão incorporada aqui é a **1.00f, de 11 de março de 2026**, com implantação indicada para homologação em **06/04/2026** e produção em **04/05/2026**.
+
+### Grupos do XML
+
+| Grupo ou tag | Conteúdo |
+|---|---|
+| `infNFGas` | informações principais da NFGas |
+| `ide` | identificação da nota, ambiente, emissão, finalidade e faturamento |
+| `emit` | emitente |
+| `dest` | destinatário |
+| `gSub` | informações de substituição |
+| `gMed` | medidores |
+| `gFatConjunto` | faturamento conjunto |
+| `det` | detalhamento de produtos e serviços |
+| `gMedicao` / `gMedida` | medição e medidas vinculadas ao item |
+| `IBSCBS` | IBS e CBS por item |
+| `total` | totais da NFGas |
+| `IBSCBSTot` | totais de IBS e CBS |
+| `gFat` | controle da fatura |
+| `infAdic` | informações adicionais |
+| `infNFGasSupl` | informações suplementares, incluindo QR Code |
+| `Signature` | assinatura digital |
+
+### Validações por tema
+
+| Tema | Exemplos de validação |
+|---|---|
+| ambiente e autorização | `tpAmb`, `cUF`, UF autorizadora e site autorizador |
+| contingência | `dhCont` e `xJust` obrigatórios em off-line e proibidos na emissão normal |
+| chave de acesso | literal `NFGas`, ano igual ou posterior a 2026, DV, modelo `76` e composição do `Id` |
+| emitente | CNPJ, IE obrigatória, IE válida, credenciamento, situação fiscal e município |
+| destinatário | CNPJ, CPF ou outro identificador; IE quando informada ou exigida |
+| data de emissão | tolerância de 5 minutos para emissão futura e atraso de 120 horas na emissão normal |
+| duplicidade | chave natural, documento cancelado, substituído ou já autorizado |
+| substituição | grupo `gSub`, chave substituída e compatibilidade de emitente/destinatário |
+| faturamento | normal, faturado por terceiro e faturamento conjunto |
+| CFOP | relação de CFOPs permitidos para a NFGas |
+| produtos e serviços | código, classificação, quantidade, valor unitário e valor do item |
+| IBS/CBS | CST, `cClassTrib`, redução, diferimento, compras governamentais e estorno |
+| totais | somatórios por item, valores negativos proibidos e `vTotDFe` |
+| QR Code | URL prevista, chave, `sign` em contingência e assinatura calculada |
+
+## Faturamento e marcações
+
+A NFGas diferencia tipos de faturamento, incluindo faturamento por terceiro e faturamento conjunto. Quando documentos ficam relacionados, o fisco pode gerar eventos de marcação automaticamente, como autorização, cancelamento ou substituição de NFGas de faturamento conjunto.
+
+## CFOPs permitidos
+
+O Anexo I traz uma relação própria de CFOPs permitidos para a NFGas. Não reaproveite a lista geral da NF-e sem filtro: o modelo 76 deve validar CFOP conforme a tabela do manual e a versão vigente das tabelas auxiliares.
+
+## Totais
+
+O total do documento fiscal (`vTotDFe`) é calculado como:
+
+```text
+vTotDFe = total/vNF + IBSCBSTot/gIBS/vIBS + IBSCBSTot/gCBS/vCBS
+```
+
+Os demais totais devem conferir com a soma dos respectivos campos dos itens, considerando a natureza da classificação do produto ou serviço, que pode somar ou deduzir valores.
+
+## Como interpretar
+
+O Anexo I combina regra fiscal, regra de schema e regra operacional. Uma rejeição pode vir de forma XML, certificado, assinatura, credenciamento, vínculo entre documentos, CFOP, cálculo tributário ou inconsistência de total.
+
+## Implicação de implementação
+
+> **Implementação:** implemente a validação em camadas: schema e assinatura primeiro; depois contexto de autorização; depois regras de negócio por finalidade, faturamento, CFOP, item, IBS/CBS e totais. O validador precisa receber versão do schema, versão das tabelas, ambiente, UF e data de emissão.
+
+## Fonte
+
+MOC NFGas — Anexo I, Leiaute e Regras de Validação, versão 1.00f — 11 de março de 2026, p. 4–50.

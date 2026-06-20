@@ -1,0 +1,30 @@
+---
+title: NfeInutilizacao
+description: Inutilização de faixas de numeração de NF-e que não serão usadas, por quebra de sequência.
+---
+
+**Função:** inutilizar uma **faixa de numeração** de NF-e que não será utilizada (quebra de sequência). **Método:** `nfeInutilizacaoNF`. **Processo:** síncrono.
+
+## O que o manual diz
+
+- Entrada: `inutNFe` com `tpAmb`, ano, CNPJ, modelo, **série** e a faixa **`nNFIni`–`nNFFin`**, além de `xJust` (justificativa). A tag `infInut` é **assinada**.
+- Retorno: `retInutNFe` com `cStat`/`xMotivo` e, se deferido, o **protocolo** (`nProt`) e data/hora.
+- Inutilização **não** serve para anular uma nota já autorizada — para isso existe [cancelamento](/docs/eventos/cancelamento). Serve só para numeração **não emitida**.
+- Regras de validação genéricas e específicas (faixa inválida, já inutilizada, assinatura).
+
+## Como interpretar
+
+Inutilizar é registrar oficialmente "estes números nunca viraram nota". É a solução quando o controle de numeração saltou um número (ex.: falha antes do envio) e a sequência fiscal precisa ficar íntegra.
+
+## Vigência
+
+- 🔄 Schema e regras versionados por NT.
+- 📍 A justificativa e o tratamento de faixas podem ter exigências adicionais por UF.
+
+## Implicação de implementação
+
+> **Implementação:** antes de inutilizar, **confirme por [ConsultaProtocolo](/docs/emissao-e-comunicacao/consulta-protocolo)** que nenhum número da faixa foi autorizado — inutilizar número usado é erro. Guarde o protocolo de inutilização junto ao controle de numeração.
+
+## Fonte
+
+MOC 7.0 — Visão Geral, §5.3, p. 78–80 (Tabelas 5-9 a 5-12).

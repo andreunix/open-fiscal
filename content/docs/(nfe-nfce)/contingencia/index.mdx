@@ -1,0 +1,28 @@
+---
+title: Contingência
+description: O que fazer quando a autorizadora está indisponível — modalidades SVC, EPEC, FS-DA e a contingência off-line da NFC-e, com conciliação.
+---
+
+Contingência é um **fluxo formal** para emitir quando o autorizador não responde. Cada modalidade tem campos, impressão e conciliação próprios.
+
+> **Em uma frase:** contingência não é ignorar a SEFAZ — é seguir uma modalidade prevista e conciliar depois.
+
+```mermaid
+flowchart TD
+    A[Autorizador indisponível] --> B{Modelo}
+    B -->|NF-e 55| C[SVC / EPEC / FS-DA]
+    B -->|NFC-e 65| D[Off-line / EPEC]
+    C --> E[Conciliar ao normalizar]
+    D --> E
+```
+
+## Nesta seção
+
+| Tema | Página |
+|---|---|
+| qual modalidade usar em cada cenário | [Escolha da modalidade](/docs/contingencia/escolha-da-modalidade) |
+| contingência da NF-e: SVC, EPEC, FS-DA (Anexo III) | [Contingência da NF-e](/docs/contingencia/nfe) |
+| contingência off-line da NFC-e (Anexo IV + v2.0) | [Contingência da NFC-e](/docs/contingencia/nfce-offline) |
+| recuperação e conciliação após a normalização | [Recuperação e conciliação](/docs/contingencia/recuperacao-e-conciliacao) |
+
+> **Implementação:** não aplique a modalidade de um modelo ao outro. A off-line é característica da NFC-e; SVC e EPEC seguem regras próprias.

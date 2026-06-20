@@ -1,0 +1,79 @@
+---
+title: Testes e homologação
+description: Matriz de homologação, testes de regressão, observabilidade e resposta a falhas para um emissor confiável.
+---
+
+Um emissor confiável precisa provar cálculos, XML, assinatura, comunicação e recuperação. Testar apenas um documento autorizado deixa os riscos principais sem cobertura.
+
+## Pirâmide de testes fiscais
+
+```mermaid
+flowchart TD
+    E[E2E com autorizador] --> I[Integração: XML, assinatura e transporte]
+    I --> U[Unidade: regras, domínios e cálculos]
+```
+
+- **Unidade:** seleção de modelo/finalidade, formação e DV da chave, arredondamento, condições de preenchimento, domínios/datas, QR Code, transições de estado.
+- **Integração:** serialização contra o XSD correto, assinatura e digest, envelope/compactação, interpretação de respostas, geração do DANFE, armazenamento.
+- **E2E:** usar homologação para autorização, rejeição, consulta, evento e contingência. Não dependa só dela: serviços externos caem e não cobrem todas as combinações.
+
+## Matriz mínima por modelo
+
+| Cenário | NF-e | NFC-e |
+|---|:---:|:---:|
+| autorização normal | ✓ | ✓ |
+| rejeição de schema | ✓ | ✓ |
+| duplicidade/timeout | ✓ | ✓ |
+| cancelamento | ✓ | ✓ |
+| documento auxiliar | DANFE | DANFE NFC-e |
+| QR Code | quando aplicável | obrigatório |
+| contingência própria | ✓ | off-line |
+| cenário específico | referências/transporte | consumidor/pagamento |
+
+## Máquina de estados
+
+Não use apenas `autorizado: true/false`.
+
+```mermaid
+stateDiagram-v2
+    [*] --> EmMontagem
+    EmMontagem --> Assinado
+    Assinado --> Enviado
+    Enviado --> Autorizado
+    Enviado --> Rejeitado
+    Enviado --> Incerto: timeout
+    Incerto --> Autorizado: consulta
+    Incerto --> Rejeitado: consulta
+    Autorizado --> Cancelado: evento autorizado
+    Autorizado --> Substituido: quando o modelo permitir
+```
+
+Guarde o histórico das transições, não apenas o estado atual.
+
+## Observabilidade
+
+Registre de forma estruturada: correlação interna e chave protegida; modelo, ambiente, serviço e autorizador; código e motivo retornados; duração, tentativas e resultado da consulta; versão do schema e da aplicação; estado anterior e novo.
+
+> **Implementação:** não registre chave privada, senha do certificado, CSC, token PIX ou XML completo sem controles de acesso e retenção.
+
+## Indicadores úteis
+
+Taxa de autorização na 1ª tentativa; rejeições por código e versão; timeouts e consultas de recuperação; tempo de autorização por serviço; documentos em estado incerto; contingências não conciliadas; certificados próximos do vencimento.
+
+## Procedimento de incidente
+
+```mermaid
+flowchart LR
+    A[Alerta] --> C[Classificar: emissor, rede ou autorizador]
+    C --> P[Proteger numeração e evitar duplicidade]
+    P --> Q[Consultar estado oficial]
+    Q --> T[Ativar contingência prevista, se necessário]
+    T --> R[Recuperar e conciliar]
+    R --> M[Registrar causa e teste de regressão]
+```
+
+> Uma rejeição é resposta definitiva ao conteúdo enviado; timeout é estado desconhecido. Tratar os dois da mesma forma é causa comum de duplicidade — ver [uso indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido).
+
+## Fonte
+
+Orientação de engenharia do projeto, fundamentada no MOC 7.0 (§4.3) e no Manual de Boas Práticas NFC-e.

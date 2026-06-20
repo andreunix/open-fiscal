@@ -1,0 +1,33 @@
+---
+title: NFAg
+description: Nota Fiscal de Água e Saneamento Eletrônica, modelo 75, conforme o MOC NFAg v1.00k e o Anexo II do DANFAG.
+---
+
+A **NFAg** é a Nota Fiscal de Água e Saneamento Eletrônica. Ela é tratada nos manuais como **modelo 75** e documenta a prestação de serviços de abastecimento de água e saneamento.
+
+> 🔄 Esta seção começa pelos três manuais baixados: **MOC NFAg — Visão Geral v1.00k**, **MOC NFAg — Anexo I v1.00k** e **MOC NFAg — Anexo II DANFAG v1.01**. Confira schemas, tabelas de classificação e atos vigentes antes de implementar.
+
+## Nesta seção
+
+| Tema | Página |
+|---|---|
+| conceito, chave de acesso, comunicação, eventos, QR Code e contingência | [Visão geral](/docs/nfag/visao-geral) |
+| validações, grupos do XML, faturamento, IBS/CBS e totais | [Leiaute e regras](/docs/nfag/leiaute-e-regras) |
+| documento auxiliar, divisões impressas, QR Code e modelos de impressão | [DANFAG](/docs/nfag/danfag) |
+
+## O que muda em relação à NF-e/NFC-e
+
+| Ponto | NFAg |
+|---|---|
+| Modelo fiscal | `75` |
+| Operação documentada | água e saneamento |
+| Emissão | serviço síncrono, uma nota por requisição |
+| Documento auxiliar | DANFAG |
+| Namespace XML | `http://www.portalfiscal.inf.br/nfag` |
+| Contingência | off-line, com QR Code assinado |
+
+## Fonte
+
+- `tmp/nfe/manuais/MOC_NFAg_VisaoGeral_v1.00k.pdf`
+- `tmp/nfe/manuais/MOC_NFAg_Anexo I_Leiaute e Regras de Validação_v1.00k.pdf`
+- `tmp/nfe/manuais/MOC_NFAg_Anexo_II_DANFAG - V1.01.pdf`
