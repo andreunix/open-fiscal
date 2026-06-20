@@ -79,6 +79,8 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 | 2019.001 v1.70 | **Teto da base de cálculo do ICMS:** `W03-20` (facultativa, por modelo de DF-e) rejeita `vBC` (total) superior ao limite definido pela SEFAZ — referência de **R$ 200.000,00** (rej. **935**, mensagem traz o limite da UF). 🔄 |
 | 2025.001 v1.03 | **Dados de cobrança (grupo `dup`/parcelas, Y07):** `Y09-40` rejeita parcela única cujo `dVenc` seja igual à `dhEmi` — cobrança não deve ser informada em pagamento à vista (rej. **853**); `Y09-50` rejeita `dVenc` superior a **10 anos** da data atual (rej. **797**). Pagamento (grupo `YA`/`pag`) em [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais). 🔄 |
 | 2022.002 v1.30a | **Combustível equiparado à exportação:** `X04-10` deixa de exigir identificação do transportador quando houver item com `UFCons=EX` e CFOP **7.667**, pois é abastecimento presencial sem frete (`modFrete=9`). Nos demais CFOP de combustível marcados na tabela, a identificação continua obrigatória por UF (rej. 362). Produção da revisão: **06/04/2026**. 📍 🔄 |
+| 2026.002 v1.00 | **Tipo 2 (`tpImp=6`):** limite total padrão de **R$ 200.000**, parametrizável por UF (`W16-30`); sem identificação do destinatário, `W16-40` usa limite estadual ou, na ausência, **R$ 10.000**. Só aceita frete quando `indPres=4`, e proíbe retenção de ICMS do transporte, veículo/reboque/vagão/balsa, cobrança, compra e cana. Vigência do limite estadual sem destinatário: produção **15/06/2026**; demais regras: **03/08/2026**. 📍 🔄 |
+| 2026.004 v1.01 | **CNPJ alfanumérico:** CNPJ do transportador (X04) passa a texto de 14 posições. Produção: **01/07/2026**. 🔄 |
 
 ## Política de arredondamento
 
@@ -97,4 +99,4 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 
 ## Fonte
 
-MOC 7.0 — Anexo I, grupos W a Y, p. 58–62. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2021.004 v1.35 (01/11/2022), NT 2022.005 v1.11 (11/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2023.001 v1.60 (09/06/2025), NT 2019.001 v1.70 (18/08/2025), NT 2025.001 v1.03 (29/09/2025), NT 2022.002 v1.30a (26/03/2026).
+MOC 7.0 — Anexo I, grupos W a Y, p. 58–62. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2021.004 v1.35 (01/11/2022), NT 2022.005 v1.11 (11/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2023.001 v1.60 (09/06/2025), NT 2019.001 v1.70 (18/08/2025), NT 2025.001 v1.03 (29/09/2025), NT 2022.002 v1.30a (26/03/2026), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026).

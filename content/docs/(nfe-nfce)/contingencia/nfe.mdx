@@ -24,6 +24,15 @@ A NF-e é transmitida a uma **Sefaz Virtual de Contingência**. O DANFE sai em *
 
 Registro **prévio** de um resumo das NF-e, que permite imprimir o DANFE em **papel comum**. A validade fica condicionada à **posterior transmissão** da NF-e à SEFAZ de origem. Ver [EPEC como evento](/docs/eventos/epec).
 
+### Offline do DANFE Simplificado Tipo 2 (`tpEmis = 9`) 🔄
+
+A **NT 2026.002** estendeu a contingência offline à NF-e modelo 55 somente quando `tpImp=6` (DANFE Simplificado Tipo 2). Gere e assine o XML no ponto de venda, imprima duas vias — consumidor e estabelecimento — e transmita depois para autorização. A via do estabelecimento fica à disposição do Fisco até a transmissão e autorização.
+
+- imprima em destaque, abaixo do cabeçalho e da identificação, **“EMITIDA EM CONTINGÊNCIA / Pendente de autorização”**;
+- omita o protocolo ainda inexistente e identifique a segunda via como **“Via do Estabelecimento”**;
+- inclua no QR Code v3 dia da emissão, `vNF`, tipo/identificação do destinatário e assinatura **RSA-SHA1/Base64** dos parâmetros 1–7 com o certificado da NF-e;
+- transmita em até **24 horas**; depois desse prazo a autorizadora pode aceitar com `cStat=150`.
+
 ### Quadro resumo
 
 | Modalidade | DANFE | Retransmite à origem? | Depende de |
@@ -31,6 +40,7 @@ Registro **prévio** de um resumo das NF-e, que permite imprimir o DANFE em **pa
 | FS-DA | Formulário de Segurança, ≥2 vias | **Sim** | estoque de formulário |
 | SVC | papel comum | **Não** | ativação pela SEFAZ de origem |
 | EPEC | papel comum (com frase) | **Sim** | registro no Ambiente Nacional |
+| Offline Tipo 2 (`tpEmis=9`) | papel comum, **2 vias** | **Sim** | NF-e modelo 55 com `tpImp=6` |
 
 ## Como interpretar
 
@@ -47,4 +57,4 @@ A diferença prática é **quem autoriza depois** e **em que papel** se imprime.
 
 ## Fonte
 
-MOC 7.0 — Anexo III, §2.1.1 a §2.1.5, p. 6–16.
+MOC 7.0 — Anexo III, §2.1.1 a §2.1.5, p. 6–16. Overlay: NT 2026.002 v1.00 (25/05/2026), NT 2026.003 v1.00 (25/05/2026).

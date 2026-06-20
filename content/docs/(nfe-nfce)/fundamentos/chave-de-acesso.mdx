@@ -63,6 +63,7 @@ A IN RFB 2229/2024 muda a lei de formação do CNPJ para ampliar a oferta de nú
 - O **DV da chave** (44 posições) usa a mesma lógica: converte **todos** os 44 caracteres por ASCII − 48 e só então aplica o módulo 11.
 - Letras `I`, `O`, `U`, `Q` e `F` devem ser **vedadas** no CNPJ alfa (pedido do ENCAT à RFB, a confirmar) — e, por consequência, na chave.
 - Antes da implantação, o autorizador **rejeita** CNPJ/chave alfanuméricos por **falha no DV**, mesmo que o schema já os aceite.
+- A **NT 2026.004 v1.01** efetiva o tipo alfanumérico (`C`) nas chaves de NF-e/CT-e referenciadas, protocolos, eventos, distribuição DF-e, cancelamento por substituição, EPEC e consultas. Não aplique conversão numérica, _trim_ ou mudança de caixa em nenhum desses caminhos. 🔄
 
 ## Como interpretar
 
@@ -74,7 +75,7 @@ A chave de acesso é gerada pelo emitente; a chave **natural** é a regra de uni
   - 🕒 **até 1.10**: sem `tpEmis`; `cNF` tinha **9** dígitos.
   - 🕒 **a partir da 2.00**: `tpEmis` entrou na chave e o `cNF` foi reduzido para **8** dígitos (mantendo 44 posições).
 - 🔄 A definição de chave natural foi consolidada pela **NT 2018.001**.
-- 🔄 **CNPJ alfanumérico**: NT Conjunta 2025.001 (v1.00, 25/04/2025) — homologação **06/04/2026**, produção **06/07/2026**; primeiros CNPJ alfa previstos para **julho/2026**.
+- 🔄 **CNPJ alfanumérico**: conceito pela NT Conjunta 2025.001 v1.00; schemas NF-e/NFC-e pela NT 2026.004 v1.01 — homologação até **15/06/2026**, produção **01/07/2026**.
 
 ## Implicação de implementação
 
@@ -82,4 +83,4 @@ A chave de acesso é gerada pelo emitente; a chave **natural** é a regra de uni
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.6 e §2.2.7, p. 18–20 (Tabelas 2-1 a 2-3). Overlay: NT Conjunta 2025.001 v1.00 (25/04/2025), NT 2023.002 v1.01 (18/11/2025).
+MOC 7.0 — Visão Geral, §2.2.6 e §2.2.7, p. 18–20 (Tabelas 2-1 a 2-3). Overlay: NT Conjunta 2025.001 v1.00 (25/04/2025), NT 2023.002 v1.01 (18/11/2025), NT 2026.004 v1.01 (08/06/2026).

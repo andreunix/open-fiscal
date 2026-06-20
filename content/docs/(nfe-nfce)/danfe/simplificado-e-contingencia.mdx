@@ -22,6 +22,29 @@ A etiqueta segue padrões próprios de impressão: 🔄
 
 > **Valor total — opcional.** Desde a **v1.10** (Ajuste SINIEF 07/05, §15-A), a informação do **valor total da NF-e pode ser suprimida** no DANFE Simplificado — Etiqueta. 🔄
 
+## DANFE Simplificado Tipo 2 (`tpImp = 6`) 🔄
+
+Instituído para a **NF-e modelo 55** em operações que normalmente seriam documentadas por NFC-e, o Tipo 2 adota impressão semelhante ao DANFE NFC-e. Pode ser usado em operação presencial ou não presencial com entrega (`indPres=1`, `4` ou `5`), sempre interna, de saída, normal e para consumidor final. Homologação: **01/07/2026**; produção: **03/08/2026**.
+
+| Divisão | Conteúdo mínimo |
+|---|---|
+| cabeçalho | CNPJ/CPF, nome e endereço do emitente; texto “DANFE Simplificado Tipo 2” |
+| itens | `cProd`, `xProd`, `qCom`, `uCom`, `vUnCom`, `vProd` |
+| totais | quantidade de itens, total dos itens; acréscimos/desconto e `vNF` quando existirem; `tPag`, `vPag` e `vTroco` |
+| IBS/CBS/IS | destaque da CBS, IBS UF + Município e IS quando houver |
+| consulta | URL + chave em 11 blocos; QR Code v3 obrigatório |
+| consumidor | CNPJ; em venda não presencial, nome e endereço de entrega também são obrigatórios |
+| identificação | número, série, emissão em hora local; protocolo e autorização em hora local, exceto na contingência |
+| mensagens | `infAdFisco`, `infCpl`, literal de homologação e avisos de contingência quando aplicáveis |
+
+Imprima em papel com largura mínima de **56 mm**, margens laterais de **2 mm**, legibilidade por ao menos **6 meses** e QR Code de no mínimo **25 × 25 mm** (22 mm de conteúdo + 3 mm de _quiet zone_; acima disso, margem de 10%). Não use ECF. Só imprima dados do XML da NF-e e do retorno de autorização; informação institucional externa deve vir depois do fim do DANFE.
+
+### QR Code v3
+
+- **Online:** `chNFe|3|tpAmb`.
+- **Offline (`tpEmis=9`):** `chNFe|3|tpAmb|dia|vNF|tpIdDest|idDest|assinatura`.
+- Codifique em **UTF-8**, correção de erro nível **M**, usando a URL de consulta da UF; grave `qrCode` e `urlChave` no grupo `infNFeSupl` (ZX).
+
 ## DANFE de contingência
 
 ### O que o manual diz
@@ -43,6 +66,7 @@ A impressão do DANFE em contingência é parte do **fluxo formal**: ela comunic
 ## Vigência
 
 - 🔄 DANFE Simplificado — Etiqueta: NT 2020.004 v1.10 (valor total opcional).
+- 🔄 DANFE Simplificado Tipo 2: NT 2026.002 v1.00 (schema/regras) e NT 2026.003 v1.00 (impressão/QR Code).
 - 🕒 A relação modalidade × códigos cita SVC-AN; confronte com as modalidades vigentes.
 
 ## Implicação de implementação
@@ -51,4 +75,4 @@ A impressão do DANFE em contingência é parte do **fluxo formal**: ela comunic
 
 ## Fonte
 
-MOC 7.0 — Anexo II, §3.9 (contingência), §3.11 e §3.12 (simplificado e etiqueta), p. 18–23. Detalhes de contingência: Anexos III e IV. Overlay: NT 2020.004 v1.10 (19/08/2024).
+MOC 7.0 — Anexo II, §3.9 (contingência), §3.11 e §3.12 (simplificado e etiqueta), p. 18–23. Detalhes de contingência: Anexos III e IV. Overlay: NT 2020.004 v1.10 (19/08/2024), NT 2026.002 v1.00 (25/05/2026), NT 2026.003 v1.00 (25/05/2026).

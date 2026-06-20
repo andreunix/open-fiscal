@@ -39,10 +39,16 @@ flowchart TD
 
 Para links por UF, autorizador, SVC e versão de schema publicada nos serviços, veja [Serviços por UF](/docs/operacao/servicos-por-uf).
 
+## Overlay de NTs
+
+| NT (vigente) | Delta nos serviços |
+|---|---|
+| 2026.004 v1.01 | **CNPJ e chaves passam a texto alfanumérico** nos schemas de `NfeRetAutorizacao`, `NFeRecepcaoEvento` (parte geral, cancelamento/substituição, EPEC e Ator Interessado), `NfeConsultaProtocolo`, `NfeConsultaCadastro`, `NfeDistribuicaoDFe` e `NfeInutilizacao`. Em Consulta Cadastro, CNPJ de entrada/retorno aceita **3–14** caracteres; nos demais campos CNPJ mantém 14 posições. A v1.01 acrescentou Inutilização e mudou a homologação para até **15/06/2026**; produção **01/07/2026**. 🔄 |
+
 ## Implicação de implementação
 
 > **Implementação:** modele um cliente por serviço, com a versão de leiaute e o endpoint resolvidos por (serviço × UF/autorizador × ambiente). Não fixe URLs no código — ver [Versionamento](/docs/operacao/versionamento).
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §4.3 (Modelo Operacional) e capítulo 5, p. 57–99 (Tabela 4-6).
+MOC 7.0 — Visão Geral, §4.3 (Modelo Operacional) e capítulo 5, p. 57–99 (Tabela 4-6). Overlay: NT 2026.004 v1.01 (08/06/2026).
