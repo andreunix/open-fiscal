@@ -37,6 +37,13 @@ description: Serviço de recepção do lote de NF-e — leiaute de entrada e ret
 
 `indSinc` decide o ciclo: com `1`, você recebe o protocolo direto (uma nota por lote); com `0`, recebe um recibo e consulta depois. O `idLote` é seu — a SEFAZ não o usa para nada além de eco.
 
+## Overlay de NTs
+
+| NT (vigente) | Delta na autorização |
+|---|---|
+| 2023.002 v1.01 | **NFC-e sem lote assíncrono:** a requisição assíncrona foi eliminada para a NFC-e — o lote do modelo 65 só pode conter **1 NFC-e** (`GAP03a-4`, rej. **126**/**961**). 🔄 |
+| 2025.001 v1.03 | **Resposta síncrona obrigatória no lote de 1 NF-e (mod. 55):** `GAP03a-3` rejeita `indSinc=0` (assíncrono) em lote com uma única NF-e (rej. **452**, produção 13/10/2025); `GAP03a-2` rejeita `indSinc=1` em UF que não oferece o síncrono (**776**). **Atraso da data de emissão:** o limite de tolerância caiu de **30 para 7 dias** — `B09-20` aceita atraso ≤ 7 dias com `cStat=100`, atraso > 7 dias com `cStat=150` ("autorização fora de prazo"); após 30 dias (ou limite da UF) só em contingência (`tpEmis=2,4,5`), rej. **228** quando configurado. 🔄 |
+
 ## Vigência
 
 - 🔄 Schemas `enviNFe`/`retEnviNFe` versionados (4.00 na fonte); o limite de 50 NF-e e os códigos podem mudar por NT.
@@ -47,4 +54,4 @@ description: Serviço de recepção do lote de NF-e — leiaute de entrada e ret
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §5.1, p. 71–74 (Tabelas 5-1 a 5-4).
+MOC 7.0 — Visão Geral, §5.1, p. 71–74 (Tabelas 5-1 a 5-4). Overlay: NT 2023.002 v1.01 (18/11/2025), NT 2025.001 v1.03 (29/09/2025).

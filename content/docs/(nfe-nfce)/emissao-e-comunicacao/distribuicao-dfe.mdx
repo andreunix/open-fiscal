@@ -32,7 +32,20 @@ A disponibilidade depende do papel e, para o destinatário, da **manifestação*
 | EPEC | Não | Sim | Sim | Não |
 | Resumo de NF-e | Não | Sim | Não | Não |
 
-¹ A NF-e completa só fica disponível ao destinatário **após** ele manifestar ("Ciência", "Confirmação" ou "Operação não Realizada"); antes, só o **Resumo de NF-e** e o cancelamento. ² Só o transportador identificado no grupo `transp`. ³ Só CNPJ/CPF informado em `autXML`.
+¹ A NF-e completa só fica disponível ao destinatário **após** ele manifestar ("Ciência", "Confirmação" ou "Operação não Realizada"); antes, só o **Resumo de NF-e** e o cancelamento. ² Só o transportador identificado no grupo `transp` **ou** indicado no evento "Ator Interessado" (110150). ³ Só CNPJ/CPF informado em `autXML`.
+
+## Overlay de NTs
+
+A **NT 2014.002** é a referência viva deste Web Service (MOC §5.7 é resumo). Deltas relevantes:
+
+| Versão | Delta na distribuição |
+|---|---|
+| v1.10 (2021) | NSU gerado só para usuários ativos nos **últimos 60 dias**; novos usuários começam a receber NSU a partir do 1º acesso, sem retroatividade. |
+| v1.15 (2022) | Retorno de NSU tornado **facultativo**; `consChNFe` deixa de exigir NSU previamente gerado. |
+| v1.20 (2024) | Inclusão do evento **"Ator Interessado"** na distribuição — adiciona a coluna de CNPJ indicado no evento (ver [Ator interessado](/docs/eventos/ator-interessado)). |
+| v1.30 (2024) | Inclusão dos eventos **"Insucesso na Entrega da NF-e"** e **"Insucesso na Entrega do CT-e propagado para a NF-e"** na tabela de distribuição (eventos criados pela [NT 2023.005](/docs/eventos/modelo-e-catalogo)). |
+
+Outros documentos distribuídos além da tabela acima: eventos de **Suframa** (vistoria/internalização), **Pedido de Prorrogação de prazo** e respostas do Fisco, **Averbação**, **Comprovante de Entrega**, e resumos de eventos de **CT-e/MDF-e/Registro de Passagem**.
 
 ## Como interpretar
 
@@ -48,4 +61,4 @@ Distribuição **não** é a mesma coisa que a distribuição do capítulo 6: l�
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §5.7 (e §6 sobre `procNFe`), p. 90–98 (Tabelas 5-25 a 5-29).
+MOC 7.0 — Visão Geral, §5.7 (e §6 sobre `procNFe`), p. 90–98 (Tabelas 5-25 a 5-29). Overlay: NT 2014.002 v1.30 (09/02/2026).

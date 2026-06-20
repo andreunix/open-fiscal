@@ -44,6 +44,15 @@ Comportamentos que sobrecarregam o autorizador podem ser bloqueados, a critério
 - Rejeição é resposta **definitiva** ao conteúdo: corrija a causa antes de reenviar; não reenvie em loop.
 - O contribuinte pode sofrer penalidades previstas na legislação da UF. 📍
 
+#### Consumo indevido na Distribuição de DF-e (NT 2014.002)
+
+Na [NFeDistribuicaoDFe](/docs/emissao-e-comunicacao/distribuicao-dfe) o 656 tem critérios próprios:
+
+- **`distNSU` sem novidade:** ao receber `cStat=137` (nenhum documento) ou quando `ultNSU = maxNSU`, **aguarde 1 hora**; consultar antes disso retorna 656 e **bloqueia o CNPJ por 1 hora** (desbloqueio automático).
+- **`distNSU` fora de ordem:** sempre consulte a partir do `ultNSU` retornado na chamada anterior; consultar fora da sequência gera 656. Desde a v1.14, o `ultNSU` da última consulta volta no próprio XML da rejeição 656, para você retomar do ponto certo.
+- **`consChNFe`/`consNSU`:** limitadas a consultas pontuais, **máx. 20 por hora**; ultrapassar gera 656 e bloqueio de 1 hora. Para baixar muitos documentos use `distNSU`, não consultas pontuais.
+- Se retomar a consulta antes de completar 1 hora, o tempo é **zerado** e a contagem reinicia.
+
 ## Como interpretar
 
 Recibo identifica um **lote**; protocolo identifica o **resultado de uma nota** (ou inutilização). Confundir os dois leva a consultar o serviço errado. O erro 656 quase nunca é da SEFAZ — é sinal de loop ou de _polling_ sem _backoff_ na sua aplicação.
@@ -59,4 +68,4 @@ Recibo identifica um **lote**; protocolo identifica o **resultado de uma nota** 
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §4.3.4 a §4.3.8, p. 60–62 (Tabelas 4-7 a 4-9); §5.7.7.1, p. 99.
+MOC 7.0 — Visão Geral, §4.3.4 a §4.3.8, p. 60–62 (Tabelas 4-7 a 4-9); §5.7.7.1, p. 99. Overlay: NT 2014.002 v1.30 (09/02/2026).

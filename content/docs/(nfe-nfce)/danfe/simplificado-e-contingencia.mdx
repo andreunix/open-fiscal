@@ -7,9 +7,20 @@ description: O DANFE Simplificado (e etiqueta) da NF-e e as regras de impressão
 
 ### O que o manual diz
 
-O **DANFE Simplificado** é uma versão reduzida do DANFE da NF-e, com um conjunto mínimo de campos obrigatórios, em papel e fontes próprios. A **NT 2020.004** introduziu também o **DANFE Simplificado — Etiqueta**, com tipo/tamanho de papel e fontes específicos para impressão em etiqueta.
+O **DANFE Simplificado** é uma versão reduzida do DANFE da NF-e, com um conjunto mínimo de campos obrigatórios, em papel e fontes próprios. A **NT 2020.004** introduziu também o **DANFE Simplificado — Etiqueta**, para a venda a varejo a consumidor final no comércio eletrônico, telemarketing ou processos semelhantes (Ajuste SINIEF 07/05, cláusula nona, §5º-A).
 
 > Não confunda com o **DANFE NFC-e** (modelo 65), que tem [manual próprio](/docs/danfe/danfe-nfce-qrcode). O Simplificado aqui é da **NF-e modelo 55**.
+
+A etiqueta segue padrões próprios de impressão: 🔄
+
+| Aspecto | Regra |
+|---|---|
+| papel | largura mínima de **55 mm**, qualquer tipo exceto papel jornal, com contraste que garanta a leitura do código de barras |
+| chave de acesso | chave e código de barras no **canto superior direito**, em qualquer sentido |
+| fontes | mínimo de **6 pontos**; títulos dos campos em **negrito e caixa alta** |
+| campos obrigatórios | título "DANFE Simplificado – Etiqueta"; dados do emitente (razão social, UF, CNPJ, IE); dados gerais (tipo de operação, série, número, data de emissão); dados do destinatário; protocolo de autorização; protocolo do EPEC em contingência |
+
+> **Valor total — opcional.** Desde a **v1.10** (Ajuste SINIEF 07/05, §15-A), a informação do **valor total da NF-e pode ser suprimida** no DANFE Simplificado — Etiqueta. 🔄
 
 ## DANFE de contingência
 
@@ -31,7 +42,7 @@ A impressão do DANFE em contingência é parte do **fluxo formal**: ela comunic
 
 ## Vigência
 
-- 🔄 DANFE Simplificado — Etiqueta: NT 2020.004.
+- 🔄 DANFE Simplificado — Etiqueta: NT 2020.004 v1.10 (valor total opcional).
 - 🕒 A relação modalidade × códigos cita SVC-AN; confronte com as modalidades vigentes.
 
 ## Implicação de implementação
@@ -40,4 +51,4 @@ A impressão do DANFE em contingência é parte do **fluxo formal**: ela comunic
 
 ## Fonte
 
-MOC 7.0 — Anexo II, §3.9 (contingência), §3.11 e §3.12 (simplificado e etiqueta), p. 18–23. Detalhes de contingência: Anexos III e IV.
+MOC 7.0 — Anexo II, §3.9 (contingência), §3.11 e §3.12 (simplificado e etiqueta), p. 18–23. Detalhes de contingência: Anexos III e IV. Overlay: NT 2020.004 v1.10 (19/08/2024).

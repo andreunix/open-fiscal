@@ -16,8 +16,26 @@ A **série** (`serie`, B07) não é só um agrupador: junto com `procEmi` (B26),
 | **900–909** | CNPJ | site SEFAZ, `procEmi = 1` (SEFAZ) ou `2` (emitente) | sequencial por CNPJ, controlada pela SEFAZ |
 | **910–919** | CPF | site SEFAZ, `e-CNPJ` SEFAZ (`procEmi=1`) ou `e-CPF` (`procEmi=2`) | sequencial por CPF, controlada pela SEFAZ |
 | **920–969** | CPF | aplicativo da empresa, `e-CPF`, `procEmi ≠ 1,2` | sequencial por CPF, controlada pelo emitente |
+| **970–979** 🔄 | CNPJ | **PAA**, `procEmi=4`, `e-CNPJ` do provedor | sequencial por CNPJ do emitente, controlada pelo PAA |
+| **000–999** 🔄 | CNPJ/CPF | **Nota Fiscal Fácil (NFF)**, App NFF, `procEmi = 3`, `e-CNPJ` da PROCERGS | gerada e controlada pelo App NFF (ver abaixo) |
 
 As faixas 900–969 foram reservadas a partir da **NT 2018.001** (suporte a emitente pessoa física).
+
+A **NT 2023.002** (Ajuste SINIEF 54/2022) estendeu a emissão por **CPF à NFC-e** (modelo 65), em substituição à Nota Fiscal modelo 4, para o **produtor rural** com IE vinculada ao CPF. Com aplicativo próprio, a NFC-e por CPF usa a mesma faixa reservada **920–969**, é assinada com **e-CPF** e leva o CPF na chave (precedido de zeros, 14 posições). Pela **NFF** (App, SVRS) não há série reservada — o tipo de identificador vai no 5º dígito do `nNF` (ver abaixo). Para **SC**, a NFC-e por CPF também pode ser emitida pela **Nota Fiscal Avulsa** (`procEmi=1`/`2`). 🔄
+
+A **NT 2026.001** reserva **970–979** para emissão por PAA. Ao criar o vínculo, o portal da SVRS atribui uma série específica à relação emitente–provedor, evitando colisão com o software próprio e com outros PAA. `B26-10` rejeita essa faixa quando `procEmi≠4`; `B26-20` exige a faixa quando `procEmi=4` (rejeições 244/451). 🔄
+
+### Chave de acesso da NFF (`tpEmis=3`) 🔄
+
+A **Nota Fiscal Fácil** (regime especial, NT 2021.002) usa `tpEmis=3` e ocupa **toda** a faixa de série (000–999): a série deixa de distinguir CPF de CNPJ. Na emissão pela NFF, o App reaproveita os espaços de **série** e **número** da chave para gravar dados do dispositivo:
+
+| Campo na chave | Conteúdo na NFF |
+|---|---|
+| `serie` (3) | 1 dígito online/offline (`0`/`1`) + 2 dígitos do ano |
+| `nNF` (9) | 2 dia + 2 mês + **1 dígito CPF/CNPJ** + 4 sequenciais diários por dispositivo |
+| `tpEmis` | `3` = regime especial NFF |
+
+Como a série não indica mais o tipo de identificador, o **5º dígito do `nNF`** passa a fazê-lo: `1`=CNPJ, `2`=CPF. Quem consome a chave (referência `refNFe`, eventos, `nfeConsultaProtocolo`, `nfeDistribuicaoDFe`) deve usar esse dígito — e não a faixa de série — para validar o identificador.
 
 ### Numeração do produtor rural
 
@@ -32,6 +50,8 @@ A faixa de série responde a duas perguntas de uma vez: *quem assina* e *quem co
 ## Vigência
 
 - 🔄 Faixas 900–969 e o suporte a CPF vieram da **NT 2018.001**.
+- 🔄 A faixa NFF (000–999, `tpEmis=3`, `procEmi=3`) e a lei de formação da chave NFF vieram da **NT 2021.002**; a série da NFF foi estendida para 000–999 na v1.12.
+- 🔄 A faixa PAA (970–979, `procEmi=4`) entra em produção em **03/08/2026** pela NT 2026.001.
 - 📍 O uso de séries por estabelecimento rural depende da organização do produtor na UF.
 
 ## Implicação de implementação
@@ -40,4 +60,4 @@ A faixa de série responde a duas perguntas de uma vez: *quem assina* e *quem co
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.8, p. 21 (Tabela 2-4); §2.2.2 (NFA-e), p. 17.
+MOC 7.0 — Visão Geral, §2.2.8, p. 21 (Tabela 2-4); §2.2.2 (NFA-e), p. 17. Overlay: NT 2021.002 v1.12 (28/01/2025), NT 2023.002 v1.01 (18/11/2025), NT 2026.001 v1.00 (22/04/2026).

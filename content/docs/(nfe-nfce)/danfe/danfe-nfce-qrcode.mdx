@@ -61,6 +61,24 @@ Geração do hash (online): concatenar os parâmetros 1–4, **adicionar o CSC a
 | 7 | identificação do destinatário (vazio se não identificado) |
 | 8 | **assinatura** RSA-SHA1 (Base64) da concatenação 1–7, com o **mesmo certificado que assina a NFC-e** |
 
+> A **assinatura** (parâmetro 8) só existe na NFC-e de **contingência off-line** (`tpEmis=9`). Na NFC-e online v3 não há assinatura nem CSC — só os 3 parâmetros.
+
+### Validações do QR Code (NT 2025.001)
+
+A NT 2025.001 formalizou as regras `ZX02-*` que conferem o conteúdo do QR Code contra o XML:
+
+| Regra | Verifica | Rej. |
+|---|---|---|
+| `ZX02-220` | qRCode v3 em UF que ainda não aceita a versão | 407 |
+| `ZX02-222` | qRCode **v2 para emitente Pessoa Física** (produtor rural) — força v3 | 444 |
+| `ZX02-224`/`228` | parâmetro Chave de Acesso ausente / divergente da nota | 396/397 |
+| `ZX02-232`/`236` | parâmetro Versão ausente / divergente | 396/398 |
+| `ZX02-240`/`244` | parâmetro Tipo de Ambiente ausente / divergente | 396/397 |
+| `ZX02-324`/`326`/`328` | (v3 off-line) tipo/identificação do destinatário ausente / divergente | 396/397 |
+| `ZX02-330` | qRCode v3 **não-contingência** com parâmetro `assinatura` indevido | 445 |
+| `ZX02-334` | qRCode v3 **contingência** sem o parâmetro `assinatura` | 474 |
+| `ZX02-338` | valor da `assinatura` difere do calculado | 583 |
+
 ### Dimensões
 
 Mínimo **25 mm × 25 mm**, impresso com padrões residentes de impressoras de não impacto (térmica, laser, deskjet).
@@ -80,4 +98,4 @@ A grande diferença entre 2.00 e 3.00 é **o que prova a autenticidade**: na 2.0
 
 ## Fonte
 
-Manual de Especificações Técnicas do DANFE NFC-e e QR Code (2025-03-24), capítulos 2–4.
+Manual de Especificações Técnicas do DANFE NFC-e e QR Code (2025-03-24), capítulos 2–4. Overlay: NT 2025.001 v1.03 (29/09/2025).

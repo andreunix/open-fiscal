@@ -26,6 +26,8 @@ flowchart TD
 
 O grupo `infIntermed` identifica o intermediador ou marketplace quando a operação ocorre em site ou plataforma de terceiro. Não confunda plataforma intermediadora, adquirente do cartão, credenciadora e software emissor — são papéis diferentes.
 
+A **NT 2020.006** estruturou esses papéis: o indicador `indIntermed` fica no grupo `ide` (ver [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores)); o grupo `infIntermed` (YB) carrega o **CNPJ do intermediador** e o **identificador do cadastro do intermediador** (`idCadIntTran`, 2–60 caracteres); e o `YA05` foi esclarecido como **"CNPJ da instituição de pagamento"** (adquirente/subadquirente — ou o do intermediador, quando ele processa o pagamento). 🔄
+
 ## Informações adicionais
 
 `infAdic` possui campos de interesse do Fisco e do contribuinte, além de grupos para observações estruturadas e processos referenciados.
@@ -64,6 +66,19 @@ flowchart TD
 
 `Signature` segue XMLDSig e referencia o `Id` de `infNFe`. Assine somente depois de concluir o conteúdo assinado — alterar qualquer campo depois invalida o digest. Ver [Arquitetura](/docs/emissao-e-comunicacao/arquitetura).
 
+## Overlay de NTs
+
+Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
+
+| NT (vigente) | Delta nos grupos finais |
+|---|---|
+| 2021.004 v1.35 | **Ato concessório:** novo campo `tpAto` (Tipo do Ato Concessório) no grupo `procRef` de `infAdic`, informado quando `indProc=0` (processo originado na SEFAZ); a regra `Z13-10` valida o `tpAto` pela Tabela de Padrões de Regime Especial da UF. **Santa Catarina:** as regras `Z02-10`/`Z02-20` (modelo 65) exigem `infAdFisco` com no mínimo 251 caracteres — **implementação futura**. 🔄 |
+| 2023.004 v1.20 | **Informações de Pagamento (`YA`):** novos campos — `dPag` (YA03a, data do pagamento), `CNPJPag`/`UFPag` (YA03c/d, estabelecimento que transacionou o pagamento), `CNPJReceb` (YA07a, beneficiário) e `idTermPag` (YA07b, terminal). Validações: `YA03a-10` (data, rej. 657), `YA03c-10` (CNPJPag, 961), `YA07a` (CNPJReceb, 796), `YA04-20` (grupo `card`/boleto só para meios 03/04/10–13/15/17/18, 963) e `YA09-20`, que eleva o limite do **troco** (`vTroco`) de R$ 1.000,00 para **R$ 300.000,00** (965, ativa em produção desde 01/10/2024). 🔄 |
+| 2021.002 v1.12 | **Solicitação da NFF (`ZE`):** novo grupo `infSolicNFF` (ZE01) com `xSolic` (ZE02, 2–5000 caracteres) — os campos do pedido preenchidos no App NFF, em **JSON**, anexados ao XML da NF-e e ao pedido de evento. Só existe para `tpEmis=3-NFF`: a regra `ZE01-10` rejeita (819) o grupo em emissão não-NFF e `ZE01-20` rejeita (834) sua ausência quando `tpEmis=3`. Na NFF não se aplicam as validações do **responsável técnico** (grupo ZD: regras `ZD01-10`/`ZD02-10`/`ZD07-10`), pois o XML é gerado pelo Portal Nacional da NFF. 🔄 |
+| 2025.001 v1.03 | **Conciliação de pagamentos no modelo 55:** regras antes opcionais por UF tornam-se padrão também na NF-e — `YA03-10` (somatório `vPag` < `vNF`, rej. **865**, **implementação futura no mod. 55**), `YA03-20` (excedente sem `vTroco`, **866**), `YA03-30` (proíbe `vPag≠0` quando `tPag=90-sem pagamento` ou `91-pagamento posterior`, **904**), `YA04-10` (exige grupo `card` em cartão/PIX, **391**, futura no mod. 55), `YA05-10` (CNPJ credenciadora + `cAut` em pagamento integrado, **392**), `YA05-20` (CNPJ da instituição, **437**) e `YA06-10` (bandeira do cartão pela tabela do Portal, **443**). Novo meio de pagamento **`tPag=91-Pagamento Posterior`** (postergação total/parcial), tratado como `90` na soma dos pagamentos. 🔄 |
+| 2024.003 v1.10 | **Produtos agropecuários (grupo `ZF`/`agropecuario`, somente modelo 55):** `defensivo` (1–20) informa `nReceituario` e `CPFRespTec`; `guiaTransito` (0–1) informa `tpGuia` (GTA/TTA/DTA, ATV/PTV/GTV ou guia florestal), `UFGuia`, série e número. As regras `ZF02-*` exigem/proíbem receituário conforme o NCM do agrotóxico; `ZF05-*` exigem/proíbem guia por produto, UF e NCM; `ZF03a-10` valida o CPF; `10ZF04-*` valida existência e uso da guia. Regras facultativas por UF: GTA para bovinos NCM 0102 em BA/GO/MA/MT desde 01/10/2025; GTV ainda sem UF ativa; guia florestal é futura. Ajustes de agrotóxicos da v1.10 em produção em **20/05/2026**. 📍 🔄 |
+| 2026.001 v1.00 | **Provedor de Assinatura e Autorização (grupo `ZG`/`infPAA`):** informa `CNPJPAA`, `PAASignature/SignatureValue` (assinatura RSA-SHA1 Base64 do atributo `Id`) e `RSAKeyValue` (`Modulus` + `Exponent=AQAB`). Só a SVRS autoriza PAA; as regras `ZG01-10`/`ZG02-10` a `ZG02-40`/`ZG04-10` validam ambiente, CNPJ/homologação do provedor, vínculo ativo, certificado e assinatura (rej. **1179–1184**). O mesmo grupo acompanha o evento de cancelamento. 🔄 |
+
 ## Checklist
 
 - [ ] Pagamentos têm meio e valor coerentes.
@@ -77,4 +92,4 @@ flowchart TD
 
 ## Fonte
 
-MOC 7.0 — Anexo I, grupos YA a ZZ, p. 62–66.
+MOC 7.0 — Anexo I, grupos YA a ZZ, p. 62–66. Overlay: NT 2020.006 v1.31 (26/09/2022), NT 2021.004 v1.35 (01/11/2022), NT 2023.004 v1.20 (07/10/2024), NT 2021.002 v1.12 (28/01/2025), NT 2025.001 v1.03 (29/09/2025), NT 2026.001 v1.00 (22/04/2026), NT 2024.003 v1.10 (11/05/2026).

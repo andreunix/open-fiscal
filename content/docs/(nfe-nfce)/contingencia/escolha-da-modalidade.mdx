@@ -17,6 +17,8 @@ A modalidade é declarada no campo **`tpEmis` (B22)**:
 | `6`/`7` | SVC (Sefaz Virtual de Contingência) 🕒 | 55 |
 | `9` | Off-line | 65 |
 
+> 🔄 O valor `tpEmis=3` **não é contingência**: era o antigo SCAN (desativado pela NT 2015/002) e foi reaproveitado pela **NT 2021.002** para o regime especial **Nota Fiscal Fácil (NFF)**. Por isso a regra `B22-30` ainda rejeita (570) `tpEmis=3` quando interpretado como SCAN/SVC. Ver [Séries e numeração](/docs/fundamentos/series-e-numeracao).
+
 ```mermaid
 flowchart TD
     A[Autorizador indisponível] --> B{Modelo}

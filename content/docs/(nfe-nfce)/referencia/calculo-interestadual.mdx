@@ -56,6 +56,8 @@ A nota leva os valores **já partilhados** entre destino e remetente; o XML não
 
 - 🕒 `pICMSInterPart` e a partilha origem/destino do exemplo são de 2016; a transição da EC 87/2015 terminou (100% destino).
 - 🔄 Alíquotas internas, interestaduais e FCP mudam por UF e por Informe Técnico — ver [Tabelas e códigos](/docs/referencia/tabelas-e-codigos).
+- 🔄 A NT 2020.005 v1.21 **reativou** as regras `NA15-10` (valor do ICMS interestadual para a UF de destino, `vICMSUFDest`) e `NA17-10` (para a UF do remetente, `vICMSUFRemet`), conferindo o repasse do diferencial de alíquotas; ambas usam tolerância de R$ 0,01 e não se aplicam a NF-e de entrada (`tpNF=0`).
+- 🔄 A NT 2022.005 v1.11 **reativou** a regra `NA01-20` (rejeição **694**), que volta a exigir o grupo `ICMSUFDest` em operação interestadual (`idDest=2`) a consumidor final (`indFinal=1`) não contribuinte (`indIEDest=9`); não se aplica ao Simples Nacional (`CRT=1`), a isentas/imunes/não tributadas, a devoluções que referenciem nota anterior a 2016, quando há partilha (`ICMSPart`), nem quando a UF de entrega (`entrega/UF`) é a do emitente. Pelo Ajuste SINIEF 18/2022, considere como destino a UF da **entrada física** (UF de entrega).
 
 ## Implicação de implementação
 
@@ -63,4 +65,4 @@ A nota leva os valores **já partilhados** entre destino e remetente; o XML não
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, capítulo 9 (Sistemática de Cálculo em Operações Interestaduais — EC 87/2015), p. 148–150.
+MOC 7.0 — Visão Geral, capítulo 9 (Sistemática de Cálculo em Operações Interestaduais — EC 87/2015), p. 148–150. Overlay: NT 2022.005 v1.11 (11/10/2024).

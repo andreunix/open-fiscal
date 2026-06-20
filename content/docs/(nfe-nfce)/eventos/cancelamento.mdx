@@ -17,6 +17,13 @@ Específico da **NFC-e** (NT 2018.004): cancela, em prazo **não superior a 168 
 
 Cancelar é diferente de [inutilizar](/docs/emissao-e-comunicacao/inutilizacao): inutilização trata numeração **não usada**; cancelamento trata uma nota **autorizada** que não deve produzir efeitos. O cancelamento por substituição existe porque, no varejo, a mesma venda pode gerar duas NFC-e por falha de comunicação.
 
+## Overlay de NTs
+
+| NT (vigente) | Delta no cancelamento |
+|---|---|
+| 2023.002 v1.01 | **Chave com CPF do emitente (NFC-e de produtor rural):** as regras de cancelamento passam a reconhecer a chave de acesso formada por CPF. `G04e` rejeita chave inválida considerando a série — `[000-909]` exige CNPJ não zerado/válido na chave, `[920-969]` exige CPF não zerado/válido (rej. **617**); `G06` rejeita chave inexistente (**494**); `G08` exige que o **CNPJ/CPF do autor** do evento seja igual ao da chave da NF-e (**574**). 🔄 |
+| 2026.001 v1.00 | **Cancelamento por PAA:** o evento pode levar o grupo `infPAA`, com a mesma identificação e assinatura RSA avançada da NF-e. Deve ser recebido pela SVRS (`P09-10`, rej. 252) e passa pelas regras `ZG01-10`/`ZG02-*`/`ZG04-10` (ambiente, provedor homologado, vínculo, certificado e assinatura; rej. 1179–1184). A assinatura XML qualificada é feita pelo PAA. 🔄 |
+
 ## Vigência
 
 - 🔄 Prazo de cancelamento e regras variam por NT; 📍 algumas condições dependem da UF.
@@ -27,4 +34,4 @@ Cancelar é diferente de [inutilizar](/docs/emissao-e-comunicacao/inutilizacao):
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §3.1.1 e §3.5 (Tabela 3-1), p. 28 e 46–47.
+MOC 7.0 — Visão Geral, §3.1.1 e §3.5 (Tabela 3-1), p. 28 e 46–47. Overlay: NT 2023.002 v1.01 (18/11/2025), NT 2026.001 v1.00 (22/04/2026).

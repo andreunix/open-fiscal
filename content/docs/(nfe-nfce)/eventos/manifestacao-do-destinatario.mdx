@@ -5,7 +5,7 @@ description: Os quatro eventos de manifestação, a regra de que prevalece a úl
 
 ## O que o manual diz
 
-O destinatário pode manifestar-se sobre uma NF-e em que está envolvido. São **quatro** eventos (NT 2012.002):
+O destinatário, pessoa jurídica ou física, pode manifestar-se sobre uma NF-e emitida para seu CNPJ/CPF. A **NT 2020.001 v1.60** substitui as NTs 2012.002 e 2013.001 e consolida os quatro eventos:
 
 | `tpEvento` | Evento | Significado |
 |---|---|---|
@@ -16,15 +16,21 @@ O destinatário pode manifestar-se sobre uma NF-e em que está envolvido. São *
 
 ### Regra de mudança (importante)
 
-> O destinatário pode enviar Confirmação, Desconhecimento ou Operação não Realizada, **valendo apenas a última mensagem registrada**. Ex.: pode desconhecer uma operação que havia confirmado, ou confirmar uma que havia desconhecido.
+> O destinatário pode registrar até **dois eventos de cada tipo conclusivo** (Confirmação, Desconhecimento ou Operação não Realizada), **valendo apenas a última manifestação registrada**. Ex.: pode desconhecer uma operação que havia confirmado e depois confirmá-la novamente.
 
-A **Ciência da Emissão** (`210210`) **não** é manifestação final: é opcional, pode ser evitada, e não cabe registrá-la **após** uma manifestação conclusiva. Depois de um período, toda "Ciência" deve evoluir para uma das três manifestações conclusivas.
+A **Ciência da Emissão** (`210210`) **não** é manifestação final: é opcional, pode ser evitada, e não cabe registrá-la **após** uma manifestação conclusiva. Seu prazo é de **10 dias** da autorização; Confirmação, Desconhecimento e Operação não Realizada devem ser registrados em até **90 dias** da autorização. A redução de 180 para 90 dias é o delta da v1.60 (Ajuste SINIEF 14/26), com produção em **01/06/2026**. 🔄
+
+### Quando a manifestação é obrigatória
+
+Além das hipóteses definidas no Ajuste SINIEF 7/05, a NT lista operações com combustíveis (exceto lubrificantes definidos em tabela), álcool não combustível a granel e, para distribuidores/atacadistas, cigarros, bebidas alcoólicas, refrigerantes e água mineral. A obrigação é setorial e deve ser conferida na legislação vigente. 📍
 
 ### Como operacionalizar
 
-- por **Web Services** no Ambiente Nacional (recebe as chaves destinadas e registra eventos de forma automatizada);
-- por **consulta no Portal Nacional** (com certificado, menu "Manifestação Destinatário");
-- pelo **Programa Manifestador**.
+- pelo **Web Service `NFeRecepcaoEvento`**, síncrono, em lotes de até 20 eventos;
+- por **consulta no Portal Nacional**, por chave ou NSU, com certificado do destinatário;
+- pelo **Programa Manifestador** para pessoa jurídica.
+
+No evento, o autor é o destinatário e a assinatura usa certificado com o mesmo CNPJ-base ou CPF. `Operação não Realizada` exige justificativa de 15–255 caracteres (regra `H01`, rejeição 595); `nSeqEvento` vai até 2 nos eventos conclusivos (`H02`, 594); evento fora do prazo é rejeitado pela `H03` (596). 🔄
 
 ## Como interpretar
 
@@ -44,7 +50,7 @@ flowchart LR
 
 ## Vigência
 
-- 🔄 Obrigatoriedade de manifestação depende da operação e evolui por NT.
+- 🔄 NT 2020.001 v1.60: manifestação conclusiva em até 90 dias; homologação 15/05/2026 e produção 01/06/2026.
 - 📍 Cenários de obrigatoriedade podem variar conforme regras setoriais.
 
 ## Implicação de implementação
@@ -53,4 +59,4 @@ flowchart LR
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §3.2 (especialmente §3.2.1.5), p. 30–35.
+MOC 7.0 — Visão Geral, §3.2 (especialmente §3.2.1.5), p. 30–35. Overlay: NT 2020.001 v1.60 (23/04/2026).

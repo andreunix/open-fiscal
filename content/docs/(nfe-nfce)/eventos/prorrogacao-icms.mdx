@@ -21,20 +21,44 @@ As respostas do **Fisco** são eventos próprios:
 | `411500/411501` | Resposta do Fisco ao pedido 1º/2º prazo |
 | `411502/411503` | Resposta do Fisco ao cancelamento 1º/2º prazo |
 
-> 📍 A implementação desses eventos é **a critério da UF**.
+> 📍 A implementação desses eventos é **a critério da UF**. Hoje só **SP** e **MG** adotam a NT — base legal: Convênio AE-15/74 (suspensão de até 180 dias, prorrogável por mais 180, com uma 2ª prorrogação excepcional de igual prazo).
+
+## Modos de solicitação 🔄
+
+A NT 2015.001 v1.30 define **duas formas** de implementar o pedido, escolhidas pela UF:
+
+| Modo | UF | Regra |
+|---|---|---|
+| **Solicitação parcial** | SP | o emitente indica os **itens e quantidades** que pretende prorrogar; pode pedir parte da nota |
+| **Solicitação completa** | MG | só aceita pedidos **totais** — todos os itens e todas as quantidades da NF-e, senão é indeferido |
+
+Na solicitação completa a justificativa de indeferimento **7 – Quantidade inconsistente** não se aplica (o pedido é tudo-ou-nada).
+
+## Resposta do Fisco (`justStatus`)
+
+O evento do Fisco traz a justificativa por item. **Pedido de prorrogação** (`justStatus` P25): `1`=autorizado · `2`/`3`=manifestação do destinatário (desconhece / operação não realizada) · `4`=item não consta na NF-e · `5`=item não consta no pedido do 1º prazo · `6`=CFOP não autorizado · `7`=quantidade inconsistente (não se aplica à solicitação completa) · `8`=fora do prazo · `9`=cancelado pelo contribuinte · `10`=outra. **Cancelamento** (P29): `1`=autorizado · `2`=já cancelado por outro evento · `3`=fora do prazo · `4`=tentativa de cancelar o 1º prazo sem antes cancelar o 2º · `5`=outra.
 
 ## Como interpretar
 
-É um diálogo de eventos: o emitente pede (`1115xx`), o Fisco responde (`4115xx`). Há precedência temporal — a resposta vigente é a do último ciclo válido, e o cancelamento desfaz o pedido correspondente.
+É um diálogo de eventos: o emitente pede (`1115xx`), o Fisco responde (`4115xx`) e o vínculo entre eles é o **`idPedido` (P19)**, não a chave da NF-e. Há precedência temporal — a resposta vigente é a do último ciclo válido. O `nSeqEvento` é **sequencial por tipo de evento** (não fica fixo em 1): como pode haver vários pedidos/cancelamentos, o autor numera 1, 2, 3…
+
+**Ordem de cancelamento:** uma quantidade prorrogada no 2º prazo (360–540 dias) precisa ter sido antes prorrogada no 1º (180–360 dias). Logo, para desfazer, **cancele o 2º prazo antes do 1º** — caso contrário restaria prorrogação de 2º prazo sem lastro no 1º.
+
+> 📍 Quantidade de pedidos pendentes: por padrão até **20** pedidos do mesmo tipo (1º ou 2º) autorizados **sem resposta do Fisco**; a UF pode reduzir esse limite para **1** (`P13-14`, rej. 638/639).
+
+## Distribuição (DF-e)
+
+Os eventos de **pedido** e **cancelamento** de prorrogação são disponibilizados na [Distribuição de DF-e](/docs/emissao-e-comunicacao/distribuicao-dfe) **apenas ao destinatário** (não ao emitente). As **respostas do Fisco** vão tanto ao emitente quanto ao destinatário.
 
 ## Vigência
 
-- 🔄 NT 2015.001; 📍 disponível apenas nas UFs que implementaram.
+- 🔄 NT 2015.001 v1.30 (06/12/2024): novo modo **solicitação completa** (MG) — teste 29/10/2024, produção 06/01/2025, só em MG; limite de pedidos pendentes parametrizável por UF (`P13-14`).
+- 📍 Disponível apenas nas UFs que implementaram (SP, MG).
 
 ## Implicação de implementação
 
-> **Implementação:** vincule pedido e resposta por chave + prazo (1º/2º). Não assuma deferimento automático — aguarde o evento de resposta do Fisco antes de tratar o prazo como prorrogado.
+> **Implementação:** vincule pedido e resposta pelo `idPedido` (P19) + prazo (1º/2º), não pela chave. Não assuma deferimento automático — aguarde o evento de resposta do Fisco antes de tratar o prazo como prorrogado. Numere `nSeqEvento` por tipo de evento e respeite a ordem de cancelamento (2º antes do 1º). Um pedido **deferido bloqueia o cancelamento da NF-e** (rej. 811).
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §3.1 (Tabelas 3-1 e 3-3) e §3.4, p. 28–29 e 44–46.
+MOC 7.0 — Visão Geral, §3.1 (Tabelas 3-1 e 3-3) e §3.4, p. 28–29 e 44–46. Overlay: NT 2015.001 v1.30 (06/12/2024).

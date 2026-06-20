@@ -27,8 +27,14 @@ Todo evento é registrado pelo Web Service `nfeRecepcaoEvento` (ver [Mapa dos We
 | `110110` | Carta de Correção Eletrônica | NT 2010.008 |
 | `110111` | Cancelamento | NT 2011.006 |
 | `110112` | Cancelamento por substituição (NFC-e, ≤168h) | NT 2018.004 |
+| `110130` | Comprovante de Entrega da NF-e | NT 2021.001 |
+| `110131` | Cancelamento do Comprovante de Entrega da NF-e | NT 2021.001 |
 | `110140` | EPEC — Emissão em Contingência | NT 2014.001 |
 | `110150` | Ator interessado — Transportador | NT 2020.007 |
+| `110192` | Insucesso na Entrega da NF-e | NT 2023.005 |
+| `110193` | Cancelamento do Insucesso na Entrega da NF-e | NT 2023.005 |
+| `110750` | Conciliação Financeira (ECONF) | NT 2024.002 |
+| `110751` | Cancelamento da Conciliação Financeira | NT 2024.002 |
 | `111500/111501` | Pedido de prorrogação 1º/2º prazo 📍 | NT 2015.001 |
 | `111502/111503` | Cancelamento de pedido de prorrogação 📍 | NT 2015.001 |
 
@@ -52,6 +58,12 @@ Todo evento é registrado pelo Web Service `nfeRecepcaoEvento` (ver [Mapa dos We
 
 Há ainda **eventos propagados** automaticamente (de CT-e, MDF-e) e eventos de **outros órgãos** (Suframa, averbação de exportação).
 
+> O **Comprovante de Entrega da NF-e** (`110130`, NT 2021.001) registra a entrega com `hashComprovante`, data/hora, `nProt` da NF-e e, opcionalmente, coordenadas `latGPS`/`longGPS` do ponto de entrega; serve para instruir processos administrativos e judiciais. O par `110131` cancela esse registro. 🔄
+
+> O **Insucesso na Entrega da NF-e** (`110192`, NT 2023.005) registra a tentativa frustrada de entrega — `tpMotivo` (1=recebedor não encontrado, 2=recusa, 3=endereço inexistente, 4=outros + `xJustMotivo`), `dhTentativaEntrega`, `nTentativa`, `hashTentativaEntrega` e, opcionalmente, `latGPS`/`longGPS`; substitui a ressalva no verso do DANFE. É **só modelo 55**, autorizado unicamente no **WS de Eventos da SVRS** (`cOrgao=92`), e o par `110193` o cancela. A NF-e com evento de entrega não cancelado não pode ser cancelada (rejeição 826). 🔄
+
+> A **Conciliação Financeira — ECONF** (`110750`, NT 2024.002; Ajustes SINIEF 3/2023 e 10/2023) vincula transações financeiras ao documento fiscal pelo grupo `detPag` (1–100): `tPag`, `vPag`, `dPag`, `indPag`, `CNPJPag`/`UFPag`, `CNPJIF`, `tBand`, `cAut` e `CNPJReceb`/`UFReceb`. É facultativa; a NF-e (modelo 55) usa o **WS da SVRS** e a NFC-e (modelo 65) o WS próprio da UF; o par `110751` cancela o evento. 🔄
+
 ## Como interpretar
 
 Um evento nunca altera a NF-e autorizada — ele acrescenta um registro sobre a chave. O `nSeqEvento` ordena registros do mesmo tipo, e o catálogo é dividido por **quem** tem competência para registrar.
@@ -67,4 +79,4 @@ Um evento nunca altera a NF-e autorizada — ele acrescenta um registro sobre a 
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5).
+MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5). Overlay: NT 2021.001 v1.01 (06/07/2022), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024).

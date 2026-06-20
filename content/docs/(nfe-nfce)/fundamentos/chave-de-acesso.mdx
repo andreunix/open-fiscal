@@ -3,7 +3,7 @@ title: Chave de acesso
 description: Composição da chave de 44 dígitos, cálculo do dígito verificador por módulo 11, versões anteriores do leiaute e a chave natural por modelo.
 ---
 
-A chave de acesso identifica o documento com **44 dígitos numéricos**, formados pela concatenação de campos do próprio leiaute.
+A chave de acesso identifica o documento com **44 posições**, formadas pela concatenação de campos do próprio leiaute. Eram só dígitos; com o **CNPJ alfanumérico** (ver abaixo) as 12 primeiras posições do CNPJ podem conter letras.
 
 ## O que o manual diz
 
@@ -44,9 +44,25 @@ Subconjunto da chave usado para detectar **duplicidade**. O conjunto **difere po
 | Modelo | Campos da chave natural |
 |---|---|
 | **NF-e 55** | UF · CNPJ/CPF do emitente · série · número · modelo · **ambiente de autorização** |
-| **NFC-e 65** | UF · CNPJ do emitente · série · número · modelo · **tipo de emissão** |
+| **NFC-e 65** | UF · CNPJ/CPF do emitente · série · número · modelo · **tipo de emissão** |
 
 > O ambiente de autorização (NF-e) e o tipo de emissão (NFC-e) ficam ambos no campo `tpEmis` (B22). O autorizador rejeita um novo pedido se identificar duplicidade de chave natural.
+
+A partir da **NT 2023.002** a NFC-e pode ser emitida por **produtor rural Pessoa Física**: o **CPF** entra na chave da NFC-e (precedido de zeros, completando 14 posições), com série reservada **920–969** e assinatura por `e-CPF` (ou pela SVRS, na NFF). Quem valida a chave deve considerar o CPF, e não só o CNPJ — ver [Séries e numeração](/docs/fundamentos/series-e-numeracao). 🔄
+
+### CNPJ alfanumérico (NT Conjunta 2025.001)
+
+A IN RFB 2229/2024 muda a lei de formação do CNPJ para ampliar a oferta de números. O novo CNPJ mantém **14 posições**: as **12 primeiras passam a ser alfanuméricas** (8 da raiz + 4 da ordem, `[A-Z0-9]`) e as **2 últimas continuam numéricas** (DV). Isso atinge o campo CNPJ em todos os DFe **e a chave de acesso**, pois o CNPJ do emitente entra na chave: 🔄
+
+| Onde | Antes | Depois |
+|---|---|---|
+| Campo CNPJ (XSD) | `[0-9]{14}` | `[A-Z0-9]{12}[0-9]{2}` |
+| Chave de acesso (XSD) | `[0-9]{44}` | `[0-9]{6}[A-Z0-9]{12}[0-9]{26}` |
+
+- **DV por módulo 11 — fórmula inalterada**, mas cada caractere (número **ou letra**) passa a entrar no cálculo pelo seu **valor ASCII − 48** (`0`→0 … `9`→9, `A`→17, `B`→18, `C`→19, …). Assim o CNPJ **numérico** atual mantém exatamente o mesmo DV.
+- O **DV da chave** (44 posições) usa a mesma lógica: converte **todos** os 44 caracteres por ASCII − 48 e só então aplica o módulo 11.
+- Letras `I`, `O`, `U`, `Q` e `F` devem ser **vedadas** no CNPJ alfa (pedido do ENCAT à RFB, a confirmar) — e, por consequência, na chave.
+- Antes da implantação, o autorizador **rejeita** CNPJ/chave alfanuméricos por **falha no DV**, mesmo que o schema já os aceite.
 
 ## Como interpretar
 
@@ -58,11 +74,12 @@ A chave de acesso é gerada pelo emitente; a chave **natural** é a regra de uni
   - 🕒 **até 1.10**: sem `tpEmis`; `cNF` tinha **9** dígitos.
   - 🕒 **a partir da 2.00**: `tpEmis` entrou na chave e o `cNF` foi reduzido para **8** dígitos (mantendo 44 posições).
 - 🔄 A definição de chave natural foi consolidada pela **NT 2018.001**.
+- 🔄 **CNPJ alfanumérico**: NT Conjunta 2025.001 (v1.00, 25/04/2025) — homologação **06/04/2026**, produção **06/07/2026**; primeiros CNPJ alfa previstos para **julho/2026**.
 
 ## Implicação de implementação
 
-> **Implementação:** trate a chave como texto, com zero-padding por campo; nunca concatene valores sem validar tamanho. Gere `cNF` com gerador aleatório (não sequencial, não derivado de `nNF`). Valide o DV **antes** de assinar. Versione o algoritmo de montagem por versão de leiaute.
+> **Implementação:** trate a chave como **texto** (não inteiro), com zero-padding por campo; nunca concatene valores sem validar tamanho. Gere `cNF` com gerador aleatório (não sequencial, não derivado de `nNF`). Valide o DV **antes** de assinar. Para o **CNPJ alfanumérico**, implemente o módulo 11 sobre o valor ASCII − 48 de cada caractere (a rotina numérica atual é caso particular) e prepare campos/índices para aceitar letras antes de 04/2026. Versione o algoritmo de montagem por versão de leiaute.
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.6 e §2.2.7, p. 18–20 (Tabelas 2-1 a 2-3).
+MOC 7.0 — Visão Geral, §2.2.6 e §2.2.7, p. 18–20 (Tabelas 2-1 a 2-3). Overlay: NT Conjunta 2025.001 v1.00 (25/04/2025), NT 2023.002 v1.01 (18/11/2025).

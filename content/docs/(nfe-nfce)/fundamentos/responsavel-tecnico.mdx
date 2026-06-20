@@ -54,9 +54,11 @@ O `hashCSRT` é uma assinatura leve de **autoria do software**, separada da assi
 
 ## Vigência
 
-- 🔄 Responsável técnico instituído pela **NT 2018.005**.
+- 🔄 Responsável técnico instituído pela **NT 2018.005** (vigente v1.52, 10/07/2025).
 - 🕒 O algoritmo especificado é **SHA-1**; é a especificação do MOC 7.0 — confronte com a NT vigente antes de implementar.
 - 📍 A exigência do CSRT depende da UF.
+- 📍 As regras do CSRT/hashCSRT (`ZD07-10`, `7ZD02-10`, `7ZD08-10`, `7ZD08-20`, `7ZD09-10`) são de **implementação futura** para todas as UF, exceto onde a UF já as ativou. No **Paraná** (modelo 55), `idCSRT` e `hashCSRT` são facultativos em homologação até **19/01/2026** e em produção até **23/02/2026**; após essas datas tornam-se **obrigatórios** (rej. 975). Quando informados, já são validados (cadastro/revogação/hash — rej. 974/976/977/978).
+- As regras de identificação do responsável técnico (`ZD01-10`/`ZD02-10`) rejeitam a ausência do grupo (rej. 972) ou CNPJ inválido (rej. 973). Não se aplicam à NFF (`tpEmis=3`).
 
 ## Implicação de implementação
 
@@ -64,4 +66,4 @@ O `hashCSRT` é uma assinatura leve de **autoria do software**, separada da assi
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.10, p. 22–24.
+MOC 7.0 — Visão Geral, §2.2.10, p. 22–24. Overlay: NT 2018.005 v1.52 (10/07/2025).

@@ -17,9 +17,21 @@ O **EPEC** (`110140`) é, ao mesmo tempo, um **evento** e uma **modalidade de co
 
 O EPEC inverte a ordem: primeiro você registra (no AN) que vai emitir em contingência, com dados mínimos; depois, quando o serviço volta, transmite a NF-e completa com a **mesma chave**. É a ponte que dá validade à operação enquanto a autorizadora está fora.
 
+## Overlay de NTs
+
+A NT 2014.001 é a referência viva do EPEC. Deltas posteriores ao MOC 7.0, até a v1.30:
+
+| Versão | Delta |
+|---|---|
+| v1.20 (2019) | EPEC estendido à **Pessoa Física**; `tpAutor=1` passou a "Empresa emitente/Pessoa Física". |
+| v1.21 (2021) | Regra `P23-10` ganhou **tolerância de 5 minutos**. |
+| v1.30 (2022) | Ajuste na **consulta do EPEC no Portal Nacional da NF-e**. |
+
+A **NT 2019.001** criou, no serviço de Autorização do EPEC, as regras `6P31-10` a `6P31-63` que validam o destinatário no Cadastro Centralizado de Contribuintes (IE/CNPJ/CPF, rej. 232/233/234/302/303/305/306/624) — equivalentes às `5E17-*` da NF-e, mas **a validação do destinatário do EPEC não gera denegação, apenas rejeição**. 🔄
+
 ## Vigência
 
-- 🔄 NT 2014.001 (NF-e) e NT 2014.003; há EPEC específico para **NFC-e**. `tpEmis` indica a modalidade.
+- 🔄 NT 2014.001 v1.30 (NF-e) e NT 2014.003; há EPEC específico para **NFC-e**. `tpEmis` indica a modalidade.
 
 ## Implicação de implementação
 
@@ -27,4 +39,4 @@ O EPEC inverte a ordem: primeiro você registra (no AN) que vai emitir em contin
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §3.3, p. 35–44.
+MOC 7.0 — Visão Geral, §3.3, p. 35–44. Overlay: NT 2014.001 v1.30 (21/06/2022), NT 2019.001 v1.70 (18/08/2025).

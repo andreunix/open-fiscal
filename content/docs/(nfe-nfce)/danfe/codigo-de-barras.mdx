@@ -35,6 +35,17 @@ Soma ponderada = (1×105)+(1×9)+(2×75)+(3×83)+(4×64) = 769
 
 > Atenção: este é o DV **da simbologia CODE-128C**, diferente do DV da chave de acesso (módulo 11) — ver [Chave de acesso](/docs/fundamentos/chave-de-acesso).
 
+### CNPJ alfanumérico: padrão híbrido 128C + 128A (NT Conjunta 2025.001)
+
+O CODE-128C **só codifica números** — incompatível com uma chave que tenha letras nas posições do CNPJ ([CNPJ alfanumérico](/docs/fundamentos/chave-de-acesso)). A solução adotada é um **padrão híbrido**: 🔄
+
+- Começa em **Start C** (a chave inicia com ≥4 dígitos numéricos: cUF + AAMM).
+- Ao chegar a um **caractere não numérico**, alterna para **CODE-128A** (aceita `0–9`, `A–Z` e controles) inserindo o código de mudança **`100` (Code A)**; volta a `C` com **`99` (Code C)** quando houver ≥4 dígitos em sequência.
+- Como o 128A codifica **um caractere por símbolo** (contra dois pares de dígitos do 128C), a chave com letras gera **mais barras** e exige mais largura.
+- A **largura mínima** para impressoras de não impacto passa para **11,5 cm** (alinhada à de impacto), acomodando a simbologia híbrida de até **539 posições** de módulo.
+
+O cálculo do DV (módulo 103) é o mesmo, somando os pesos dos códigos de mudança `Code A`/`Code C` na sequência em que aparecem.
+
 ## Como interpretar
 
 O código de barras existe para **capturar a chave** rapidamente em postos fiscais e consultas. O segundo código (em certas contingências) carrega dados extras para registrar o trânsito enquanto a nota não está autorizada normalmente.
@@ -42,11 +53,12 @@ O código de barras existe para **capturar a chave** rapidamente em postos fisca
 ## Vigência
 
 - 🕒 O cenário "um código" cita o Sistema de Contingência do Ambiente Nacional (SVC-AN); confronte modalidades vigentes em [Contingência](/docs/contingencia).
+- 🔄 Padrão híbrido **128C + 128A** para suportar o CNPJ alfanumérico: NT Conjunta 2025.001 (v1.00, 25/04/2025) — homologação 06/04/2026, produção 06/07/2026.
 
 ## Implicação de implementação
 
-> **Implementação:** use uma biblioteca CODE-128C testada e valide o DV da simbologia separadamente do DV da chave. Respeite a margem clara — é causa comum de leitura falha.
+> **Implementação:** use uma biblioteca CODE-128 testada que suporte **subsets A/C com troca de Code Set** (não só 128C puro) e valide o DV da simbologia separadamente do DV da chave. Respeite a margem clara — é causa comum de leitura falha. Reserve largura para o padrão híbrido antes de 04/2026.
 
 ## Fonte
 
-MOC 7.0 — Anexo II, §2 (Código de Barras), p. 6–7 (Anexo III.01).
+MOC 7.0 — Anexo II, §2 (Código de Barras), p. 6–7 (Anexo III.01). Overlay: NT Conjunta 2025.001 v1.00 (25/04/2025).

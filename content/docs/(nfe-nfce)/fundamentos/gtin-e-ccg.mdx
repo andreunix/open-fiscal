@@ -28,13 +28,36 @@ GTIN · marca · tipo de GTIN · descrição · classificação (segmento, famí
 | GPC | classificação ausente, inexistente ou incompatível |
 | GTIN contido (GTIN-14) | ausente ou com dígito inválido |
 
+### Ativação da validação no CCG por grupo de NCM
+
+A **NT 2021.003** (substitui a NT 2017.001, já recepcionada no MOC 7.0) ativa por **etapas** a verificação da **existência** do GTIN no CCG. Ela só incide quando o GTIN tem **prefixo Brasil (789/790)**, o **NCM** está num dos grupos do Anexo I **e** o **CFOP** é de venda de produção do estabelecimento (Anexo II). Os grupos de NCM foram ampliados versão a versão: 🔄
+
+| Grupo | Mercadorias (NCM) | Produção |
+|---|---|---|
+| **I** | tabaco (2401–2403), farmacêuticos (3001–3006), brinquedos (9503–9505) | 12/09/2022 |
+| **II** | bebidas (2201–2209), cimento (2523/3816), higiene e cosméticos (3301–3307, 3401, 4818, 8212, 9605, 9615…) | 03/07/2023 |
+| **III** | mercadorias da Cesta Básica Nacional | 02/09/2024 |
+| **IV** | mercadorias com **redução/zero de alíquotas de IBS/CBS** (LC 214/2025) | **01/10/2025** (teste 01/07/2025) |
+
+- **Etapa 1** (ativa): existência do GTIN no CCG — `9I03-10` (cod. **890**) e `9I12-10` (cod. **894**), só **NF-e modelo 55**.
+- **Etapa 2**: confronto de **NCM** com o CCG — `9I03-20`/`9I12-20` (cod. **891**/**895**).
+- **Implementação futura**: confronto de **CEST** (`9I03-30`/`9I12-30`).
+
+> O grupo IV apenas estende a **lista de NCM** sujeita à validação de existência — não cria campo nem regra nova; é consequência da Reforma Tributária do Consumo (LC 214/2025).
+
 ## Como interpretar
 
 A validação do GTIN **não** é só de formato: o autorizador compara contra um cadastro externo (CCG). Um produto pode ter GTIN sintaticamente válido e ainda ser rejeitado porque o dono da marca não atualizou o CNP.
 
+## Consulta GTIN via Web Service
+
+A **NT 2022.001** criou um Web Service próprio para **consultar o GTIN no CCG** antes da emissão. O serviço recebe um GTIN, aplica a **normalização** (completa com zeros à esquerda até 14 posições) e devolve os dados cadastrais e a situação no CCG. Use-o para antecipar rejeições de GTIN na sua própria validação, em vez de descobrir o problema só na autorização. 🔄
+
 ## Vigência
 
 - 🔄 CCG instituído pela **NT 2017.001**; entrada em vigor por **cronograma** previsto na legislação.
+- 🔄 Validação de existência no CCG por grupo de NCM: **NT 2021.003** (v1.40, 26/02/2025) — grupo IV (IBS/CBS, LC 214/2025) em produção **01/10/2025**.
+- 🔄 Consulta de GTIN via Web Service: **NT 2022.001** (v1.00, 31/05/2022).
 - 📍 O conteúdo do cadastro depende da manutenção pelo dono da marca, fora do controle do emitente.
 
 ## Implicação de implementação
@@ -43,4 +66,4 @@ A validação do GTIN **não** é só de formato: o autorizador compara contra u
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.9, p. 21–22 (Tabela 2-5).
+MOC 7.0 — Visão Geral, §2.2.9, p. 21–22 (Tabela 2-5). Overlay: NT 2022.001 v1.00 (31/05/2022), NT 2021.003 v1.40 (26/02/2025).
