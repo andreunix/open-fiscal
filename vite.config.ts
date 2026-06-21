@@ -8,6 +8,7 @@ import mdx from 'fumadocs-mdx/vite';
 export default defineConfig({
   server: {
     port: 3000,
+    allowedHosts: ['localhost', 'dev.andreunix.com'],
   },
   plugins: [
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
@@ -19,4 +20,5 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+
 });
