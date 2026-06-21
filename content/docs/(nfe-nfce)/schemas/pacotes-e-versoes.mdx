@@ -1,0 +1,81 @@
+---
+title: Pacotes e versões
+description: Inventário dos pacotes de schema XSD baixados, suas versões, escopo e as páginas onde os fatos de schema foram dobrados.
+---
+
+Esta página é o **registro de proveniência dos schemas**: cada linha é um pacote XSD baixado do Portal Nacional, com a **versão do pacote descompactado** (não a do Portal), o escopo e as páginas onde os fatos de tipo, ocorrência e enumeração foram dobrados.
+
+> A versão exibida é a do pacote baixado em `tmp/nfe/esquemas-xml/`. Confirme contra o Portal e a Nota Técnica vigente antes de implementar.
+
+## Leiaute e tipos da NF-e/NFC-e
+
+| Pacote (versão descompactada) | `.xsd` | Escopo | Páginas onde foi dobrado |
+|---|--:|---|---|
+| PL_010c_NT2022_002v1.30 | 5 | leiaute NF-e 4.00 + `tiposBasico` | como-ler-o-leiaute · mapa-do-xml · identificacao-e-atores · itens-e-produtos · tributos · totais-e-fechamento · grupos-finais |
+
+## Eventos
+
+| Pacote (versão descompactada) | `.xsd` | Escopo | Páginas onde foi dobrado |
+|---|--:|---|---|
+| Evento_Canc_PL_v1.01 | 8 | cancelamento | eventos/cancelamento |
+| Evento_Canc_PL_v1.01_NT_2018_004 | 8 | cancelamento (NT 2018.004) | eventos/cancelamento |
+| Evento_CancSubst_v1.01 | 8 | cancelamento por substituição | eventos/cancelamento |
+| Evento_CCe_PL_v1.01 | 8 | carta de correção | eventos/carta-de-correcao |
+| Evento_EPEC_PL_v1.01 | 8 | EPEC NF-e | eventos/epec |
+| Evento_EPEC_NFCe_PL1.00 | 4 | EPEC NFC-e | eventos/epec |
+| Evento_ManifestaDest_PL_v1.01 | 11 | manifestação do destinatário | eventos/manifestacao-do-destinatario |
+| Evento_AtorInteressado_PL_v1.02 | 8 | ator interessado | eventos/ator-interessado |
+| Evento_Generico_PL_v1.01 | 6 | evento genérico | eventos/modelo-e-catalogo |
+| Eventos_RTC | 18 | eventos de apuração IBS/CBS | eventos/modelo-e-catalogo |
+| Evento_EntregaNFe_PL_v1.01 | 14 | comprovante de entrega | — (inventariado) |
+| Evento_InsucessoNFe_PL_v1.02 | 15 | insucesso na entrega | — (inventariado) |
+| Evento_Econf_v1.00 | 14 | conciliação financeira (ECONF) | — (inventariado) |
+| Evento_Averb_PL_v1.01 | 8 | averbação para exportação | — (inventariado) |
+| Evento_Prorrog_Indust_1.0 | 15 | prorrogação ICMS (industrialização) | — (inventariado) |
+| Evento_SuframaInternaliza_PL_v1.01 | 7 | internalização SUFRAMA | — (inventariado) |
+| Evento_SuframaVistoria_PL_v1.01 | 7 | vistoria SUFRAMA | — (inventariado) |
+
+## Serviços de comunicação
+
+| Pacote (versão descompactada) | `.xsd` | Escopo | Páginas onde foi dobrado |
+|---|--:|---|---|
+| PL_NFeDistDFe_103 | 5 | distribuição de DF-e (v1.01) | distribuicao-dfe |
+| ConSitNFe | 5 | consulta situação NF-e (v2.01) | consulta-protocolo |
+| PL_ConsultaGTIN_v1.00 | 4 | consulta GTIN (v1.00) | gtin-e-ccg |
+| CNPJ Alfanumérico — NT2026.004 (consCad/CCC) | 22 | consulta cadastro (v2.00) + CNPJ alfa | consulta-cadastro · chave-de-acesso · web-services |
+
+## Novos modelos
+
+| Pacote (versão descompactada) | `.xsd` | Escopo | Páginas onde foi dobrado |
+|---|--:|---|---|
+| PL_NFAg_1.00j | 18 | modelo 75 (NFAg) — leiaute, eventos, serviços | nfag/leiaute-e-regras · nfag/visao-geral |
+| PL_NFGas_1.00e | 18 | modelo 76 (NFGas) — leiaute, eventos, serviços | nfgas/leiaute-e-regras · nfgas/visao-geral |
+
+> Os pacotes marcados como **inventariado** estão baixados, mas seus fatos de schema ainda não foram dobrados nas páginas. Eventos logísticos (entrega, insucesso, ECONF, averbação, prorrogação, SUFRAMA) seguem como camada pendente.
+
+## Divergências conhecidas
+
+Diferenças entre o schema baixado e a NT/tabela vigente. Onde aparecem no conteúdo, há nota editorial.
+
+| Divergência | Detalhe | Onde está anotada |
+|---|---|---|
+| **CNPJ no `consCad_v2.00`** | schema fixa `[0-9A-Z]{12}[0-9]{2}` (14 posições); a NT 2026.004 prevê 3–14 caracteres nesse serviço | [consulta-cadastro](/docs/emissao-e-comunicacao/consulta-cadastro) |
+| **`e211120` no pacote Eventos_RTC** | XSD retido apesar de o evento `211120` ter sido revogado (LC 227/2026) — a tabela legal prevalece | [eventos/modelo-e-catalogo](/docs/eventos/modelo-e-catalogo) |
+| **`tpImp=6` (NT 2026.002)** | ausente da enumeração-base do `leiauteNFe_v4.00` baixado | [identificacao-e-atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| **Chave da NFAg/NFGas** | o `Id` (`NFAG…`/`NFGas…`) traz o CNPJ como `[A-Z0-9]{12}` — chave **não** totalmente numérica (CNPJ alfanumérico de origem) | [nfag/leiaute-e-regras](/docs/nfag/leiaute-e-regras) · [nfgas/leiaute-e-regras](/docs/nfgas/leiaute-e-regras) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Pacotes de schemas XSD da NF-e/NFC-e |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | pacote XSD indicado nesta página; XSD; schemas |
+| Status | forma de dado versionada pelo pacote XSD indicado |
+
+### Registro de origem
+
+Pacotes XSD em `tmp/nfe/esquemas-xml/` (24 pacotes, 244 arquivos `.xsd`); mapa de consolidação em `tmp/nfe/esquemas-xml/PLANO-CONSOLIDACAO-SCHEMAS.md`. Ver [Proveniência](/docs/referencia/proveniencia#schemas-xsd-forma-do-dado).

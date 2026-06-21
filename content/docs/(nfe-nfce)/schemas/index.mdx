@@ -1,0 +1,61 @@
+---
+title: Schemas
+description: O papel dos schemas XSD na validação do XML, a hierarquia entre schema, Nota Técnica e Informe Técnico, e o cronograma de implantação por mudança.
+---
+
+Os **schemas XSD** são a terceira camada de proveniência desta documentação, ao lado das Notas Técnicas (regra) e dos Informes Técnicos (tabela). O schema fixa a **forma exata do dado** antes de qualquer regra de validação: tipo, tamanho, casas decimais, padrão (regex), cardinalidade (`minOccurs`/`maxOccurs`) e listas fechadas de valores.
+
+> 🔄 O schema é a *verdade de tipo e ocorrência* — o que o parser aceita antes de qualquer RV. Sempre confronte a versão do pacote com a Nota Técnica vigente e o cronograma de implantação antes de implementar.
+
+## Nesta seção
+
+| Tema | Página |
+|---|---|
+| parser do schema da NF-e (modelo 55): tipos, validações, enumerações e campos do CNPJ alfanumérico | [NF-e — schema e validações](/docs/schemas/nfe) |
+| inventário dos pacotes XSD, versões e onde foram dobrados | [Pacotes e versões](/docs/schemas/pacotes-e-versoes) |
+| cronograma de implantação (homologação e produção) por mudança | [Cronograma de implantação](/docs/schemas/cronograma) |
+
+## Três camadas, três papéis
+
+| Camada | O que define | Como aparece no open-fiscal |
+|---|---|---|
+| **NT** — Nota Técnica | regra de validação, comportamento e prazo | dobrada no corpo das páginas de tema |
+| **IT** — Informe Técnico | versão vigente de uma tabela externa (valores) | registrado como proveniência; valores carregados do Portal |
+| **XSD** — Schema | tipo, tamanho, decimais, regex, cardinalidade e enumeração fechada | dobrado como *fato de schema* nas páginas de leiaute/eventos |
+
+## Hierarquia de autoridade ao divergir
+
+Quando as camadas discordam, vale a precedência por tipo de fato:
+
+- **Schema vence em tipo, ocorrência e enumeração** — é o que o parser aceita.
+- **NT vence em regra, comportamento e prazo** — é o que o autorizador valida.
+- **IT vence em valor de tabela** — é a lista vigente de códigos.
+
+Divergência relevante vira **nota**, não edição silenciosa. As divergências conhecidas estão registradas em [Pacotes e versões](/docs/schemas/pacotes-e-versoes#divergências-conhecidas) e em [Proveniência](/docs/referencia/proveniencia#schemas-xsd-forma-do-dado).
+
+## Onde os fatos de schema estão dobrados
+
+| Tipo de fato | Página |
+|---|---|
+| dicionário de tipos (`TString`, `TDec_*`, datas, CNPJ/CPF, chave) | [Como ler o leiaute](/docs/leiaute-e-rejeicoes/como-ler-o-leiaute) |
+| cardinalidade macro dos grupos | [Mapa do XML](/docs/leiaute-e-rejeicoes/mapa-do-xml) |
+| enumerações de cabeçalho e item | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) · [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos) |
+| enumerações de tributo, total e fecho | [Tributos](/docs/leiaute-e-rejeicoes/tributos) · [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) · [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) |
+| tipos e ocorrências de eventos | [Eventos](/docs/eventos/modelo-e-catalogo) |
+| NFAg (modelo 75) e NFGas (modelo 76) | [NFAg — Leiaute e regras](/docs/nfag/leiaute-e-regras) · [NFGas — Leiaute e regras](/docs/nfgas/leiaute-e-regras) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Pacotes de schemas XSD da NF-e/NFC-e |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | pacote XSD indicado nesta página; XSD |
+| Status | página índice; rastreabilidade detalhada nas páginas filhas |
+
+### Registro de origem
+
+Pacotes XSD em `tmp/nfe/esquemas-xml/`; mapa de consolidação em `tmp/nfe/esquemas-xml/PLANO-CONSOLIDACAO-SCHEMAS.md`. Ver [Proveniência](/docs/referencia/proveniencia).

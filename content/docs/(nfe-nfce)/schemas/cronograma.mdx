@@ -1,0 +1,64 @@
+---
+title: Cronograma de implantação
+description: Datas de homologação (teste) e produção das mudanças de schema, extraídas do Histórico de Alterações / Cronograma das Notas Técnicas e dos MOCs dos novos modelos.
+---
+
+Toda Nota Técnica abre com uma seção **Histórico de Alterações / Cronograma**, cujas colunas são **Versão · Histórico de atualizações · Implantação Teste · Implantação Produção**. A *Implantação Teste* é o **ambiente de homologação** (testes das empresas); a *Implantação Produção* é a entrada em vigor. Esta página consolida essas datas para as mudanças que **afetam o schema XSD** e para os novos modelos.
+
+> 🔄 As datas refletem a revisão vigente baixada e podem ser revisadas pela SEFAZ. Datas com "até" são prazos-limite de disponibilização; mudanças em fases têm mais de um par homologação/produção. Confronte sempre com a NT vigente.
+
+## Reforma Tributária (IBS/CBS) — o eixo central
+
+A entrada do **schema, das Regras de Validação e dos eventos de apuração** de IBS/CBS é faseada pela **NT 2025.002** (consolidada na v1.50), com tabelas de classificação publicadas pelo **IT 2025.002**.
+
+| Etapa | Homologação (teste) | Produção |
+|---|---|---|
+| Novo schema com campos de apuração IBS/CBS/IS | de 07/07/2025 até 28/07/2025 | 06/10/2025 |
+| Regras de validação do grupo IBS/CBS | de 07/07/2025 até 11/08/2025 | 06/10/2025 |
+| Eventos de apuração (IBS, CBS e IS) | 25/08/2025 | 06/10/2025 |
+| Ajustes e novas fases (v1.30 em diante) | até 01/07/2026 | 03/08/2026 e 01/09/2026 |
+
+> A NT 2024.003 (controle de agrotóxicos e outros) **padronizou suas datas de vigência com a NT 2025.002**; a revisão v1.10 prevê homologação até 15/05/2026 e produção até 20/05/2026.
+
+## Mudanças de schema por Nota Técnica
+
+| Mudança / NT | Versão | Homologação (teste) | Produção |
+|---|---|---|---|
+| Schema/RV/eventos IBS/CBS (NT 2025.002) | v1.50 | 07/07/2025 | 06/10/2025 — fases até 03/08/2026 e 01/09/2026 |
+| Controle de agrotóxicos e ajustes (NT 2024.003) | v1.10 | até 15/05/2026 | até 20/05/2026 |
+| CNPJ alfanumérico (NT 2026.004) | v1.01 | 01/06/2026 (até 15/06/2026) | 01/07/2026 |
+| Novos campos e regras (NT 2026.001) | v1.00 | 08/06/2026 | 03/08/2026 |
+| Ajustes de schema/RV (NT 2026.002) | v1.00 | 01/06/2026 (em fases) | 15/06/2026 → 03/08/2026 → 05/10/2026 |
+| Ajustes de contingência/leiaute (NT 2026.003) | v1.00 | 01/07/2026 | 03/08/2026 |
+| Novos campos e regras sem impacto MEI (NT 2024.001) | v1.20 | 01/07/2024 | 16/09/2024 (regras de MEI: 01/04/2025) |
+| Regras N41/LA18 (NT 2023.001) | v1.60 | até 01/07/2025 | 14/07/2025 (LA18-10: 01/10/2025) |
+
+> O catálogo completo das Notas Técnicas vigentes, com a data de publicação de cada revisão, está em [Notas Técnicas](/docs/referencia/notas-tecnicas). Esta tabela recorta apenas o que muda o schema.
+
+## Novos modelos
+
+| Modelo | Pacote / MOC | Homologação | Produção |
+|---|---|---|---|
+| NFAg — modelo 75 | PL_NFAg_1.00j / MOC 1.00k | 06/04/2026 | 04/05/2026 |
+| NFGas — modelo 76 | PL_NFGas_1.00e / MOC 1.00e | 06/04/2026 | 04/05/2026 |
+| NF-e ABI — modelo 77 | MOC Visão Geral v1.00 (minuta) · Anexo I v2.00 | minuta — sem cronograma oficial | minuta — sem cronograma oficial |
+
+## Como usar este cronograma
+
+> **Implementação:** ao planejar uma release, cruze três datas por mudança: a **publicação** da NT (em [Notas Técnicas](/docs/referencia/notas-tecnicas)), a **homologação** (quando você pode testar contra o ambiente da SEFAZ) e a **produção** (quando a regra passa a rejeitar). O schema é a primeira coisa a atualizar; depois venham as regras de validação e os valores de tabela. Mudanças faseadas exigem feature flags por data.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Pacotes de schemas XSD da NF-e/NFC-e |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | pacote XSD indicado nesta página |
+| Status | forma de dado versionada pelo pacote XSD indicado |
+
+### Registro de origem
+
+Seção **Histórico de Alterações / Cronograma** das Notas Técnicas em `tmp/nfe/notas-tecnicas/`; MOCs dos novos modelos em `tmp/nfe/manuais/`. Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).
