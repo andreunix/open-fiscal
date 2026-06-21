@@ -1,0 +1,39 @@
+---
+title: IT 2025.003 v1.00 — URL do QR Code da NFC-e em Goiás
+description: Migra para HTTPS os endereços de consulta do QR Code da NFC-e em Goiás e mantém a rejeição 395 para URL divergente.
+---
+
+O **IT 2025.003** troca os endereços de consulta do QR Code da NFC-e em Goiás de HTTP para HTTPS. É o único IT deste catálogo que altera diretamente um valor dependente de UF usado no documento.
+
+> 📍 Vigente: v1.00 (junho de 2025). As novas URLs passaram a ser aceitas em **16/06/2025** nos dois ambientes.
+
+## Endereços e transição
+
+| Ambiente | Nova URL | Tratamento da URL anterior |
+|---|---|---|
+| Produção | `https://nfeweb.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe` | aceita até 30/08/2025 |
+| Homologação | `https://nfewebhomolog.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe` | aceita até 30/06/2025 |
+
+## Regra de validação
+
+A RV `ZX02-20` não mudou. Após o período de transição, uma URL diferente da publicada para Goiás causa a **rejeição 395 — Endereço do site da UF da Consulta via QR-Code difere do previsto**.
+
+## Onde se aplica
+
+[DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | IT 2025.003 v1.00 |
+| Versão | v1.00 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | tabela externa do Informe Técnico |
+| Status | tabela externa versionada; recapturar revisão vigente antes de validar produção |
+
+### Registro de origem
+
+IT 2025.003 v1.00, `tmp/nfe/informes-tecnicos/IT_2025.003- Alteração Endereço QRCode NFC-e - GO.pdf`.

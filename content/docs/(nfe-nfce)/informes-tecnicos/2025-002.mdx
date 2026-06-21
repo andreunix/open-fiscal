@@ -1,0 +1,39 @@
+---
+title: IT 2025.002 v1.50 — Tabelas de classificação do IBS e da CBS
+description: Atualiza cClassTrib, CST, classificação do crédito presumido e indicadores de aplicação dos DF-e para a Reforma Tributária do Consumo.
+---
+
+O **IT 2025.002** publica as tabelas de **CST**, Código de Classificação Tributária (`cClassTrib`) e Classificação do Crédito Presumido do IBS e da CBS (`cCredPres`). Também documenta indicadores que tornam grupos XML obrigatórios, permitidos ou vedados para cada classificação e documento fiscal.
+
+> 🔄 Vigente: v1.50, publicada em **15/04/2026**, com implantação em homologação e produção até **04/05/2026**.
+
+## O que muda na v1.50
+
+| Delta | Detalhe |
+|---|---|
+| Novos `cClassTrib` | `000005` e `200054` |
+| Aplicação por DF-e | altera indicadores para NFC-e, NF3e, CT-e OS, NF-e ABI e DeRE |
+| Tributação monofásica | desativa `ind_gMonoPadrao` e ativa `ind_gTribRegular` para `550023` |
+| Rastreabilidade | linhas alteradas têm `DataAtualização = 15/04/2026` nas visualizações oficiais |
+
+As tabelas são parametrizadoras: seus indicadores afetam o preenchimento e as regras de validação. A semântica dos grupos e RVs está na **NT 2025.002 v1.50**; este IT fornece os valores consultados por essas regras. Não confunda os dois documentos de mesmo número.
+
+## Onde se aplica
+
+[Tributos](/docs/leiaute-e-rejeicoes/tributos) · [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) · [NT 2025.002](/docs/notas-tecnicas/2025-002)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | IT 2025.002 v1.50 |
+| Versão | v1.50; 1.50 |
+| Data | 15/04/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | tabela externa do Informe Técnico |
+| Status | tabela externa versionada; recapturar revisão vigente antes de validar produção |
+
+### Registro de origem
+
+IT 2025.002 v1.50 (15/04/2026), `tmp/nfe/informes-tecnicos/IT 2025.002 v.1.50 - Tabelas de Classificação do IBS e da CBS - RFB (2026_04_15).pdf`.

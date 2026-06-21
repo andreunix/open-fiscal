@@ -1,0 +1,43 @@
+---
+title: IT 2026.001 v1.00 — Meios de pagamento para vinculação com o Split
+description: Define os códigos de meio de pagamento aceitos no grupo de vinculação da transação usado pelo Split Payment.
+---
+
+O **IT 2026.001** define quais códigos da tabela nacional de meios de pagamento podem ser usados no grupo de vinculação da transação criado pelas NTs 2026.001 dos DF-e para o sistema de **Split Payment**.
+
+> 🔄 Vigente: v1.00 (fevereiro de 2026). Implantação prevista para **abril de 2026** em homologação e **maio de 2026** em produção.
+
+## Códigos aceitos
+
+| Código | Meio de pagamento |
+|---:|---|
+| `15` | Boleto |
+| `17` | PIX QR Code dinâmico |
+| `18` | TED |
+| `20` | PIX chave ou QR Code estático |
+| `23` | PIX Automático |
+| `24` | TEF / book transfer |
+
+Um código fora dessa seleção causa a **rejeição 1003 — Tipo de Pagamento inválido**. O informe pode receber novas versões quando outros meios forem admitidos.
+
+> Esta seleção é mais restrita que a tabela geral de `tPag`, mantida pelo [IT 2024.002](/docs/informes-tecnicos/2024-002).
+
+## Onde se aplica
+
+[Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) · [Tabelas e códigos](/docs/referencia/tabelas-e-codigos)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | IT 2026.001 v1.00 |
+| Versão | v1.00; 1.00 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | tabela externa do Informe Técnico |
+| Status | tabela externa versionada; recapturar revisão vigente antes de validar produção |
+
+### Registro de origem
+
+IT 2026.001 v1.00, `tmp/nfe/informes-tecnicos/IT 2026.001 v.1.00 - Tabelas de Meios de Pagamento para Vinculação com o Split.pdf`.
