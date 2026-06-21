@@ -1,0 +1,77 @@
+---
+title: Fontes oficiais
+description: "Matriz de rastreabilidade por camada: MOC, anexos, Notas Técnicas, Informes Técnicos, XSD, legislação nacional e legislação estadual."
+---
+
+Esta página define a matriz editorial das fontes oficiais usadas nas páginas de NF-e e NFC-e. Cada página técnica deve terminar com `## Fonte` e registrar documento, versão, data, páginas ou capítulo, NT relacionada, schema ou tabela relacionada e status.
+
+## Camadas
+
+| Camada | Fonte oficial | Papel técnico | Onde rastrear nesta documentação |
+|---|---|---|---|
+| MOC | Manual de Orientação do Contribuinte 7.0 — Visão Geral | Conceitos, arquitetura, serviços, eventos, tabelas, cálculo e operação base da NF-e/NFC-e | [Proveniência](/docs/referencia/proveniencia#manuais-usados) |
+| Anexos | Anexo I, Anexo II, Anexo III, Anexo IV e manuais auxiliares | Leiaute e regras de validação, DANFE, código de barras, contingência NF-e e contingência NFC-e | [Proveniência](/docs/referencia/proveniencia#manuais-usados) |
+| Notas Técnicas | NTs publicadas no Portal Nacional da NF-e | Overlay de regra, campo, validação, cronograma, evento ou comportamento posterior ao MOC | [Notas Técnicas](/docs/notas-tecnicas) e [Notas Técnicas no MOC](/docs/referencia/notas-tecnicas) |
+| Informes Técnicos | ITs e arquivos de tabelas publicados no Portal Nacional | Valores de tabelas externas e domínios operacionais voláteis, sem alterar regra de negócio por si só | [Informes Técnicos](/docs/informes-tecnicos) e [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) |
+| XSD | Pacotes de schemas XML oficiais | Forma do dado: tipo, tamanho, regex, enumeração e ocorrência antes das regras de validação | [Schemas](/docs/schemas) |
+| Legislação nacional | Ajustes SINIEF, Atos COTEPE/ICMS, Leis Complementares e normas federais correlatas | Base jurídica de existência, obrigatoriedade, eventos, responsabilidade e Reforma Tributária | Pendente de seção própria em `legislacao/`; registrar provisoriamente no bloco `## Fonte` da página afetada |
+| Legislação estadual | Portais e atos das SEFAZ, regras de credenciamento, CSC, QR Code, contingência, prazos e particularidades por UF | Regra fiscal e operacional específica por UF, data e ambiente | Pendente de seção própria em `ufs/`; endpoints atuais ficam em [Serviços por UF](/docs/operacao/servicos-por-uf) |
+
+## Prioridade ao divergir
+
+| Divergência | Fonte que prevalece para implementação | Como documentar |
+|---|---|---|
+| Tipo, tamanho, regex, enumeração ou ocorrência do XML | XSD vigente do pacote aplicável | Registrar o pacote XSD no campo `Schema/tabela relacionada` e mencionar a divergência no texto |
+| Regra de validação, prazo de implantação ou comportamento de autorização | NT vigente ou MOC/anexo quando não houver NT posterior | Registrar a NT no campo `NT relacionada`; se a regra for histórica, marcar no status |
+| Valor de tabela externa | IT ou arquivo de tabela vigente no Portal Nacional | Versionar o arquivo baixado e registrar a data de captura |
+| Obrigatoriedade legal, evento legalmente previsto ou hipótese tributária | Legislação nacional ou estadual aplicável | Não resolver por inferência técnica; linkar a norma quando a seção de legislação existir |
+| Endpoint, autorizador, URL de consulta ou ambiente | Portal Nacional e portal estadual da UF | Registrar data de captura, ambiente e UF |
+
+## Padrão do bloco `## Fonte`
+
+Toda página deve usar esta estrutura mínima:
+
+| Campo | Valor esperado |
+|---|---|
+| Documento | Nome da fonte oficial principal, não apenas o arquivo local |
+| Versão | Versão declarada na fonte ou no pacote |
+| Data | Publicação, revisão ou captura |
+| Páginas/capítulo | Página, item, seção, capítulo ou justificativa quando não houver paginação |
+| NT relacionada | NT que alterou ou confirmou o tema; `não indicada` quando não houver |
+| Schema/tabela relacionada | Pacote XSD, tabela externa, IT ou `não indicada` |
+| Status | Vigente, histórico, depende de UF, overlay posterior ao MOC, índice editorial ou pendente de captura |
+
+O texto antigo da fonte deve ficar abaixo da tabela em `### Registro de origem`. Esse registro preserva detalhes finos que não cabem no resumo estruturado, como lista de overlays, caminhos locais em `tmp/nfe/` e observações editoriais.
+
+## Captura e arquivos locais
+
+| Tipo | Local versionado no workspace | Observação |
+|---|---|---|
+| PDFs de manuais | `tmp/nfe/manuais/` | Usados como fonte primária de MOC, anexos e modelos novos |
+| PDFs de NT | `tmp/nfe/notas-tecnicas/` | Cada página de NT aponta o arquivo consolidado usado |
+| PDFs de IT | `tmp/nfe/informes-tecnicos/` | Tabelas externas devem ser recarregadas antes de produção |
+| Schemas XSD | `tmp/nfe/esquemas-xml/` | Pacote baixado é a verdade de forma analisada pela documentação |
+| Tabelas auxiliares | `tmp/nfe/diversos/` | Snapshots para estudo, não cadastro permanente de emissão |
+| HTML do Portal | `tmp/nfe/portal-principal.html`, `tmp/nfe/webServices.html` | Capturas usadas em [Serviços por UF](/docs/operacao/servicos-por-uf) |
+
+## Pendências explícitas
+
+- Separar a legislação nacional em páginas próprias: Ajuste SINIEF 07/05, Ajuste SINIEF 19/16, Ato COTEPE/ICMS 69/20, LC 214/2025 e normas correlatas.
+- Criar matriz estadual por UF com fonte, data de captura e validade operacional.
+- Transformar as tabelas baixadas em dados versionados consumíveis por código, mantendo a data de vigência e a fonte do arquivo.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Matriz editorial de fontes oficiais do Open Fiscal |
+| Versão | checkpoint 2026-06-21 |
+| Data | 2026-06-21 |
+| Páginas/capítulo | matriz de rastreabilidade da Parte 1 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | não indicada |
+| Status | padrão editorial obrigatório para páginas NF-e/NFC-e |
+
+### Registro de origem
+
+Plano de expansão em `docs/PLANO-EXPANSAO-OPEN-FISCAL.md`, Parte 1 — Matriz de fontes oficiais. Consolida a página de [Proveniência](/docs/referencia/proveniencia), as páginas de [Notas Técnicas](/docs/notas-tecnicas), [Informes Técnicos](/docs/informes-tecnicos), [Schemas](/docs/schemas) e [Serviços por UF](/docs/operacao/servicos-por-uf).
