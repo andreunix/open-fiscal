@@ -14,6 +14,8 @@ O destinatário, pessoa jurídica ou física, pode manifestar-se sobre uma NF-e 
 | `210220` | **Desconhecimento da Operação** | a operação não foi solicitada pelo destinatário |
 | `210240` | **Operação não Realizada** | houve participação, mas a operação não se efetivou |
 
+No schema (namespace `http://www.portalfiscal.inf.br/nfe`, `versao` `1.00`), o `detEvento` confirma a assimetria: Ciência, Confirmação e Desconhecimento carregam só o `descEvento` fixo; **apenas** Operação não Realizada (`210240`) acrescenta `xJust` (15–255). Cada evento tem seu arquivo (`e210200`…`e210240`) com o `descEvento` fixado no texto correspondente.
+
 ### Regra de mudança (importante)
 
 > O destinatário pode registrar até **dois eventos de cada tipo conclusivo** (Confirmação, Desconhecimento ou Operação não Realizada), **valendo apenas a última manifestação registrada**. Ex.: pode desconhecer uma operação que havia confirmado e depois confirmá-la novamente.
@@ -59,4 +61,18 @@ flowchart LR
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §3.2 (especialmente §3.2.1.5), p. 30–35. |
+| Versão | v1.60 |
+| Data | 23/04/2026 |
+| Páginas/capítulo | §3; p. 30–35 |
+| NT relacionada | NT 2020.001 v1.60 |
+| Schema/tabela relacionada | Evento_ManifestaDest_PL_v1.01 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Visão Geral, §3.2 (especialmente §3.2.1.5), p. 30–35. Overlay: NT 2020.001 v1.60 (23/04/2026).
+
+Schema: e210200/e210210/e210220/e210240_v1.00 (Evento_ManifestaDest_PL_v1.01).

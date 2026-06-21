@@ -35,6 +35,8 @@ Campos de total podem ser opcionais no schema e obrigatórios pelo conteúdo da 
 
 O grupo `transp` começa por `modFrete`, que define a modalidade do frete. Os demais grupos dependem dela e do modelo do documento.
 
+`modFrete` é enumeração fechada no schema: `0`=por conta do emitente · `1`=por conta do destinatário · `2`=por conta de terceiros · `3`=transporte próprio por conta do remetente · `4`=transporte próprio por conta do destinatário · `9`=sem transporte.
+
 ```mermaid
 flowchart TD
     A[modFrete] --> B{Há transporte informado?}
@@ -101,5 +103,19 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 - [ ] Modelo 65 não recebe grupos proibidos.
 
 ## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30). |
+| Versão | v1.21; v1.35; v1.11; v1.20 |
+| Data | 15/10/2021; 01/11/2022; 11/10/2024; 07/10/2024 |
+| Páginas/capítulo | p. 58–62 |
+| NT relacionada | NT 2020.005 v1.21; NT 2021.004 v1.35; NT 2022.005 v1.11; NT 2023.004 v1.20; NT 2023.001 v1.60; NT 2019.001 v1.70 |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30).
 
 MOC 7.0 — Anexo I, grupos W a Y, p. 58–62. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2021.004 v1.35 (01/11/2022), NT 2022.005 v1.11 (11/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2023.001 v1.60 (09/06/2025), NT 2019.001 v1.70 (18/08/2025), NT 2025.001 v1.03 (29/09/2025), NT 2022.002 v1.30a (26/03/2026), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026), NT 2025.002 v1.50 (03/06/2026).

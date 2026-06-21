@@ -11,6 +11,8 @@ description: Consulta da situação atual de uma NF-e pela chave de acesso.
 - Retorno: `retConsSitNFe` com `cStat`/`xMotivo` da consulta e a situação da nota — incluindo o **`protNFe`** (autorização/denegação) e, quando houver, os **eventos** vinculados (cancelamento, CC-e, manifestação etc.).
 - É a fonte oficial para saber o que aconteceu com uma chave quando a resposta do envio se perdeu.
 
+> **Forma no schema (`consSitNFe_v2.01`):** raiz `consSitNFe` / `retConsSitNFe`, `versao` fixa **`2.01`**; namespace `http://www.portalfiscal.inf.br/nfe`. `xServ` é enumeração fechada de valor único **`CONSULTAR`** e `chNFe` é `TChNFe` (44 posições). O retorno traz `tpAmb`, `verAplic`, `cStat`, `xMotivo`, `cUF` e, conforme o caso, `protNFe` (autorização/denegação) e os grupos `procEventoNFe` dos eventos vinculados.
+
 ## Como interpretar
 
 Esta é a consulta de **recuperação**: depois de um timeout, ela diz se a nota foi autorizada, rejeitada, denegada ou se simplesmente não existe. É por chave, então independe de recibo ou lote.
@@ -25,4 +27,16 @@ Esta é a consulta de **recuperação**: depois de um timeout, ela diz se a nota
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §5.4, p. 81–83 (Tabelas 5-13 a 5-16).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §5.4, p. 81–83 (Tabelas 5-13 a 5-16). |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | §5; p. 81–83 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | não indicada |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, §5.4, p. 81–83 (Tabelas 5-13 a 5-16). Schema: consSitNFe_v2.01 / retConsSitNFe_v2.01 (ConSitNFe).

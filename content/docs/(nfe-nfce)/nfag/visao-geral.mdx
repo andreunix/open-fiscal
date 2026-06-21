@@ -19,7 +19,7 @@ O conjunto do MOC é composto por:
 
 ### Chave de acesso
 
-A chave de acesso da NFAg possui **44 caracteres numéricos**.
+A chave de acesso da NFAg possui **44 caracteres**. O schema (`Id` no padrão `NFAG[0-9]{6}[A-Z0-9]{12}[0-9]{26}`) define o segmento de 12 posições do **CNPJ do emitente** como **alfanumérico** (`[A-Z0-9]{12}`): a NFAg já adota CNPJ alfanumérico, portanto a chave não é totalmente numérica.
 
 | Parte | Origem |
 |---|---|
@@ -76,6 +76,8 @@ O Sistema de Registro de Eventos da NFAg permite eventos do contribuinte e do fi
 
 Eventos de marcação são gerados automaticamente quando uma NFAg referencia outra, por exemplo em substituição ou faturamento conjunto.
 
+No schema, o único evento de contribuinte com leiaute próprio é o **cancelamento** (`evCancNFAg`, `descEvento` fixo `Cancelamento`); ele compartilha o namespace `http://www.portalfiscal.inf.br/nfag` e o atributo `versao` fixo `1.00`. Os eventos de marcação `240xxx` são lavrados pelo fisco.
+
 ## QR Code e consulta
 
 O QR Code deve constar no DANFAG em emissão normal e em contingência off-line. Em emissão normal, a URL contém a chave de acesso e o ambiente. Em contingência off-line, inclui também assinatura digital da chave de acesso, usando o certificado que assina a NFAg.
@@ -90,4 +92,18 @@ A contingência off-line é uma exceção para problemas técnicos que impedem a
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC NFAg — Padrões Técnicos de Comunicação, versão 1.00k — 11 de março de 2026, p. 6–58. |
+| Versão | 1.00k |
+| Data | março de 2026 |
+| Páginas/capítulo | p. 6–58 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | PL_NFAg_1.00j |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
 MOC NFAg — Padrões Técnicos de Comunicação, versão 1.00k — 11 de março de 2026, p. 6–58.
+
+Schema: nfag_v1.00 · eventoNFAg_v1.00 · evCancNFAg_v1.00 (PL_NFAg_1.00j)

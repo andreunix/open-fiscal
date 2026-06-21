@@ -85,13 +85,13 @@ Códigos introduzidos depois do corte do Anexo I 7.03 (lista parcial — confirm
 | `951` | Rejeição: Chave de Acesso referenciada com código numérico zerado não permitida para finalidade diferente de normal | 2022.003 v1.11 |
 | `952` | Rejeição: Chave de Acesso referenciada com a mesma Chave Natural da Nota Fiscal atual | 2022.003 v1.11 |
 | `953` | Rejeição: Chave de Acesso referenciada com tipo de emissão inválido | 2022.003 v1.11 |
-| `460` | Rejeição: Protocolo do Evento difere do cadastrado | 2023.005 v1.02 |
-| `821` | Rejeição: Data-Hora de Entrega superior à data de emissão do evento | 2023.005 v1.02 |
-| `822` | Rejeição: Data-Hora do Hash de Entrega superior à data de emissão do evento | 2023.005 v1.02 |
-| `823` | Rejeição: Data-Hora de Entrega inferior à data de emissão da NF-e | 2023.005 v1.02 |
-| `824` | Rejeição: Data-Hora do Hash de Entrega inferior à data de emissão da NF-e | 2023.005 v1.02 |
-| `825` | Rejeição: Não permitido mais de um Evento de Insucesso na Entrega para a NF-e | 2023.005 v1.02 |
-| `826` | Rejeição: Pedido de Cancelamento para NF-e com evento de Entrega | 2023.005 v1.02 |
+| `460` | Rejeição: Protocolo do Evento difere do cadastrado | 2021.001 v1.01 · reutilizado na 2023.005 v1.02 |
+| `821` | Rejeição: Data-Hora de Entrega superior à data de emissão do evento | 2021.001 v1.01 · reutilizado na 2023.005 v1.02 |
+| `822` | Rejeição: Data-Hora do Hash de Entrega superior à data de emissão do evento | 2021.001 v1.01 · reutilizado na 2023.005 v1.02 |
+| `823` | Rejeição: Data-Hora de Entrega inferior à data de emissão da NF-e | 2021.001 v1.01 · reutilizado na 2023.005 v1.02 |
+| `824` | Rejeição: Data-Hora do Hash de Entrega inferior à data de emissão da NF-e | 2021.001 v1.01 · reutilizado na 2023.005 v1.02 |
+| `825` | Rejeição: Não permitido mais de um Evento de Insucesso na Entrega para a NF-e | 2021.001 v1.01 · reutilizado na 2023.005 v1.02 |
+| `826` | Rejeição: Pedido de Cancelamento para NF-e com evento de Entrega | 2021.001 v1.01 · reutilizado na 2023.005 v1.02 |
 | `545` | Rejeição: NF-e de devolução com valor total superior a NF-e devolvida | 2022.005 v1.11 |
 | `546` | Rejeição: NF-e de devolução com valor do ICMS superior a NF-e devolvida | 2022.005 v1.11 |
 | `566` | Rejeição: NF-e de devolução com valor do FCP superior a NF-e devolvida | 2022.005 v1.11 |
@@ -195,6 +195,56 @@ Códigos introduzidos depois do corte do Anexo I 7.03 (lista parcial — confirm
 | `1000–1218` | Rejeições RTC de finalidade crédito/débito, IBS/CBS/IS, SUFRAMA/ALC, compras governamentais, referências, créditos e totais; use `xMotivo` e a regra indicada, pois a faixa não representa uma única causa | 2025.002 v1.50 |
 | `1200–1202` | `cClassTrib` incompatível com finalidade ou tipo de nota de débito/crédito | 2025.002 v1.50 |
 | `1219–1272` | Rejeições do leiaute monofásico reformulado: escolha temporal ad rem/ad valorem, grupos padrão/retenção/retido e cálculos de IBS/CBS e diferença de biocombustível | 2025.002 v1.50 |
+| `897` | Rejeição: Código numérico (`cNF`) em formato inválido (sequência fraca ou igual ao `nNF`) | 2019.001 v1.70 |
+| `922` | Rejeição: Contranota de Produtor só pode referenciar NF-e ou NF de Produtor Modelo 4 | 2019.001 v1.70 |
+| `923` | Rejeição: Referenciado documento de operação interna em operação interestadual ou com o exterior | 2019.001 v1.70 |
+| `924` | Rejeição: Informado Cupom Fiscal referenciado em UF que não permite | 2019.001 v1.70 |
+| `925` | Rejeição: NF-e com identificação de estrangeiro e IE informada para destinatário | 2019.001 v1.70 |
+| `926` | Rejeição: Operação com Exterior e país de destino igual a Brasil | 2019.001 v1.70 |
+| `927` | Rejeição: Número do item (`nItem`) fora da ordem sequencial | 2019.001 v1.70 |
+| `928` | Rejeição: Informado `cBenef` para CST sem benefício fiscal | 2019.001 v1.70 |
+| `929` | Rejeição: Informado CST de diferimento sem as informações de diferimento | 2019.001 v1.70 |
+| `930` | Rejeição: CST com benefício fiscal e não informado o `cBenef` | 2019.001 v1.70 |
+| `931` | Rejeição: CST não corresponde ao tipo de código de benefício fiscal | 2019.001 v1.70 |
+| `932` | Rejeição: Modalidade da BC da ST = MVA e não informado `pMVAST` | 2019.001 v1.70 |
+| `933` | Rejeição: Modalidade da BC da ST ≠ MVA e informado `pMVAST` | 2019.001 v1.70 |
+| `934` | Rejeição: Não informado valor do ICMS desonerado ou motivo de desoneração | 2019.001 v1.70 |
+| `935` | Rejeição: Valor total da Base de Cálculo superior ao limite estabelecido pela UF | 2019.001 v1.70 |
+| `936` | Rejeição: Razão Social do emitente diverge do cadastro da SEFAZ | 2019.001 v1.70 |
+| `946` | Rejeição: Informado `cBenef` incorreto ou inexistente na UF | 2019.001 v1.70 |
+| `507` | Rejeição: Grupo de informações sobre o Crédito Presumido não permitido | 2019.001 v1.70 |
+| `626` | Rejeição: CFOP de operação isenta para ZFM diferente do previsto | 2019.001 v1.70 |
+| `664` | Rejeição: `cCredPresumido` incorreto, inexistente ou incompatível na UF | 2019.001 v1.70 |
+| `665` | Rejeição: Não informado `cBenefRBC` quando o percentual de redução de BC > 0 (CST 51) | 2019.001 v1.70 |
+| `666` | Rejeição: `cBenefRBC` incorreto, inexistente ou incompatível na UF | 2019.001 v1.70 |
+| `696` | Rejeição: Operação com não contribuinte deve indicar operação com consumidor final | 2019.001 v1.70 |
+| `305` | Rejeição: Destinatário bloqueado na UF | 2019.001 v1.70 |
+| `306` | Rejeição: IE do destinatário não está ativa na UF | 2019.001 v1.70 |
+| `126` | Rejeição: Enviado lote com mais de 1 NFC-e (NFC-e sem lote assíncrono; ver também `961`) | 2023.002 v1.01 |
+| `401` | Rejeição: CPF do emitente inválido | 2023.002 v1.01 |
+| `494` | Rejeição: Chave de Acesso inexistente (evento) | 2023.002 v1.01 |
+| `560` | Rejeição: CNPJ base/CPF do emitente difere do da 1ª NF-e do lote | 2023.002 v1.01 |
+| `574` | Rejeição: O autor do evento diverge do emissor da NF-e | 2023.002 v1.01 |
+| `617` | Rejeição: Chave de Acesso inválida (CNPJ/CPF zerado ou dígito inválido) | 2023.002 v1.01 |
+| `957` | Rejeição: Tipo de emissão incompatível com o Processo de Emissão | 2023.002 v1.01 |
+| `228` | Rejeição: Data de Emissão muito atrasada (acima do limite da UF) | 2025.001 v1.03 |
+| `300` | Rejeição: Tipo da IE do Destinatário difere de Não Contribuinte no cadastro da UF | 2025.001 v1.03 |
+| `391` | Rejeição: Não informados os dados do cartão de crédito/débito no pagamento | 2025.001 v1.03 |
+| `392` | Rejeição: Não informados os dados da operação de pagamento por cartão | 2025.001 v1.03 |
+| `407` | Rejeição: NFC-e com qrCode na versão 3 (UF ainda não aceita) | 2025.001 v1.03 |
+| `443` | Rejeição: Código da bandeira de cartão de crédito/débito inexistente | 2025.001 v1.03 |
+| `444` | Rejeição: NFC-e com qrCode na versão 2 para Pessoa Física | 2025.001 v1.03 |
+| `445` | Rejeição: Parâmetro assinatura não deve ser informado no qrCode | 2025.001 v1.03 |
+| `583` | Rejeição: Valor da assinatura do qrCode difere do calculado | 2025.001 v1.03 |
+| `776` | Rejeição: Solicitada resposta síncrona para UF que não disponibiliza | 2025.001 v1.03 |
+| `797` | Rejeição: Data de vencimento da parcela superior a 10 anos | 2025.001 v1.03 |
+| `805` | Rejeição: A SEFAZ do destinatário não permite Contribuinte Isento de Inscrição Estadual | 2025.001 v1.03 |
+| `853` | Rejeição: Dados de cobrança não devem ser informados para pagamento à vista | 2025.001 v1.03 |
+| `865` | Rejeição: Total dos pagamentos menor que o total da nota | 2025.001 v1.03 |
+| `866` | Rejeição: Ausência de troco quando os pagamentos superam o total da nota | 2025.001 v1.03 |
+| `904` | Rejeição: Informado indevidamente campo valor de pagamento (`tPag`=90/91) | 2025.001 v1.03 |
+
+> **Colisões de `cStat` (reuso por NTs distintas):** `452` (resposta assíncrona) foi estendido da NFC-e para o lote de 1 NF-e pela NT 2025.001; `474`, `437` e `781` já existiam (NT 2022.003/2024.002/2024.001) e foram reaproveitados — `474` significa "FCP não destacado" **ou** "parâmetro assinatura deve ser informado no qrCode" (NT 2025.001), `961` é usado por NT 2024.002 (CNPJ transacional), NT 2023.001 (alíquota ad rem) **e** NT 2023.002 (lote NFC-e). Sempre decida pelo `xMotivo` e pela regra de validação, não só pelo número. Os códigos de transporte da [NFeDistribuicaoDFe](/docs/emissao-e-comunicacao/distribuicao-dfe) (NT 2014.002: 108/137/138/214/215/489/490/589/593/614–619/632/640/641/653/654/656…) ficam documentados naquela página e em [Recibo e uso indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido).
 
 ## Vigência
 
@@ -204,4 +254,16 @@ Códigos introduzidos depois do corte do Anexo I 7.03 (lista parcial — confirm
 
 ## Fonte
 
-MOC 7.0 — Anexo I, §4.4 (Lista das Regras de Validação), p. 143–153. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2022.003 v1.11 (25/01/2023), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024), NT 2022.005 v1.11 (11/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2020.007 v1.40 (02/08/2024), NT 2015.001 v1.30 (06/12/2024), NT 2021.002 v1.12 (28/01/2025), NT 2021.003 v1.40 (26/02/2025), NT 2023.001 v1.60 (09/06/2025), NT 2018.005 v1.52 (10/07/2025), NT 2026.002 v1.00 (25/05/2026), NT 2025.002 v1.50 (03/06/2026).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I, §4.4 (Lista das Regras de Validação), p. 143–153. |
+| Versão | v1.21; v1.11; v1.02; v1.00 |
+| Data | 15/10/2021; 25/01/2023; 26/04/2024; 27/05/2024 |
+| Páginas/capítulo | §4; p. 143–153 |
+| NT relacionada | NT 2020.005 v1.21; NT 2022.003 v1.11; NT 2023.005 v1.02; NT 2024.002 v1.00; NT 2022.005 v1.11; NT 2023.004 v1.20 |
+| Schema/tabela relacionada | não indicada |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+MOC 7.0 — Anexo I, §4.4 (Lista das Regras de Validação), p. 143–153. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2022.003 v1.11 (25/01/2023), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024), NT 2022.005 v1.11 (11/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2020.007 v1.40 (02/08/2024), NT 2015.001 v1.30 (06/12/2024), NT 2021.002 v1.12 (28/01/2025), NT 2021.003 v1.40 (26/02/2025), NT 2023.001 v1.60 (09/06/2025), NT 2018.005 v1.52 (10/07/2025), NT 2019.001 v1.70 (18/08/2025), NT 2025.001 v1.03 (29/09/2025), NT 2023.002 v1.01 (18/11/2025), NT 2026.002 v1.00 (25/05/2026), NT 2025.002 v1.50 (03/06/2026).

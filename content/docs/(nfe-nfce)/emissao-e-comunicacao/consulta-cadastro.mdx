@@ -11,6 +11,8 @@ description: Consulta da situação cadastral de um contribuinte na UF (CCC).
 - Retorno: `retConsCad` com os dados cadastrais — situação (`cSit`), Inscrição Estadual, CNPJ/CPF, endereço e o vínculo CNPJ↔IE, consultados no [CCC](/docs/fundamentos/cadastros-e-beneficios).
 - 📍 Nem toda UF disponibiliza a consulta por todos os identificadores.
 
+> **Forma no schema (`consCad_v2.00`, pacote CNPJ Alfanumérico):** raiz `ConsCad` / `RetConsCad`, `versao` fixa **`2.00`**; namespace `http://www.portalfiscal.inf.br/nfe`. A entrada `infCons` tem `xServ` fixo **`CONS-CAD`**, `UF` e um `<choice>` de `IE` | `CNPJ` | `CPF`. O `CNPJ` já é o tipo **alfanumérico** `TCnpjVar` = `[0-9A-Z]{12}[0-9]{2}` (14 posições). O retorno `infCad` repete IE/CNPJ/CPF/UF e traz `cSit`, `indCredNFe`, `indCredCTe`, `xNome`, `xFant` e o vínculo CNPJ↔IE. ⚠️ O schema baixado fixa o `CNPJ` em **14 posições**; a NT 2026.004 prevê CNPJ de **3–14** caracteres nesse serviço — ver [Mapa dos Web Services](/docs/emissao-e-comunicacao/web-services).
+
 ## Como interpretar
 
 É a forma de validar **antes do envio** se a IE do destinatário existe, está habilitada e bate com o CNPJ — evitando rejeições cadastrais na autorização (ver [CCC](/docs/fundamentos/cadastros-e-beneficios)).
@@ -26,4 +28,16 @@ description: Consulta da situação cadastral de um contribuinte na UF (CCC).
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §5.6, p. 87–89 (Tabelas 5-21 a 5-24).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §5.6, p. 87–89 (Tabelas 5-21 a 5-24). |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | §5; p. 87–89 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | não indicada |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, §5.6, p. 87–89 (Tabelas 5-21 a 5-24). Schema: consCad_v2.00 / retConsCad_v2.00 (CNPJ Alfanumérico - NT2026.004 · CadConsultaCadastro).

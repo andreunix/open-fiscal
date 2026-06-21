@@ -11,6 +11,10 @@ O evento **Ator interessado na NF-e — Transportador** (`110150`, NT 2020.007) 
 
 É a forma de conceder acesso ao XML **depois** da autorização, sem reemitir a nota. Equivale a adicionar um autorizado (como em `autXML`), mas via evento, para o papel de transportador — que então passa a receber o documento pela [Distribuição de DF-e](/docs/emissao-e-comunicacao/distribuicao-dfe).
 
+## Estrutura do evento (schema)
+
+Namespace `http://www.portalfiscal.inf.br/nfe`; `versao` = `1.00`; `descEvento` fixo = `Ator interessado na NF-e`. O `detEvento` traz `cOrgaoAutor`, `tpAutor`, `verAplic`, o grupo `autXML` (com escolha entre `CNPJ` e `CPF` do transportador autorizado), `tpAutorizacao` (opcional) e `xCondUso` (opcional). Tanto `tpAutor` (`1`/`2`/`3`) quanto `tpAutorizacao` (`0`/`1`) são enumerações fechadas no schema.
+
 ## Quem gera o evento
 
 O campo `tpAutor` define o autor e ativa validações próprias:
@@ -34,4 +38,18 @@ Para o autor emitente/destinatário, o campo `tpAutorizacao` (`0`=não permite, 
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §3.1.1 (Tabela 3-1, evento 110150), p. 29. |
+| Versão | v1.40 |
+| Data | 02/08/2024 |
+| Páginas/capítulo | §3; p. 29 |
+| NT relacionada | NT 2020.007 v1.40 |
+| Schema/tabela relacionada | Evento_AtorInteressado_PL_v1.02 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Visão Geral, §3.1.1 (Tabela 3-1, evento 110150), p. 29. Overlay: NT 2020.007 v1.40 (02/08/2024).
+
+Schema: 110150_v1.00 (Evento_AtorInteressado_PL_v1.02).

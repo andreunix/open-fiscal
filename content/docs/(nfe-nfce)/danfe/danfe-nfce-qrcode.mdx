@@ -91,6 +91,7 @@ A grande diferença entre 2.00 e 3.00 é **o que prova a autenticidade**: na 2.0
 
 - 🔄 Manual do DANFE NFC-e e QR Code, versão **2025-03-24**, que **inclui a versão 3.00** do QR Code. A versão 1.00 foi descontinuada (fim da concomitância em 2018). 🕒
 - 📍 Endereços de consulta e permissão de DANFE resumido dependem da UF.
+- 📍 **GO migrou o endereço de consulta para HTTPS** (IT 2025.003, jun/2025): produção passa de `http://nfe.sefaz.go.gov.br/...` para `https://nfeweb.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe` (corte 30/08/2025; homologação `https://nfewebhomolog.sefaz.go.gov.br/...`, corte 30/06/2025). A regra de validação do endereço não muda — só a URL. Confirma por que o endpoint deve vir de tabela versionada por UF, não fixo no código.
 
 ## Implicação de implementação
 
@@ -98,4 +99,16 @@ A grande diferença entre 2.00 e 3.00 é **o que prova a autenticidade**: na 2.0
 
 ## Fonte
 
-Manual de Especificações Técnicas do DANFE NFC-e e QR Code (2025-03-24), capítulos 2–4. Overlay: NT 2025.001 v1.03 (29/09/2025).
+| Campo | Valor |
+|---|---|
+| Documento | Manual de Especificações Técnicas do DANFE NFC-e e QR Code (2025-03-24), capítulos 2–4. |
+| Versão | v1.03; v1.00 |
+| Data | 29/09/2025; 2025-03-24; jun/2025 |
+| Páginas/capítulo | capítulos 2–4 |
+| NT relacionada | NT 2025.001 v1.03 |
+| Schema/tabela relacionada | QR Code |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+Manual de Especificações Técnicas do DANFE NFC-e e QR Code (2025-03-24), capítulos 2–4. Overlay: NT 2025.001 v1.03 (29/09/2025); IT 2025.003 v1.00 (jun/2025, endereço de consulta GO).

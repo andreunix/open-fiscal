@@ -59,6 +59,8 @@ A IN RFB 2229/2024 muda a lei de formação do CNPJ para ampliar a oferta de nú
 | Campo CNPJ (XSD) | `[0-9]{14}` | `[A-Z0-9]{12}[0-9]{2}` |
 | Chave de acesso (XSD) | `[0-9]{44}` | `[0-9]{6}[A-Z0-9]{12}[0-9]{26}` |
 
+✅ Os dois padrões acima estão **confirmados nos schemas baixados** (`tiposBasico_v4.00` da NF-e, dos eventos e da `consSitNFe` v4.00): `TCnpj` = `[0-9A-Z]{12}[0-9]{2}`, `TCnpjOpc` = `[0-9]{0}|[0-9A-Z]{12}[0-9]{2}` e `TChNFe` = `[0-9]{6}[0-9A-Z]{12}[0-9]{26}` (mesma classe de caracteres, `[0-9A-Z]`).
+
 - **DV por módulo 11 — fórmula inalterada**, mas cada caractere (número **ou letra**) passa a entrar no cálculo pelo seu **valor ASCII − 48** (`0`→0 … `9`→9, `A`→17, `B`→18, `C`→19, …). Assim o CNPJ **numérico** atual mantém exatamente o mesmo DV.
 - O **DV da chave** (44 posições) usa a mesma lógica: converte **todos** os 44 caracteres por ASCII − 48 e só então aplica o módulo 11.
 - Letras `I`, `O`, `U`, `Q` e `F` devem ser **vedadas** no CNPJ alfa (pedido do ENCAT à RFB, a confirmar) — e, por consequência, na chave.
@@ -83,4 +85,16 @@ A chave de acesso é gerada pelo emitente; a chave **natural** é a regra de uni
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.6 e §2.2.7, p. 18–20 (Tabelas 2-1 a 2-3). Overlay: NT Conjunta 2025.001 v1.00 (25/04/2025), NT 2023.002 v1.01 (18/11/2025), NT 2026.004 v1.01 (08/06/2026).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §2.2.6 e §2.2.7, p. 18–20 (Tabelas 2-1 a 2-3). |
+| Versão | v1.00; v1.01 |
+| Data | 08/05/2025; 18/11/2025; 08/06/2026 |
+| Páginas/capítulo | §2; p. 18–20 |
+| NT relacionada | NT Conjunta 2025.001 v1.00; NT 2023.002 v1.01; NT 2026.004 v1.01 |
+| Schema/tabela relacionada | PL_010d_NT2026.004 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, §2.2.6 e §2.2.7, p. 18–20 (Tabelas 2-1 a 2-3). Overlay: NT Conjunta 2025.001 v1.00 (08/05/2025), NT 2023.002 v1.01 (18/11/2025), NT 2026.004 v1.01 (08/06/2026). Schema: tiposBasico_v4.00 (CNPJ Alfanumérico - NT2026.004 · PL_010d_NT2026.004).

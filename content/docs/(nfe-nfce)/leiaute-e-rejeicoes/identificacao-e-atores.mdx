@@ -41,6 +41,24 @@ Esses campos não são independentes. Modelo, destino, finalidade, presença e t
 | `indPres` | como ocorreu a presença do comprador? |
 | `indIntermed` | a operação tem intermediador/marketplace? 🔄 |
 
+## Domínios do cabeçalho
+
+Cada um desses campos é uma **enumeração fechada** no schema: o parser só aceita os valores abaixo. Use-os como tabela de domínio do gerador.
+
+| Campo | Valores (XSD) |
+|---|---|
+| `tpNF` | `0`=entrada · `1`=saída |
+| `idDest` | `1`=interna · `2`=interestadual · `3`=exterior |
+| `tpImp` | `0`=sem DANFE · `1`=retrato · `2`=paisagem · `3`=simplificado · `4`=DANFE NFC-e · `5`=DANFE NFC-e em mensagem eletrônica |
+| `tpEmis` | `1`=normal · `2`=FS-IA · `3`=SCAN/NFF · `4`=DPEC/EPEC · `5`=FS-DA · `6`=SVC-AN · `7`=SVC-RS · `9`=offline NFC-e |
+| `tpAmb` | `1`=produção · `2`=homologação |
+| `finNFe` | `1`=normal · `2`=complementar · `3`=ajuste · `4`=devolução · 🔄 `5`=nota de crédito · `6`=nota de débito (RTC) |
+| `indFinal` | `0`=normal · `1`=consumidor final |
+| `indPres` | `0`=não se aplica · `1`=presencial · `2`=internet · `3`=teleatendimento · `4`=NFC-e entrega em domicílio · `5`=presencial fora do estabelecimento · `9`=não presencial, outros |
+| `indIntermed` | `0`=sem intermediador (site/plataforma próprios) · `1`=intermediador/marketplace de terceiros |
+
+O schema do leiaute (já com o overlay RTC) traz `finNFe` até `6`; os valores `5`/`6` são detalhados por `tpNFCredito`/`tpNFDebito` (ver overlay NT 2025.002). `tpImp=6` (Simplificado Tipo 2) entra por NT 2026.002 e não consta da enumeração-base. 🔄
+
 ## Emitente
 
 O grupo `emit` contém `CNPJ` ou `CPF` (conforme cenário), razão social e nome fantasia, endereço, inscrição estadual e adicionais, e o `CRT` (regime tributário).
@@ -112,4 +130,18 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I, grupos A a GA, p. 8–17. |
+| Versão | v1.31; v1.11; v1.20; v1.12 |
+| Data | 26/09/2022; 25/01/2023; 29/08/2024; 28/01/2025 |
+| Páginas/capítulo | p. 8–17 |
+| NT relacionada | NT 2020.006 v1.31; NT 2022.003 v1.11; NT 2024.001 v1.20; NT 2021.002 v1.12; NT 2018.005 v1.52; NT 2019.001 v1.70 |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Anexo I, grupos A a GA, p. 8–17. Overlay: NT 2020.006 v1.31 (26/09/2022), NT 2022.003 v1.11 (25/01/2023), NT 2024.001 v1.20 (29/08/2024), NT 2021.002 v1.12 (28/01/2025), NT 2018.005 v1.52 (10/07/2025), NT 2019.001 v1.70 (18/08/2025), NT 2023.002 v1.01 (18/11/2025), NT 2025.001 v1.03 (29/09/2025), NT 2022.002 v1.30a (26/03/2026), NT 2024.003 v1.10 (11/05/2026), NT 2026.001 v1.00 (22/04/2026), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026), NT 2025.002 v1.50 (03/06/2026).
+
+Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30).

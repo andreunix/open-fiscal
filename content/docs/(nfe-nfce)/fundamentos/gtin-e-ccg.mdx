@@ -53,6 +53,8 @@ A validação do GTIN **não** é só de formato: o autorizador compara contra u
 
 A **NT 2022.001** criou um Web Service próprio para **consultar o GTIN no CCG** antes da emissão. O serviço recebe um GTIN, aplica a **normalização** (completa com zeros à esquerda até 14 posições) e devolve os dados cadastrais e a situação no CCG. Use-o para antecipar rejeições de GTIN na sua própria validação, em vez de descobrir o problema só na autorização. 🔄
 
+> **Forma no schema (`consGTIN_v1.00`):** raiz `consGTIN` / `retConsGTIN`, `versao` fixa **`1.00`**; namespace `http://www.portalfiscal.inf.br/nfe`. A entrada tem **só** o campo `GTIN` (`TCodGTIN` = `[0-9]{6,14}`). O retorno traz `verAplic`, `cStat`, `xMotivo`, `dhResp` e, quando localizado, `GTIN`, `tpGTIN`, `xProd`, `NCM` e `CEST` — exatamente o conjunto reduzido do CCG.
+
 ## Vigência
 
 - 🔄 CCG instituído pela **NT 2017.001**; entrada em vigor por **cronograma** previsto na legislação.
@@ -66,4 +68,16 @@ A **NT 2022.001** criou um Web Service próprio para **consultar o GTIN no CCG**
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §2.2.9, p. 21–22 (Tabela 2-5). Overlay: NT 2022.001 v1.00 (31/05/2022), NT 2021.003 v1.40 (26/02/2025).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §2.2.9, p. 21–22 (Tabela 2-5). |
+| Versão | v1.00; v1.40 |
+| Data | 31/05/2022; 26/02/2025 |
+| Páginas/capítulo | §2; p. 21–22 |
+| NT relacionada | NT 2022.001 v1.00; NT 2021.003 v1.40 |
+| Schema/tabela relacionada | PL_ConsultaGTIN_v1.00 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, §2.2.9, p. 21–22 (Tabela 2-5). Overlay: NT 2022.001 v1.00 (31/05/2022), NT 2021.003 v1.40 (26/02/2025). Schema: consGTIN_v1.00 / retConsGTIN_v1.00 (PL_ConsultaGTIN_v1.00).

@@ -79,6 +79,8 @@ A NT 2025.002 v1.50 cria eventos da NF-e modelo 55 para a apuração de IBS/CBS.
 
 Os eventos por item levam `nItem` e os valores/quantidades afetados; as regras impedem exceder o IBS, a CBS ou a quantidade da NF-e vinculada. O retorno aceita `cStat` de 3–4 posições e protocolo de 15 ou 17 posições. O evento `211120` (destinação para consumo pessoal) é **histórico**: foi removido após a revogação do art. 57, §6º, da LC 214/2025 pela LC 227/2026. Os demais eventos devem ser registrados desde janeiro de 2026 quando ocorrer a hipótese legal.
 
+> **Confirmação no schema (`Eventos_RTC`):** todos os 17 schemas (`e110001`–`e412130`) usam namespace `http://www.portalfiscal.inf.br/nfe` e `versao` fixa `1.00`; cada `detEvento` traz um `descEvento` **literal fixo**. Carregam `nItem` (evento por item) apenas `112120`, `112130`, `112140`, `211110`, `211124`, `211130`, `211140` e `211150`; os demais são por nota inteira. O `110001` (Cancelamento de Evento) carrega `tpEventoAut` + `nProtEvento` do evento cancelado. ⚠️ O pacote **ainda inclui** o schema `e211120_v1.00`, mesmo após a revogação do evento `211120` — trate o `tpEvento` pela tabela legal, não pela presença do XSD.
+
 Há ainda **eventos propagados** automaticamente (de CT-e, MDF-e) e eventos de **outros órgãos** (Suframa, averbação de exportação).
 
 > O **Comprovante de Entrega da NF-e** (`110130`, NT 2021.001) registra a entrega com `hashComprovante`, data/hora, `nProt` da NF-e e, opcionalmente, coordenadas `latGPS`/`longGPS` do ponto de entrega; serve para instruir processos administrativos e judiciais. O par `110131` cancela esse registro. 🔄
@@ -102,4 +104,16 @@ Um evento nunca altera a NF-e autorizada — ele acrescenta um registro sobre a 
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5). Overlay: NT 2021.001 v1.01 (06/07/2022), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024), NT 2025.002 v1.50 (03/06/2026).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5). |
+| Versão | v1.01; v1.02; v1.00; v1.50 |
+| Data | 06/07/2022; 26/04/2024; 27/05/2024; 03/06/2026 |
+| Páginas/capítulo | §3; p. 27–30 |
+| NT relacionada | NT 2021.001 v1.01; NT 2023.005 v1.02; NT 2024.002 v1.00; NT 2025.002 v1.50 |
+| Schema/tabela relacionada | não indicada |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, §3.1, p. 27–30 (Tabelas 3-1 a 3-5). Overlay: NT 2021.001 v1.01 (06/07/2022), NT 2023.005 v1.02 (26/04/2024), NT 2024.002 v1.00 (27/05/2024), NT 2025.002 v1.50 (03/06/2026). Schema: e110001–e412130_v1.00 (Eventos_RTC).

@@ -49,6 +49,40 @@ A versão incorporada aqui é a **1.00f, de 11 de março de 2026**, com implanta
 | totais | somatórios por item, valores negativos proibidos e `vTotDFe` |
 | QR Code | URL prevista, chave, `sign` em contingência e assinatura calculada |
 
+## Fatos do schema (XSD v1.00)
+
+O schema fixa a *forma do dado* antes de qualquer regra de validação. O elemento raiz `NFGas` declara o namespace `http://www.portalfiscal.inf.br/nfgas` e o atributo `versao` fixo em `1.00` (padrão `1\.00`).
+
+### Domínios fechados do cabeçalho
+
+| Campo | Tipo | Valores aceitos |
+|---|---|---|
+| `mod` | `TModNF` | `76` (único valor) |
+| `tpAmb` | `TAmb` | `1`, `2` |
+| `tpEmis` | `TtpEmis` | `1`, `2` |
+| `finNFGas` | `TFinNF` | `0`, `3` |
+| `tpFat` | `TFatNF` | `1`, `2`, `3` |
+
+O schema ainda fecha domínios específicos do gás, como a modalidade tarifária `TModTar` (`01`–`10`) e a composição da fatura `TCompFat` (`1`–`7`).
+
+### Tipos e cardinalidade
+
+| Item | Schema |
+|---|---|
+| `serie` | `0` ou `[1-9]{1}[0-9]{0,2}` |
+| `nNF` | `[1-9]{1}[0-9]{0,8}` |
+| `det` | 1 a 990 ocorrências |
+| `gMed` | 0 a 99 |
+| `gSub` / `gMedicao` | 0 a 1 |
+| `gMedida` | 1 (exatamente uma por `gMedicao`) |
+| `autXML` | 0 a 10 |
+
+### Chave de acesso é alfanumérica
+
+O atributo `Id` segue o padrão `NFGas[0-9]{6}[A-Z0-9]{12}[0-9]{26}`: o prefixo literal `NFGas`, seguido dos 44 caracteres da chave. O segmento de 12 posições corresponde ao **CNPJ do emitente**, e o schema o define como `[A-Z0-9]{12}` — a NFGas já nasce com **CNPJ alfanumérico**. O tipo `TCnpj` confirma: `[A-Z0-9]{12}[0-9]{2}`.
+
+> **Atenção:** a chave **não** é totalmente numérica. Trate o segmento do CNPJ como alfanumérico ao montar, validar ou indexar a chave de acesso da NFGas.
+
 ## Faturamento e marcações
 
 A NFGas diferencia tipos de faturamento, incluindo faturamento por terceiro e faturamento conjunto. Quando documentos ficam relacionados, o fisco pode gerar eventos de marcação automaticamente, como autorização, cancelamento ou substituição de NFGas de faturamento conjunto.
@@ -77,4 +111,18 @@ O Anexo I combina regra fiscal, regra de schema e regra operacional. Uma rejeiç
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC NFGas — Anexo I, Leiaute e Regras de Validação, versão 1.00f — 11 de março de 2026, p. 4–50. |
+| Versão | 1.00f |
+| Data | março de 2026 |
+| Páginas/capítulo | p. 4–50 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | PL_NFGas_1.00e |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
 MOC NFGas — Anexo I, Leiaute e Regras de Validação, versão 1.00f — 11 de março de 2026, p. 4–50.
+
+Schema: nfgas_v1.00 · nfgasTiposBasico_v1.00 · tiposGeralNFGas_v1.00 (PL_NFGas_1.00e)

@@ -14,7 +14,10 @@
     "nfe-abi",
     "nfag",
     "nfgas",
+    "schemas",
     "operacao",
+    "notas-tecnicas",
+    "informes-tecnicos",
     "referencia"
   ]
 }

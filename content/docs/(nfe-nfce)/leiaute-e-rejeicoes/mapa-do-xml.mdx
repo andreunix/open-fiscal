@@ -86,6 +86,28 @@ flowchart TD
 | ZX | QR Code e URL de consulta da NFC-e |
 | ZZ | assinatura XMLDSig |
 
+## Cardinalidade dos grupos repetíveis
+
+Os limites de ocorrência abaixo vêm direto do schema (`minOccurs`/`maxOccurs`). Um gerador deve recusar listas maiores que o teto antes mesmo de enviar — a SEFAZ rejeita por schema.
+
+| Grupo | Tag | Ocorrência (XSD) |
+|---|---|---|
+| BA | `NFref` | 0–999 |
+| GA | `autXML` | 0–10 |
+| H | `det` | 1–990 |
+| I01 | `DI` | 0–100 |
+| I02 | `adi` | 1–999 (por `DI`) |
+| I80 | `rastro` | 0–500 |
+| L | `arma` | 1–500 |
+| X | `reboque` | 0–5 |
+| X | `vol` | 0–5000 |
+| X | `lacres` | 0–5000 (por `vol`) |
+| YA | `detPag` | 1–100 |
+| Z | `obsCont` / `obsFisco` | 0–10 cada |
+| Z | `procRef` | 0–100 |
+
+Grupos sem `maxOccurs` (ex.: `infIntermed`, `infAdic`, `infRespTec`, `infNFeSupl`) são `0–1`; `pag` é único e contém os `detPag`.
+
 ## Item é uma unidade fechada
 
 Cada `det` contém produto e seus tributos. Totais ficam fora dos itens e precisam conferir com a soma deles.
@@ -111,4 +133,18 @@ XML Schema valida sequência. Ter todas as tags corretas na ordem errada ainda p
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I, capítulo 2 (Leiaute da NF-e), p. 8–66. |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | p. 8–66; capítulo 2 (Leiaute da NF-e), p |
+| NT relacionada | NT 2025.002 v1.50 |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Anexo I, capítulo 2 (Leiaute da NF-e), p. 8–66. Overlay RTC: NT 2025.002 v1.50 (03/06/2026).
+
+Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30).

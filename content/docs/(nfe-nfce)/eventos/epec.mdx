@@ -17,6 +17,20 @@ O **EPEC** (`110140`) é, ao mesmo tempo, um **evento** e uma **modalidade de co
 
 O EPEC inverte a ordem: primeiro você registra (no AN) que vai emitir em contingência, com dados mínimos; depois, quando o serviço volta, transmite a NF-e completa com a **mesma chave**. É a ponte que dá validade à operação enquanto a autorizadora está fora.
 
+## Estrutura do evento (schema)
+
+Namespace `http://www.portalfiscal.inf.br/nfe`; `versao` = `1.00`; `descEvento` fixo = `EPEC`. O "leiaute mínimo" da NF-e citado pelo manual corresponde, no schema, aos campos do `detEvento`:
+
+| Campo | Conteúdo |
+|---|---|
+| `cOrgaoAutor` / `tpAutor` / `verAplic` | identificação do autor e da aplicação |
+| `dhEmi` | data/hora de emissão da NF-e (`TDateTimeUTC`) |
+| `tpNF` | `0`=entrada · `1`=saída |
+| `IE` / `dest` | inscrição do emitente e grupo do destinatário (`CNPJ`, `CPF` ou `idEstrangeiro` — escolha) |
+| `UF` / `vNF` / `vICMS` / `vST` | UF de destino e os totais mínimos da operação |
+
+O grupo `dest` usa **escolha** entre `CNPJ`, `CPF` e `idEstrangeiro` — exatamente um. O EPEC da **NFC-e** tem schema próprio (`Evento_EPEC_NFCe`), mesmo `tpEvento` `110140`.
+
 ## Overlay de NTs
 
 A NT 2014.001 é a referência viva do EPEC. Deltas posteriores ao MOC 7.0, até a v1.30:
@@ -39,4 +53,18 @@ A **NT 2019.001** criou, no serviço de Autorização do EPEC, as regras `6P31-1
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §3.3, p. 35–44. |
+| Versão | v1.30; v1.70 |
+| Data | 21/06/2022; 18/08/2025 |
+| Páginas/capítulo | §3; p. 35–44 |
+| NT relacionada | NT 2014.001 v1.30; NT 2019.001 v1.70 |
+| Schema/tabela relacionada | Evento_EPEC_PL_v1.01; Evento_EPEC_NFCe_PL1.00 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Visão Geral, §3.3, p. 35–44. Overlay: NT 2014.001 v1.30 (21/06/2022), NT 2019.001 v1.70 (18/08/2025).
+
+Schema: e110140_v1.00 (Evento_EPEC_PL_v1.01), eventoEPEC_v0.01 (Evento_EPEC_NFCe_PL1.00).

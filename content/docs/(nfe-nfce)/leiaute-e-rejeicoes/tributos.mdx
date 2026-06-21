@@ -52,6 +52,24 @@ Cada CST ou CSOSN possui um grupo de escolha. Informar o grupo errado gera rejei
 
 Não copie uma fórmula genérica para todos os grupos. A semântica muda conforme o CST/CSOSN.
 
+## Domínios fechados de CST/CSOSN
+
+Cada tributo restringe o `CST` (ou `CSOSN`) a uma lista fechada no schema. Validar a tag contra a lista certa pega o erro antes do envio.
+
+| Campo | Valores aceitos (XSD) |
+|---|---|
+| `CST` (ICMS, regime normal) | `00` `02` `10` `15` `20` `30` `40` `41` `50` `51` `53` `60` `61` `70` `90` |
+| `CSOSN` (Simples Nacional) | `101` `102` `103` `201` `202` `203` `300` `400` `500` `900` |
+| `CST` (IPI) | `00` `01` `02` `03` `04` `05` `49` `50` `51` `52` `53` `54` `55` `99` |
+| `CST` (PIS) | `01`–`09` `49` `50`–`56` `60`–`67` `70`–`75` `98` `99` |
+| `CST` (COFINS) | idêntico ao PIS |
+| `modBC` (ICMS) | `0`=margem agregada % · `1`=pauta · `2`=preço tabelado máximo · `3`=valor da operação |
+| `modBCST` (ICMS-ST) | `0`=preço tabelado/sugerido · `1`=lista negativa · `2`=lista positiva · `3`=lista neutra · `4`=margem valor agregado % · `5`=pauta · `6`=valor da operação |
+| `motDesICMS` | `1` `3` `4` `5` `6` `7` `8` `9` `10` `11` `12` `16` `90` |
+| `motDesICMSST` | `3`=uso na agropecuária · `9`=outros · `12`=órgão de fomento agropecuário |
+
+> CST 02/15/53/61 (monofásico de combustível) e os motivos 10/11 (PCD) entraram por NT — já constam da enumeração-base deste schema. Os grupos de IBS/CBS/IS têm `CST`/`cClassTrib` próprios, definidos pelas NTs da Reforma.
+
 ## IPI e Imposto de Importação
 
 IPI usa grupo de enquadramento e uma escolha entre tributado e não tributado. O Imposto de Importação aparece quando a operação e o item exigem seus valores. Na NFC-e, determinados grupos são **proibidos** pelas regras de negócio, ainda que existam no schema compartilhado.
@@ -91,6 +109,28 @@ A v1.50 **reformula** o leiaute antigo: dentro de `gIBSCBSMono`, IBS e CBS têm 
 | 2029 em diante | ad rem | ad rem |
 
 Nos grupos ad rem, valide `valor = quantidade × alíquota ad rem`. Nos grupos ad valorem, valide `valor = base × alíquota percentual`; o IBS separa as parcelas estadual e municipal. As regras da família `UB85a`–`UB104b` escolhem o ramo pelo ano e pelos indicadores de `cClassTrib`, conferem valores com tolerância de R$ 0,01 e tratam retenção e diferença de mistura. Algumas fórmulas dependem de tabelas externas ainda “a publicar”.
+
+### Crédito presumido (`cCredPres`)
+
+O `cCredPres` classifica o crédito presumido de IBS/CBS por fundamento legal (LC 214/2025). A tabela vigente traz indicadores que definem **se** e **como** o crédito é apropriado — não basta o código existir:
+
+| `cCredPres` | Fundamento (LC 214/2025) | Apropria via NF | Apropria via evento | IBS | CBS |
+|---:|---|:--:|:--:|:--:|:--:|
+| 1 | Art. 168 | ✅ | ✅ | ✅ | ✅ |
+| 2 | Art. 169 | — | ✅ | ✅ | ✅ |
+| 3 | Art. 170 | ✅ | ✅ | ✅ | ✅ |
+| 4 | Art. 171 (deduz) | ✅ | — | ✅ | ✅ |
+| 5 | Art. 311 (regime automotivo) | ✅ | — | — | ✅ |
+| 6 | Art. 312 (regime automotivo) | ✅ | — | — | ✅ |
+| 7 | Art. 444 (deduz) | ✅ | — | ✅ | — |
+| 8 | Art. 447 | — | ✅ | ✅ | — |
+| 9 | Art. 449 | — | ✅ | ✅ | — |
+| 10 | Art. 450 | ✅ | — | — | ✅ |
+| 11 | Art. 462 (deduz) | ✅ | — | ✅ | — |
+| 12 | Art. 465 | — | ✅ | ✅ | — |
+| 13 | Art. 467 | ✅ | — | — | ✅ |
+
+> Os indicadores `ind_DeduzCredPres`, `ind_gIBSCredPres` e `ind_gCBSCredPres` decidem entre apropriação por NF-e ou por evento e por imposto. A tributação ad valorem da **CBS** começa em **0,9% (2026)**; a alíquota de 2027 em diante aguarda legislação (IT 2026.002).
 
 ## Totais nascem nos itens
 
@@ -141,4 +181,18 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I, grupos M a UA, p. 25–57. |
+| Versão | v1.01; v1.21; v1.35; v1.11 |
+| Data | 19/08/2022; 15/10/2021; 01/11/2022; 25/01/2023 |
+| Páginas/capítulo | p. 25–57 |
+| NT relacionada | NT 2020.002 v1.01; NT 2020.005 v1.21; NT 2021.004 v1.35; NT 2022.003 v1.11; NT 2022.004 v1.10; NT 2023.003 v1.20 |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Anexo I, grupos M a UA, p. 25–57. Grupos de IBS/CBS/IS: Notas Técnicas da Reforma Tributária. Overlay: NT 2020.002 v1.01 (19/08/2022), NT 2020.005 v1.21 (15/10/2021), NT 2021.004 v1.35 (01/11/2022), NT 2022.003 v1.11 (25/01/2023), NT 2022.004 v1.10 (14/02/2023), NT 2023.003 v1.20 (08/10/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2023.001 v1.60 (09/06/2025), NT 2018.005 v1.52 (10/07/2025), NT 2019.001 v1.70 (18/08/2025), NT 2022.002 v1.30a (26/03/2026), NT 2024.003 v1.10 (11/05/2026), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026), NT 2025.002 v1.50 (03/06/2026).
+
+Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30).

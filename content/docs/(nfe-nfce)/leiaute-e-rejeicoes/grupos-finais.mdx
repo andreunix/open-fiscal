@@ -22,6 +22,29 @@ flowchart TD
 
 "Sem pagamento" é um meio específico e não deve ser combinado como se fosse dinheiro de valor zero fora das condições previstas.
 
+No schema, `tPag` (forma de pagamento) **não** é enumeração fechada: aceita o padrão `[0-9]{2}` e os códigos (`01`=dinheiro, `03`=cartão de crédito, `17`=PIX, `90`=sem pagamento…) vêm da tabela do MOC/NT, validados por regra de negócio. Já são enumerações fechadas: `indPag` (`0`=à vista, `1`=a prazo) e, dentro de `card`, `tpIntegra` (`1`=pagamento integrado ao sistema do emissor · `2`=não integrado, maquininha avulsa).
+
+### Bandeiras de cartão (`tBand`)
+
+Quando `tPag` é cartão (03/04) ou outro meio com grupo `card`, a bandeira da operadora (`tBand`, dentro de `card`) é validada pela tabela do Portal Nacional (regra `YA06-10`). Valores vigentes (todos desde 01/01/2020):
+
+| `tBand` | Operadora | `tBand` | Operadora |
+|---|---|---|---|
+| `01` | Visa | `15` | GoodCard |
+| `02` | Mastercard | `16` | GreenCard |
+| `03` | American Express | `17` | Hiper |
+| `04` | Sorocred | `18` | JCB |
+| `05` | Diners Club | `19` | Mais |
+| `06` | Elo | `20` | MaxVan |
+| `07` | Hipercard | `21` | Policard |
+| `08` | Aura | `22` | RedeCompras |
+| `09` | Cabal | `23` | Sodexo |
+| `10` | Alelo | `24` | ValeCard |
+| `11` | Banes Card | `25` | Verocheque |
+| `12` | CalCard | `26` | VR |
+| `13` | Credz | `27` | Ticket |
+| `14` | Discover | `99` | Outros |
+
 ## Intermediador da transação
 
 O grupo `infIntermed` identifica o intermediador ou marketplace quando a operação ocorre em site ou plataforma de terceiro. Não confunda plataforma intermediadora, adquirente do cartão, credenciadora e software emissor — são papéis diferentes.
@@ -33,6 +56,8 @@ A **NT 2020.006** estruturou esses papéis: o indicador `indIntermed` fica no gr
 `infAdic` possui campos de interesse do Fisco e do contribuinte, além de grupos para observações estruturadas e processos referenciados.
 
 > **Implementação:** não use texto livre para substituir um campo estruturado existente.
+
+No grupo `procRef` (processo referenciado), o schema fecha dois domínios: `indProc` (origem do processo) — `0`=SEFAZ · `1`=Justiça Federal · `2`=Justiça Estadual · `3`=Secex/RFB · `4`=CONFAZ · `9`=outros; e `tpAto` (tipo do ato concessório, quando `indProc=0`) — `08`=Termo de Acordo · `10`=Regime Especial · `12`=Autorização específica · `14`=Ajuste SINIEF · `15`=Convênio ICMS.
 
 ## Comércio exterior, compras e cana
 
@@ -93,5 +118,19 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 - [ ] Nada dentro de `infNFe` muda após a assinatura.
 
 ## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30). |
+| Versão | v1.31; v1.35; v1.20; v1.12 |
+| Data | 26/09/2022; 01/11/2022; 07/10/2024; 28/01/2025 |
+| Páginas/capítulo | p. 62–66 |
+| NT relacionada | NT 2020.006 v1.31; NT 2021.004 v1.35; NT 2023.004 v1.20; NT 2021.002 v1.12; NT 2025.001 v1.03; NT 2026.001 v1.00 |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30).
 
 MOC 7.0 — Anexo I, grupos YA a ZZ, p. 62–66. Overlay: NT 2020.006 v1.31 (26/09/2022), NT 2021.004 v1.35 (01/11/2022), NT 2023.004 v1.20 (07/10/2024), NT 2021.002 v1.12 (28/01/2025), NT 2025.001 v1.03 (29/09/2025), NT 2026.001 v1.00 (22/04/2026), NT 2024.003 v1.10 (11/05/2026), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026).

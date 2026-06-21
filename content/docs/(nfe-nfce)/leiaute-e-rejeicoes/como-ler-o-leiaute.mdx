@@ -75,6 +75,48 @@ flowchart TD
 
 > **Implementação:** preserve identificadores como `CNPJ`, `cMun` e `CFOP` em string. Eles são números apenas no alfabeto aceito; não são valores para cálculo.
 
+## Dicionário de tipos do schema
+
+A notação `C 1-60` ou `N 13v2` das tabelas do Anexo I resolve, no XSD, para um `simpleType` nomeado com tamanho, casas decimais e regex exatos. Conhecer o tipo nomeado evita ambiguidade: é a forma que o parser aceita **antes** de qualquer Regra de Validação.
+
+### Texto, identificadores e domínios fixos
+
+| Tipo (XSD) | Forma exata | Onde aparece |
+|---|---|---|
+| `TString` | regex `[!-ÿ]{1}[ -ÿ]{0,}[!-ÿ]{1}` | base de todo texto: 1.º e último caractere não podem ser espaço |
+| `TChNFe` | `[0-9]{44}` | chave de acesso |
+| `TCnpj` | `[0-9]{14}` | CNPJ numérico (ver alfanumérico na chave de acesso) |
+| `TCpf` | `[0-9]{11}` | CPF |
+| `TCodMunIBGE` | `[0-9]{7}` | `cMun`, `cMunFG` |
+| `TIe` / `TIeDest` | `[0-9]{2,14}` ou `ISENTO` | inscrição estadual |
+| `TNF` | `[1-9]{1}[0-9]{0,8}` | `nNF` (1 a 999.999.999, sem zeros à esquerda) |
+| `TSerie` | `0|[1-9]{1}[0-9]{0,2}` | `serie` (0 a 999) |
+| `TMed` | `[0-9]{1,4}` | número de medição |
+| `TPlaca` | `[A-Z]{2,3}[0-9]{4}` … `[A-Z0-9]{7}` | placa de veículo (admite padrão Mercosul) |
+
+Textos com faixa explícita herdam de `TString`: `TVerAplic` 1–20, `TMotivo` 1–255, `TJust` 15–255 (justificativa de cancelamento/CCe exige no mínimo 15 caracteres).
+
+### Datas e hora
+
+| Tipo (XSD) | Formato | Observação |
+|---|---|---|
+| `TData` | `AAAA-MM-DD` | só ano `20xx`; valida mês, dia e ano bissexto na própria regex |
+| `TTime` | `hh:mm:ss` | 00–23 / 00–59 / 00–59 |
+| `TDateTimeUTC` | `AAAA-MM-DDThh:mm:ss±hh:00` | exige fuso (`-03:00`, `+00:00`…); usado em `dhEmi`, `dhSaiEnt`, `dhRecbto` |
+
+### Decimais `TDec_IIDD`
+
+O nome codifica a precisão: **`II`** = casas inteiras máximas, **`DD`** = casas decimais. Variações:
+
+| Sufixo | Significado |
+|---|---|
+| (nenhum) | casas decimais fixas (`TDec_1302` = até 13 inteiros + exatamente 2 decimais) |
+| `v` | casas decimais variáveis (`TDec_1104v` = 1 a 4 decimais) |
+| `Opc` | não admite o valor zero |
+| `Max100` | valor limitado a 100 (alíquotas percentuais) |
+
+Exemplos do leiaute: `vProd`/`vNF` usam `TDec_1302` (13v2); quantidades comerciais usam `TDec_1104v` (11v0-4); alíquotas como `pICMS` usam `TDec_0302a04Max100`. Nunca normalize esses campos com ponto flutuante binário — a regex rejeita separador de milhar e exige ponto decimal.
+
 ## ID não é o nome da tag
 
 `B02` é o identificador documental de uma linha. `cUF` é a tag. Rejeições usam IDs compostos, como `B02-20`, para apontar uma regra relacionada ao campo.
@@ -101,4 +143,18 @@ Isso permite ligar documentação, código do validador, mensagem de erro e test
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I, capítulo 2 (Leiaute da NF-e), p. 8–66; §3.1 (Abreviações), p. 67–69. |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | §3; p. 8–66; p. 67–69; capítulo 2 (Leiaute da NF-e), p |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
 MOC 7.0 — Anexo I, capítulo 2 (Leiaute da NF-e), p. 8–66; §3.1 (Abreviações), p. 67–69.
+
+Schema: tiposBasico_v4.00 (PL_010c_NT2022_002v1.30).

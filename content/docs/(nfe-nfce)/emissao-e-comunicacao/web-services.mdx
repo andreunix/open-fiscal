@@ -39,6 +39,17 @@ flowchart TD
 
 Para links por UF, autorizador, SVC e versão de schema publicada nos serviços, veja [Serviços por UF](/docs/operacao/servicos-por-uf).
 
+## Cadeia de certificação (TLS)
+
+A conexão aos Web Services é HTTPS com autenticação mútua por certificado ICP-Brasil. O cliente precisa **confiar na cadeia do servidor** da SEFAZ para fechar o TLS. As cadeias publicadas no Portal Nacional usam duas árvores distintas:
+
+| Host | Âncora de confiança | Cadeia |
+|---|---|---|
+| `www1.nfe.fazenda.gov.br` (Web Services) | **ICP-Brasil** | AC Raiz Brasileira v10 (ITI) → AC do SERPRO SSLv1 → certificado do servidor |
+| `www.nfe.fazenda.gov.br` (portal público) | Let's Encrypt | DST Root CA X3 → Let's Encrypt R3 → certificado do servidor |
+
+> **Implementação:** instale a cadeia ICP-Brasil (Raiz Brasileira v10 + AC SERPRO) na truststore do cliente dos Web Services — não dependa só das âncoras públicas do sistema operacional, que podem não incluir a raiz ICP-Brasil. As cadeias mudam quando os certificados são renovados; trate-as como artefato versionado e revalide periodicamente. Arquivos de referência: `cadeia_www1.nfe.fazenda.gov.br.p7b` (Web Services) e `cadeia_www.nfe.fazenda.gov.br.p7b` (portal).
+
 ## Overlay de NTs
 
 | NT (vigente) | Delta nos serviços |
@@ -51,4 +62,16 @@ Para links por UF, autorizador, SVC e versão de schema publicada nos serviços,
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, §4.3 (Modelo Operacional) e capítulo 5, p. 57–99 (Tabela 4-6). Overlay: NT 2026.004 v1.01 (08/06/2026).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §4.3 (Modelo Operacional) e capítulo 5, p. 57–99 (Tabela 4-6). |
+| Versão | v1.01 |
+| Data | 08/06/2026 |
+| Páginas/capítulo | §4; p. 57–99; capítulo 5, p |
+| NT relacionada | NT 2026.004 v1.01 |
+| Schema/tabela relacionada | PL_010d_NT2026.004 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, §4.3 (Modelo Operacional) e capítulo 5, p. 57–99 (Tabela 4-6). Overlay: NT 2026.004 v1.01 (08/06/2026). Schema: tiposBasico_v4.00 (CNPJ Alfanumérico - NT2026.004 · PL_010d_NT2026.004). Cadeias de certificado em `tmp/nfe/diversos/*.p7b`.

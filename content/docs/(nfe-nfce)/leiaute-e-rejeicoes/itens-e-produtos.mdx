@@ -42,6 +42,19 @@ flowchart TD
 | `vProd` | valor bruto do item |
 | `indTot` | informa se `vProd` compõe o total da nota |
 
+## Domínios do item
+
+Enumerações fechadas do schema — o parser só aceita estes valores:
+
+| Campo | Valores (XSD) |
+|---|---|
+| `orig` (origem da mercadoria) | `0`=nacional · `1`=estrangeira, importação direta · `2`=estrangeira, mercado interno · `3`=nacional >40% importação · `4`=nacional, processos produtivos básicos · `5`=nacional ≤40% importação · `6`=estrangeira, importação direta sem similar (CAMEX) · `7`=estrangeira, mercado interno sem similar (CAMEX) · `8`=nacional, conteúdo de importação >70% |
+| `indTot` | `0`=`vProd` não compõe o total da NF-e · `1`=compõe |
+| `indEscala` | `S`=produzido em escala relevante · `N`=não relevante |
+| `tpViaTransp` (I23a, na importação) | `1`=marítima · `2`=fluvial · `3`=lacustre · `4`=aérea · `5`=postal · `6`=ferroviária · `7`=rodoviária · `8`=conduto/rede · `9`=meios próprios · `10`=entrada/saída ficta · `11`=courier · `12`=em mãos · `13`=por reboque |
+
+`uCom` e `uTrib` **não** são enumerados: são texto livre (`TString`, até 6 caracteres). A coerência da unidade tributável é cobrada por regra de negócio (ex.: tabela ANP de combustíveis), não pelo schema.
+
 ## Comercial não é sempre tributável
 
 Exemplo: um produto pode ser vendido em caixa, mas tributado em unidade ou quilograma.
@@ -75,6 +88,34 @@ Frete, seguro, desconto e outras despesas podem aparecer no item. Quando informa
 | papel imune | `RECOPI` |
 
 Esses grupos não são "metadados livres". A presença deles ativa validações específicas e pode ser **proibida** para a NFC-e.
+
+### Tipo e espécie de veículo (`tpVeic`/`espVeic`)
+
+No grupo `veicProd`, `tpVeic` (J19) e `espVeic` (J20) são validados pela Tabela de Tipo e Espécie de Veículo (Portaria DENATRAN 681, regras `J19-10`/`J20-10`/`J20-20`). A espécie restringe os tipos compatíveis:
+
+| `espVeic` | Espécie | `tpVeic` compatíveis |
+|---|---|---|
+| `1` | Passageiro | 2 Ciclomotor · 3 Motoneta · 4 Motocicleta · 5 Triciclo · 6 Automóvel · 7 Micro-ônibus · 8 Ônibus · 10 Reboque · 11 Semirreboque · 21 Quadriciclo · 22 Chassi plataforma |
+| `2` | Carga | 3 Motoneta · 4 Motocicleta · 5 Triciclo · 10 Reboque · 11 Semirreboque · 14 Caminhão · 21 Quadriciclo · 23 Caminhonete |
+| `3` | Misto | 13 Camioneta · 25 Utilitário |
+| `5` | Tração | 17 Caminhão trator · 18 Trator de rodas · 19 Trator de esteiras · 20 Trator misto |
+| `6` | Especial | 4, 5, 6, 7, 8, 10, 11, 13, 14, 17, 22, 23, 25, 26 (Motor-casa) |
+
+### Índice de mistura de biocombustível (`pBio`)
+
+O `pBio` (LA17) declara o percentual obrigatório de anidro/biodiesel por `cProdANP` (regras `LA17-10`/`LA17-20`). Valores vigentes da tabela baixada:
+
+| `cProdANP` | Produto | `pBio` |
+|---|---|--:|
+| 320102001 | Gasolina C comum | 0,30 |
+| 320102002 | Gasolina C comum aditivada | 0,30 |
+| 320102003 | Gasolina C premium | 0,25 |
+| 320102005 | Gasolina C premium aditivada | 0,25 |
+| 320103001 | Gasolina de referência — NBR 16038 | 0,30 |
+| 320103002 | Outras gasolinas automotivas | 0,30 |
+| 320103003 | Gasolina de referência — PROCONVE L-6 | 0,30 |
+| 320301001 | Outras gasolinas | 0,30 |
+| 320301002 | Gasolina para exportação | 0,30 |
 
 ## GTIN
 
@@ -122,4 +163,18 @@ Camada incremental posterior ao MOC 7.0. Confirme sempre a revisão vigente.
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I, grupos H a LB, p. 17–25. |
+| Versão | v1.21; v1.35; v3.70; v1.20 |
+| Data | 15/10/2021; 01/11/2022; 09/01/2024; 07/10/2024 |
+| Páginas/capítulo | p. 17–25 |
+| NT relacionada | NT 2020.005 v1.21; NT 2021.004 v1.35; NT 2016.003 v3.70; NT 2023.004 v1.20; NT 2024.001 v1.20; NT 2021.002 v1.12 |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Anexo I, grupos H a LB, p. 17–25. Overlay: NT 2020.005 v1.21 (15/10/2021), NT 2021.004 v1.35 (01/11/2022), NT 2016.003 v3.70 (09/01/2024), NT 2023.004 v1.20 (07/10/2024), NT 2024.001 v1.20 (29/08/2024), NT 2021.002 v1.12 (28/01/2025), NT 2023.001 v1.60 (09/06/2025), NT 2019.001 v1.70 (18/08/2025), NT 2026.002 v1.00 (25/05/2026), NT 2026.004 v1.01 (08/06/2026), NT 2025.002 v1.50 (03/06/2026).
+
+Schema: leiauteNFe_v4.00 (PL_010c_NT2022_002v1.30).

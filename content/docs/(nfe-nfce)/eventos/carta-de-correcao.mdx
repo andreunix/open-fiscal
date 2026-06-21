@@ -17,6 +17,18 @@ A legislação **não** permite corrigir por CC-e, entre outros:
 
 A CC-e serve para ajustes que não mudam o cálculo nem as partes da operação (ex.: corrigir uma informação complementar). Se o que está errado afeta tributo ou identifica outra pessoa, o caminho é **cancelar e reemitir**, não corrigir.
 
+## Estrutura do evento (schema)
+
+Namespace `http://www.portalfiscal.inf.br/nfe`; `versao` = `1.00`. O `detEvento` da CC-e tem dois campos:
+
+| Campo | Conteúdo |
+|---|---|
+| `descEvento` (fixo) | `Carta de Correcao` |
+| `xCorrecao` | texto da correção (`TString`, 15–1000) |
+| `xCondUso` (fixo) | termo legal de condição de uso (texto fixo do Convênio S/N de 1970) |
+
+O `xCondUso` é um literal **fixo** no schema — o emissor não o redige; basta reproduzi-lo. O conteúdo do que pode ou não ser corrigido é regra de legislação, não de schema.
+
 ## Vigência
 
 - 🔄 NT 2011.003 consolidou a CC-e; os limites do que pode ser corrigido seguem a legislação vigente.
@@ -27,5 +39,17 @@ A CC-e serve para ajustes que não mudam o cálculo nem as partes da operação 
 > **Implementação:** valide localmente o que a CC-e pode tocar antes de oferecer a funcionalidade ao usuário. Cada CC-e tem `nSeqEvento` próprio; a última CC-e não apaga as anteriores — todas ficam no histórico da chave.
 
 ## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §3.1.1 (Tabela 3-1, evento 110110), p. 28. |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | §3; p. 28 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | não indicada |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
 
 MOC 7.0 — Visão Geral, §3.1.1 (Tabela 3-1, evento 110110), p. 28.

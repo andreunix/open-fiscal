@@ -47,6 +47,40 @@ A versão incorporada aqui é a **1.00k, de 11 de março de 2026**, com implanta
 | totais | somatórios por item, valores negativos proibidos e `vTotDFe` |
 | QR Code | URL prevista, chave, `sign` em contingência e assinatura calculada |
 
+## Fatos do schema (XSD v1.00)
+
+O schema fixa a *forma do dado* antes de qualquer regra de validação. O elemento raiz `NFAg` declara o namespace `http://www.portalfiscal.inf.br/nfag` e o atributo `versao` fixo em `1.00` (padrão `1\.00`).
+
+### Domínios fechados do cabeçalho
+
+| Campo | Tipo | Valores aceitos |
+|---|---|---|
+| `mod` | `TModNFAg` | `75` (único valor) |
+| `tpAmb` | `TAmb` | `1`, `2` |
+| `tpEmis` | `TtpEmis` | `1`, `2` |
+| `finNFAg` | `TFinNFAg` | `0`, `3` |
+| `tpFat` | `TFatNFAg` | `1`, `2`, `3` |
+
+### Tipos e cardinalidade
+
+| Item | Schema |
+|---|---|
+| `cNF` | `[0-9]{7}` |
+| `cDV` | `[0-9]{1}` |
+| `nSiteAutoriz` | `[0-9]{1}` |
+| `serie` | `0` ou `[1-9]{1}[0-9]{0,2}` |
+| `nNF` | `[1-9]{1}[0-9]{0,8}` |
+| `det` | 1 a 990 ocorrências |
+| `gMed` | 0 a 99 |
+| `gSub` / `gFatConjunto` / `gMedicao` | 0 a 1 |
+| `autXML` | 0 a 10 |
+
+### Chave de acesso é alfanumérica
+
+O atributo `Id` segue o padrão `NFAG[0-9]{6}[A-Z0-9]{12}[0-9]{26}`: o prefixo literal `NFAG`, seguido dos 44 caracteres da chave. O segmento de 12 posições corresponde ao **CNPJ do emitente**, e o schema o define como `[A-Z0-9]{12}` — a NFAg já nasce com **CNPJ alfanumérico**. O tipo `TCnpj` confirma: `[A-Z0-9]{12}[0-9]{2}`.
+
+> **Atenção:** a chave **não** é totalmente numérica. Trate o segmento do CNPJ como alfanumérico ao montar, validar ou indexar a chave de acesso da NFAg.
+
 ## Faturamento e marcações
 
 A NFAg diferencia tipos de faturamento, incluindo faturamento por terceiro e faturamento conjunto. Quando documentos ficam relacionados, o fisco pode gerar eventos de marcação automaticamente, como autorização, cancelamento ou substituição de NFAg de faturamento conjunto.
@@ -61,6 +95,26 @@ vTotDFe = total/vNF + IBSCBSTot/gIBS/vIBS + IBSCBSTot/gCBS/vCBS
 
 Os demais totais devem conferir com a soma dos respectivos campos dos itens, considerando a natureza do código de classificação do produto (`cClass`), que pode somar ou deduzir valores.
 
+## Classificação do item (`cClass`)
+
+O `cClass` define a natureza de cada item e determina se o valor **soma** ou **deduz** no total, além de marcar faturamento conjunto e cobrança centralizada. Grupos da tabela vigente:
+
+| Grupo | Natureza | Códigos de exemplo |
+|---|---|---|
+| `060` | Saneamento | `0601001` Água · `0601002` Esgoto · `0601003` Resíduos |
+| `061` | Serviços Acessórios | `0611001` Água · `0611002` Esgoto |
+| `062` | Serviços de Terceiros | `0621001` |
+| `063` | Demais Receitas do Contrato de Concessão | `0631001` |
+| `064` | Outros Serviços | `0641001` |
+| `065` | Acréscimos Financeiros | `0651001` Multa · `0651002` Juros · `0651003` Correção monetária · `0651004` Outros |
+| `070` | Negociações | `0701001` Parcelamento |
+| `080` | Cobranças Especiais | `0801001`–`0801005` (subvenção, taxas, retroativas, multa por infração…) |
+| `092` | Faturamento Conjunto | `0921001` (marca `Fat Conjunto`) |
+| `093` | Cobrança Centralizada | `0931001` (marca `Fat Centralizado`) |
+| `590` | **Deduções** | `5901001`–`5901004` (descontos, subvenção, outras deduções) — **valor deduzido** |
+
+> Apenas o grupo `590` é marcado como **valor deduzido**: seus itens subtraem no total. Os grupos `092`/`093` sinalizam faturamento conjunto e cobrança centralizada, que disparam os eventos de marcação do fisco.
+
 ## Como interpretar
 
 O Anexo I combina regra fiscal, regra de schema e regra operacional. Uma rejeição pode vir de forma XML, certificado, assinatura, credenciamento, vínculo entre documentos, cálculo tributário ou inconsistência de total.
@@ -71,4 +125,18 @@ O Anexo I combina regra fiscal, regra de schema e regra operacional. Uma rejeiç
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC NFAg — Anexo I, Leiaute e Regras de Validação, versão 1.00k — 11 de março de 2026, p. 4–50. |
+| Versão | 1.00k |
+| Data | março de 2026 |
+| Páginas/capítulo | p. 4–50 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | PL_NFAg_1.00j |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
 MOC NFAg — Anexo I, Leiaute e Regras de Validação, versão 1.00k — 11 de março de 2026, p. 4–50.
+
+Schema: nfag_v1.00 · nfagTiposBasico_v1.00 · tiposGeralNFAg_v1.00 (PL_NFAg_1.00j)

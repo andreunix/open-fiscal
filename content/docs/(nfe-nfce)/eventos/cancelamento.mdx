@@ -17,6 +17,20 @@ Específico da **NFC-e** (NT 2018.004): cancela, em prazo **não superior a 168 
 
 Cancelar é diferente de [inutilizar](/docs/emissao-e-comunicacao/inutilizacao): inutilização trata numeração **não usada**; cancelamento trata uma nota **autorizada** que não deve produzir efeitos. O cancelamento por substituição existe porque, no varejo, a mesma venda pode gerar duas NFC-e por falha de comunicação.
 
+## Estrutura do evento (schema)
+
+Namespace `http://www.portalfiscal.inf.br/nfe`; `verEvento`/`versao` = `1.00`. O `detEvento` é distinto por tipo:
+
+| Campo | `110111` (cancelamento) | `110112` (cancelamento por substituição) |
+|---|---|---|
+| `descEvento` (fixo) | `Cancelamento` | `Cancelamento por substituicao` |
+| `nProt` | protocolo da NF-e (`TProt`, 15) | protocolo da NF-e |
+| `xJust` | justificativa (`TJust`, 15–255) | justificativa (15–255) |
+| `cOrgaoAutor` / `tpAutor` / `verAplic` | — | presentes (autor do evento) |
+| `chNFeRef` | — | chave da NFC-e que substitui (`TChNFe`, 44) |
+
+A justificativa exige **no mínimo 15 caracteres** já no schema (`TJust`), antes de qualquer regra de prazo.
+
 ## Overlay de NTs
 
 | NT (vigente) | Delta no cancelamento |
@@ -34,4 +48,18 @@ Cancelar é diferente de [inutilizar](/docs/emissao-e-comunicacao/inutilizacao):
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §3.1.1 e §3.5 (Tabela 3-1), p. 28 e 46–47. |
+| Versão | v1.01; v1.00 |
+| Data | 18/11/2025; 22/04/2026 |
+| Páginas/capítulo | §3; p. 28 |
+| NT relacionada | NT 2023.002 v1.01; NT 2026.001 v1.00 |
+| Schema/tabela relacionada | Evento_Canc_PL_v1.01; Evento_CancSubst_v1.01 |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
 MOC 7.0 — Visão Geral, §3.1.1 e §3.5 (Tabela 3-1), p. 28 e 46–47. Overlay: NT 2023.002 v1.01 (18/11/2025), NT 2026.001 v1.00 (22/04/2026).
+
+Schema: e110111_v1.00 (Evento_Canc_PL_v1.01), e110112_v1.00 (Evento_CancSubst_v1.01).

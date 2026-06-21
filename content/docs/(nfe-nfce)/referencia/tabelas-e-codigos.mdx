@@ -33,9 +33,52 @@ A diferença prática é entre **estrutura** (estável, com algoritmo de DV que 
 ## Vigência
 
 - 🕒 Os valores do MOC 7.0 são de 2020.
-- 🔄 Tabelas atualizadas por Informes Técnicos (NCM, CFOP, ANP, FCP, meios de pagamento, `cClassTrib` da Reforma…). Ver os IT em `tmp/nfe/informes-tecnicos` e o Portal Nacional.
-- 🔄 Enquadramento Legal do IPI (`cEnq`): a NT 2020.002 v1.01 acrescentou os códigos **163, 164 e 165**. A tabela `tPag` (meios de pagamento) passou a ser externa, publicada no Portal Nacional (NT 2020.006).
+- 🔄 Tabelas atualizadas por Informes Técnicos (IT). O IT publica a **versão vigente da lista de valores**, não regra nova; carregue-as do Portal Nacional, versionadas. Revisões vigentes em uso (registro completo em [Proveniência](/docs/referencia/proveniencia)):
+  - **NCM** — IT 2024.001 v2.30 (nov/2025)
+  - **CFOP** — IT 2023.002 v1.00 (abr/2023)
+  - **`cProdANP`** — IT 2023.001 v1.10 (nov/2024); **combustíveis monofásicos** — IT 2023.003 v1.08 (dez/2025)
+  - **FCP** — IT 2023.004 v1.03 (fev/2025)
+  - **Municípios (IBGE)** — IT 2025.001 v1.00 (jan/2025)
+  - **`tPag` (meios de pagamento)** — IT 2024.002 v1.11 (fev/2026); **meios de pagamento p/ Split** — IT 2026.001 v1.00 (fev/2026)
+  - **Classificação IBS/CBS (`cClassTrib`/`CST`/`cClassTribIS`/`cCredPres`)** — IT 2025.002 v1.50 (15/04/2026); **alíquotas da CBS** — IT 2026.002 v1.00 (12/05/2026); **índice de biocombustível (`pBio`)** — IT 2025.004 v1.10 (06/04/2026)
+- 🔄 Enquadramento Legal do IPI (`cEnq`): a NT 2020.002 v1.01 acrescentou os códigos **163, 164 e 165**. A tabela `tPag` (meios de pagamento) passou a ser externa, publicada no Portal Nacional (NT 2020.006). A **NT 2025.001** criou o meio `tPag=91-Pagamento Posterior` (postergação total/parcial), tratado como `90-sem pagamento` na soma dos pagamentos (ver [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais)).
 - 🔄 A NT 2025.002 v1.50 usa tabelas externas e versionadas para `CST`/`cClassTrib` do IBS/CBS, `CSTIS`/`cClassTribIS`, `cCredPres`, alíquotas, produtos monofásicos, índice obrigatório de biocombustível e valores de referência. Os indicadores dessas tabelas **ativam ou vedam grupos XML e regras de validação**; não basta validar a existência do código. NCM e `cClassTribIS` do Imposto Seletivo ainda constam como “a publicar” na revisão.
+
+## Snapshots das tabelas baixadas
+
+Registro das tabelas auxiliares baixadas em `tmp/nfe/diversos/`. A coluna **linhas** é a contagem aproximada de registros (sem cabeçalho); a **vigência** vem do nome do arquivo. São fotografias versionadas — recarregue a versão vigente do Portal antes de implementar.
+
+| Tabela | Vigência do arquivo | Colunas-chave | Linhas | Onde é usada |
+|---|---|---|--:|---|
+| Municípios (IBGE) | 10/02/2025 | `UF` · `Nome_UF` · `cMun` · `Nome_Município` | ~5.570 | `cMun`/`cMunFG` |
+| NCM + uTrib | 01/02/2026 | `NCM` · vigência · `uTrib` · descrição | ~10.520 | `NCM` · unidade tributável |
+| CFOP | 24/04/2023 | `CFOP` + indicadores `indNFe`/`indComunica`/`indTransp`/`indDevol`/`indRetor`/`indAnula`/`indRemes`/`indComb` | ~619 | `CFOP` |
+| Código de Produto ANP (`cProdANP`) | 18/11/2024 | `cProdANP` | ~1.031 | grupo `comb` |
+| Combustíveis monofásicos | 01/01/2026 | `cProdANP` · `pBio` · `origComb` · `uTrib` · `adRemICMS` | ~40 | grupo `comb` |
+| Índice de mistura de biocombustível (`pBio`) | 24/04/2026 | `cProdANP` · `pBio` · vigência | ~9 | `pBio` (LA17) |
+| Classificação tributária IBS/CBS (`cClassTrib`) | 15/04/2026 | `CST-IBS/CBS` · `cClassTrib` · `pRedIBS`/`pRedCBS` · indicadores `ind_g*` · vigência | ~156 | grupo `IBSCBS` |
+| Crédito presumido (`cCredPres`) | 12/12/2025 | `cCredPres` · `Apropria via NF/evento` · `ind_DeduzCredPres`/`ind_gCBSCredPres`/`ind_gIBSCredPres` | ~13 | crédito presumido IBS/CBS |
+| Alíquotas da CBS | IT 2026.002 v1.00 | `Ano` · `Alíquota` | 2 | alíquota CBS |
+| FCP por UF | 07/02/2025 | `cUF` · `UF` · `Aliq_1/2/3` · `Observação` | ~27 | Fundo de Combate à Pobreza |
+| Meios de pagamento (`tPag`) | 04/03/2026 | `tPag` · `Descrição` · `dIniVig`/`dFimVig` | ~23 | grupo `pag` |
+| Bandeiras de cartão (`tBand`) | desde 01/01/2020 | `tBand` · `Operadora` | 28 | grupo `card` |
+| Tipo e espécie de veículo | desde 12/03/2020 | `tpVeic` · `EspVeic` · descrição | 39 | `veicProd` |
+| Unidades de Medida Comercial | 05/07/2016 | `uCom` | (`.xls` legado) | unidade comercial |
+| Lista de Serviços (`cListServ`) | — | `cListServ` · Descrição | ~200 | ISSQN/serviços |
+| Padrões de Regime Especial | Regra Z13-10 | `UF` · padrão · regex | 1 (PR) | `nProc`/`procRef` |
+| `cClass` (NFAg) | — | `Grupo/Código` · Descrição · `Valor Deduzido`/`Fat Conjunto`/`Fat Centralizado` | ~35 | classificação NFAg |
+| Prefixo GS1 | — | informativo | — | `cEAN`/GTIN |
+| Códigos NFe ABI | v2.00 (minuta) | 13 abas de códigos | — | NF-e ABI |
+
+> Os **indicadores** das tabelas `cClassTrib`/`cCredPres` (`ind_gTribRegular`, `ind_gCredPresOper`, `ind_gMonoPadrao`, `ind_DeduzCredPres`, `ind_gIBSCredPres`…) **ativam ou vedam grupos XML e regras de validação** — não basta validar a existência do código. As tabelas pequenas e fechadas foram dobradas nas páginas de tema (ver links na coluna "Onde é usada").
+
+### Padrões de Regime Especial (Z13-10)
+
+A Tabela de Padrões de Regime Especial define, por UF, o formato do número do processo (`nProc`) de regime especial e a expressão regular de validação. No arquivo baixado consta o Paraná:
+
+| UF | Padrão | Exemplos | Expressão regular |
+|---|---|---|---|
+| PR | `NNNNN/AAAA` | `123/2009`, `1234/2018`, `12345/2021` | `([0-9]{1,5})(\/)([2][0][0-9]{2}\|[1][9][8-9][0-9])` |
 
 ## Implicação de implementação
 
@@ -43,4 +86,16 @@ A diferença prática é entre **estrutura** (estável, com algoritmo de DV que 
 
 ## Fonte
 
-MOC 7.0 — Visão Geral, capítulo 8 (Tabelas e Códigos), p. 129–147. Overlay: NT 2025.002 v1.50 (03/06/2026).
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, capítulo 8 (Tabelas e Códigos), p. 129–147. |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | p. 129–147; capítulo 8 (Tabelas e Códigos), p |
+| NT relacionada | NT 2025.002 v1.50 |
+| Schema/tabela relacionada | não indicada |
+| Status | base oficial com overlay explícito de NT, IT ou schema |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, capítulo 8 (Tabelas e Códigos), p. 129–147. Overlay: NT 2025.002 v1.50 (03/06/2026). Snapshots das tabelas auxiliares em `tmp/nfe/diversos/`.

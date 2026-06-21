@@ -19,7 +19,7 @@ O conjunto do MOC é composto por:
 
 ### Chave de acesso
 
-A chave de acesso da NFGas possui **44 caracteres numéricos**.
+A chave de acesso da NFGas possui **44 caracteres**. O schema (`Id` no padrão `NFGas[0-9]{6}[A-Z0-9]{12}[0-9]{26}`) define o segmento de 12 posições do **CNPJ do emitente** como **alfanumérico** (`[A-Z0-9]{12}`): a NFGas já adota CNPJ alfanumérico, portanto a chave não é totalmente numérica.
 
 | Parte | Origem |
 |---|---|
@@ -76,6 +76,8 @@ O Sistema de Registro de Eventos da NFGas permite eventos do contribuinte e do f
 
 Eventos de marcação são gerados automaticamente quando uma NFGas referencia outra, por exemplo em substituição ou faturamento conjunto.
 
+No schema, o único evento de contribuinte com leiaute próprio é o **cancelamento** (`evCancNFGas`, `descEvento` fixo `Cancelamento`); ele compartilha o namespace `http://www.portalfiscal.inf.br/nfgas` e o atributo `versao` fixo `1.00`. Os eventos de marcação `240xxx` são lavrados pelo fisco.
+
 ## QR Code e consulta
 
 O QR Code deve constar no DANFGas em emissão normal e em contingência off-line. Em emissão normal, a URL contém a chave de acesso e o ambiente. Em contingência off-line, inclui também assinatura digital da chave de acesso, usando o certificado que assina a NFGas.
@@ -94,4 +96,18 @@ O DANFGas em contingência deve indicar que foi emitido nessa modalidade, e a co
 
 ## Fonte
 
+| Campo | Valor |
+|---|---|
+| Documento | MOC NFGas — Padrões Técnicos de Comunicação, versão 1.00f — 11 de março de 2026, p. 6–58. |
+| Versão | 1.00f |
+| Data | março de 2026 |
+| Páginas/capítulo | p. 6–58 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | PL_NFGas_1.00e |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
 MOC NFGas — Padrões Técnicos de Comunicação, versão 1.00f — 11 de março de 2026, p. 6–58.
+
+Schema: nfgas_v1.00 · eventoNFGas_v1.00 · evCancNFGas_v1.00 (PL_NFGas_1.00e)
