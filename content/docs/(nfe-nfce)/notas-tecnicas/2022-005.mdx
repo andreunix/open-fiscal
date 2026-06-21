@@ -1,0 +1,51 @@
+---
+title: NT 2022.005 v1.11 — ICMS interestadual a consumidor final e devolução
+description: Reativa a RV NA01-20 (grupo ICMSUFDest obrigatório no DIFAL), adotando a UF de entrada física como destino (Ajuste SINIEF 18/2022), e cria as validações 3BA02 que impedem NF-e de devolução com valor superior ao da nota devolvida. Em produção desde 06/04/2023; flexibilização de comércio exterior em 31/10/2024.
+---
+
+A **NT 2022.005** trata do **ICMS na operação interestadual de venda a consumidor final**. Reativa a **RV `NA01-20`** (rejeição 694), que **obriga o grupo `ICMSUFDest`** (ICMS devido à UF de destino) — suspensa no início de 2022 — adotando, conforme o **Ajuste SINIEF 18/2022**, a **UF de entrada física** da mercadoria (ou fim da prestação) como destino. A NT também cria as validações de **NF-e de devolução** (`finNFe=4`): as RVs **`3BA02-50/54/58/64/68`** impedem que o valor total, o ICMS, o FCP, o ICMS interestadual ou o FCP interestadual da devolução **superem o somatório das NF-e referenciadas** (devolvidas), com **tolerância de R$ 1,00**. A revisão vigente **v1.11 cria exceção na `3BA02-50` para comércio exterior** (`idDest=3`), em que a devolução pode legitimamente superar a NF-e de saída. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.11 (Outubro 2024). Em produção desde 06/04/2023; exceção de comércio exterior (`3BA02-50`) até 31/10/2024.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `NA01-20` reativada | Grupo `ICMSUFDest` obrigatório no DIFAL (idDest=2, indFinal=1, indIEDest=9); destino = UF de entrada física (Ajuste SINIEF 18/2022) | [Cálculo interestadual](/docs/referencia/calculo-interestadual) |
+| `3BA02-50/54/58/64/68` | NF-e de devolução (`finNFe=4`) não pode ter `vNF`/`vICMS`/`vFCP`/`vICMSUFDest`/`vFCPUFDest` maior que o somatório das NF-e referenciadas; tolerância de R$ 1,00 | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| Exceção comércio exterior (v1.11) | `3BA02-50` não se aplica à devolução no comércio exterior (`idDest=3`) | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `545` | `3BA02-50` | NF-e de devolução com valor total superior à NF-e devolvida |
+| `546` | `3BA02-54` | NF-e de devolução com valor do ICMS superior à NF-e devolvida |
+| `566` | `3BA02-58` | NF-e de devolução com valor do FCP superior à NF-e devolvida |
+| `567` | `3BA02-64` | NF-e de devolução com valor do ICMS da UF Destino superior à NF-e devolvida |
+| `581` | `3BA02-68` | NF-e de devolução com valor do FCP da UF Destino superior à NF-e devolvida |
+| `694` | `NA01-20` | Não informado o grupo de ICMS para a UF de destino |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 07/02/2023 |
+| Produção | 06/04/2023 |
+| Exceção de comércio exterior (`3BA02-50`, v1.11) | até 31/10/2024 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2022.005 v1.11 |
+| Versão | v1.11; 1.11 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2022.005 v1.11 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2022.005 v1.11 (Outubro 2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2022.005 v.1.11 - Publicada em 11-10-2024.pdf`. As RVs `3BA02` (NF-e referenciada) foram dobradas em Totais e fechamento por compararem totais (vNF/vICMS/vFCP). Overlay dobrado em [Cálculo interestadual](/docs/referencia/calculo-interestadual), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

@@ -1,0 +1,52 @@
+---
+title: NT 2020.002 v1.01 — Imposto sobre Produtos Industrializados (IPI)
+description: Consolida as regras de IPI das NT 2015.002/2016.001 e acrescenta os códigos 163, 164 e 165 à Tabela de Enquadramento Legal do IPI. Em produção desde 11/06/2020.
+---
+
+A **NT 2020.002** consolida num único documento as regras do **IPI** (grupo O) que estavam dispersas nas NT 2015.002 e 2016.001 e amplia a **Tabela de Enquadramento Legal do IPI** (`cEnq`, O06) com três novos códigos ligados ao Repetro: **163** (REPETRO-Industrialização), **164** (REPETRO-SPED) e **165** (requerimento do industrial/equiparado, IN RFB 1.081/2010). A revisão vigente v1.01 ajusta a descrição do código 165 e atualiza a RV `W16-10` (total da NF-e) para refletir a [NT 2020.005](/docs/notas-tecnicas/2020-005). Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.01 (19/08/2022). Em produção. Os códigos `cEnq` 163–165 valem desde 11/06/2020.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `cEnq` 163, 164, 165 | Novos códigos de Enquadramento Legal do IPI (Repetro-Industrialização, Repetro-SPED e requerimento do industrial) | [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) |
+| RV `O06-10` | Valida `cEnq` (O06) contra o Anexo de Enquadramento Legal do IPI | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| RV `O09-10` | Compatibilidade entre CST do IPI e `cEnq` (isenção 02/52 → faixa 301-399; imunidade 04/54 → 001-099; suspensão 05/55 → 101-199) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| RV `W16-10` (v1.01) | Total do `vNF` passa a considerar `vIPIDevol` e os indicadores de PIS/COFINS-ST (alinhamento à NT 2020.005) | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `387` | `O06-10` | Código de Enquadramento Legal do IPI inválido |
+| `388` | `O09-10` | CST do IPI incompatível com o Código de Enquadramento Legal |
+| `597` | `I08-120` | CFOP de importação e não informado o grupo de IPI |
+| `538` | `W12-10` | Total do IPI difere do somatório dos itens |
+| `863` | `W12a-10` | Total do IPI devolvido difere do somatório dos itens |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — v1.00 | 30/05/2020 |
+| Produção — v1.00 | 11/06/2020 |
+
+> v1.01 (19/08/2022) apenas reescreve a descrição do `cEnq` 165 e atualiza a RV `W16-10`, sem novo prazo.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2020.002 v1.01 |
+| Versão | v1.01; 1.01 |
+| Data | 19/08/2022 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2020.002 v1.01 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2020.002 v1.01 (19/08/2022), `tmp/nfe/notas-tecnicas/Nota Técnica 2020.002 - v.1.01 - Publicada em 19-08-2022.pdf`. Overlay dobrado em [Tributos](/docs/leiaute-e-rejeicoes/tributos) e [Tabelas e códigos](/docs/referencia/tabelas-e-codigos). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

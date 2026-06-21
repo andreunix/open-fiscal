@@ -1,0 +1,64 @@
+---
+title: NT 2023.001 v1.60 — Tributação monofásica do ICMS sobre combustíveis
+description: Regime monofásico (ad rem) do ICMS sobre combustíveis — novos CST 02/15/53/61, campos pBio e origem do combustível, valor por quantidade e totais. Regras base em produção desde 04/09/2023; v1.60 (N41 diesel B e ativação da origem) em 2025.
+---
+
+A **NT 2023.001** implanta a **tributação monofásica do ICMS sobre combustíveis** (Convênio ICMS 199/2022, Lei Complementar 192/2022 e Ajuste SINIEF 01/2023). O imposto deixa de ser percentual e passa a ser **ad rem** — um valor em reais por unidade tributada (litro/kg). A NT cria quatro CST monofásicos (**02** próprio, **15** próprio com retenção, **53** diferido, **61** cobrado anteriormente), os campos de cálculo por quantidade no item, os totais correspondentes no grupo da NF-e e o grupo de origem do combustível. As regras de validação confrontam o `cProdANP` do item contra a **Tabela de Combustíveis Sujeitos à Tributação Monofásica** publicada no Portal. A revisão vigente **v1.60** ajusta `N41-10`/`N41-20` para a refinaria emitir óleo diesel B e marca a ativação da regra de origem (`LA18-10`). Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.60 (Junho 2025). Regras base em produção desde 04/09/2023 (campos desde 30/03/2023); v1.60 (`N41-10`/`N41-20`) em produção 14/07/2025; origem do combustível (`LA18-10`) em produção 01/10/2025.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| CST monofásicos (`ICMS02`/`ICMS15`/`ICMS53`/`ICMS61`) | Novos grupos N02a/N03a/N07a/N08a para os CST 02 (próprio), 15 (próprio + retenção), 53 (diferido) e 61 (cobrado anteriormente) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| ICMS ad rem por quantidade | `qBCMono`×`adRemICMS`=`vICMSMono` (próprio); retenção `qBCMonoReten`/`adRemICMSReten`/`vICMSMonoReten`; retido ant. `qBCMonoRet`/`adRemICMSRet`/`vICMSMonoRet` | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Diferimento (CST 53) e redução da alíquota | `pDif`/`vICMSMonoDif` no CST 53; `pRedAdRem` (N47) + `motRedAdRem` (N48) para a redução do valor ad rem | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `pBio` (LA17) | Índice de mistura do biodiesel no óleo diesel B ou do etanol anidro na gasolina C; `LA17-10`/`LA17-20` (rej. 907/908) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Grupo `origComb` (LA18, 0-30) | `indImport` (0=nacional/1=importado), `cUFOrig`, `pOrig` — origem do B100, etanol anidro e GLGN na mistura; `LA18-10`/`LA18-20`/`LA18-30` e `LA21-10`/`LA21-20` (rej. 909/747/958) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Totais do ICMS monofásico (grupo W) | `vICMSMono`/`vICMSMonoReten`/`vICMSMonoRet` e os totalizadores de quantidade `qBCMono`/`qBCMonoReten`/`qBCMonoRet`; `W16-10` soma `vICMSMonoReten` no `vNF` | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| Validação por `cProdANP` | `N12-100`/`N12-110` exigem ou proíbem o grupo monofásico conforme o `cProdANP` constar na **Tabela de Combustíveis** (rej. 959/960); `I13-20` valida a unidade tributável (rej. 854) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) · [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Delta v1.60 — diesel B | `N41-10`/`N41-20` passam a aceitar os códigos ANP do diesel B (refinaria emite a NF-e quando o ICMS já incidiu sobre o biodiesel, mas não sobre o diesel A) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `610` | `W16-10` | Total da NF difere do somatório (passou a incluir `vICMSMonoReten`) |
+| `700`/`723`/`744` | `W06b.1-10`/`W06c.1-10`/`W06d.1-10` | Total da quantidade tributada monofásica (próprio/retenção/retido) difere dos itens (tolerância R$ 0,01) |
+| `747` | `LA18-30` | Não permitido o grupo de UF de origem fora da Tabela de Combustíveis |
+| `767`/`768`/`769` | `N37a-10`/`N39a-10`/`N43a-10` | Obrigatória a quantidade tributada (próprio/sujeita a retenção/retida anteriormente) |
+| `907`/`908` | `LA17-10`/`LA17-20` | Índice de mistura do biocombustível indevido ou ausente |
+| `909` | `LA18-10`/`LA18-20` | Obrigatório o grupo de UF de origem do combustível |
+| `958` | `LA21-10`/`LA21-20` | Somatório dos percentuais de origem (`pOrig`) diverge de 100 |
+| `959`/`960` | `N12-100`/`N12-110` | Grupo de tributação monofásica indevido ou obrigatório conforme o `cProdANP` |
+| `961`/`963`/`965` | `N38-10`/`N40-10`/`N44-10` | Alíquota ad rem difere da legislação (próprio/retenção/retido) — revogadas e recriadas |
+| `962`/`964`/`966` | `N39-10`/`N41-10`/`N45-10` | Valor do ICMS difere do calculado (próprio/retenção/retido) |
+| `967`/`968`/`969` | `W06c-10`/`W06d-10`/`W06e-10` | Total do ICMS monofásico (próprio/retenção/retido) difere dos itens |
+
+> ⚠️ O `cStat` **966** colide: nasce aqui (`N45-10`, valor do ICMS retido divergente) e é reutilizado pela [NT 2024.001](/docs/notas-tecnicas/2024-001) na regra `N45-10` de origem do produto. As linhas de [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno#overlay-de-nts) mantêm o código único com nota de aviso.
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Campos/leiaute — produção | 30/03/2023 (01/05/2023 p/ diesel e GLP, CV ICMS 12/2023) |
+| Regras de validação base — produção | 04/09/2023 (homol. 03/07/2023) |
+| v1.60 (`N41-10`/`N41-20` diesel B) — produção | 14/07/2025 (homol. 01/07/2025) |
+| `LA18-10` (origem do combustível) — produção | 01/10/2025 (homol. 04/08/2025) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2023.001 v1.60 |
+| Versão | v1.60; 1.60 |
+| Data | 09/06/2025 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2023.001 v1.60 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2023.001 v1.60 (09/06/2025), `tmp/nfe/notas-tecnicas/Nota Técnica 2023.001 v.1.60 - Publicada em 09-06-2025.pdf`. Overlay dobrado em [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

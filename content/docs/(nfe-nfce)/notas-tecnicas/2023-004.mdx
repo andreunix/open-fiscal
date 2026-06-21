@@ -1,0 +1,52 @@
+---
+title: NT 2023.004 v1.20 — Informações de pagamento e desoneração
+description: Enriquece o grupo YA de pagamento (dPag, CNPJPag/UFPag, CNPJReceb, idTermPag), cria o indDeduzDeson para o ICMS desonerado, trata a importação por conta e ordem com CPF (I23d1) e eleva o limite do troco para R$ 300.000. Em produção desde 01/04/2024 (troco ampliado em 01/10/2024).
+---
+
+A **NT 2023.004** amplia as **informações de pagamento e de desoneração** da NF-e/NFC-e. No grupo **`YA` (pagamento)** entram a **data do pagamento `dPag`** (YA03a), o CNPJ transacional `CNPJPag`/`UFPag`, o `CNPJReceb` (beneficiário) e o `idTermPag` (terminal). Cria-se o campo **`indDeduzDeson`** (N28b) para indicar se o **ICMS desonerado (`vICMSDeson`) deduz ou não do valor do item/total**, com regra específica para a **desoneração SUFRAMA** (`motDesICMS=7`, RV `N28-12`, rejeição 652). Na importação por conta e ordem, o adquirente/encomendante pode ser **CPF** (`I23d1`). A revisão vigente **v1.20 eleva o limite do troco** (`vTroco`, RV `YA09-20`) de R$ 1.000,00 para **R$ 300.000,00**. A RV `YA04-20` (963) restringe o grupo de cartões/boletos aos meios de pagamento compatíveis e foi **ativada em 01/10/2024**. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.20 (Outubro 2024). Em produção desde 01/04/2024; `YA09-20`/`YA04-20` ativadas em 01/10/2024.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Grupo `YA` enriquecido | `dPag` (YA03a), `CNPJPag`/`UFPag` (YA03c/d), `CNPJReceb` (YA07a), `idTermPag` (YA07b) | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| `YA04-20` (963) | Grupo de cartões/boletos só para `tPag` compatível; `CNPJReceb` validado (796) | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| `vTroco` até R$ 300.000 | `YA09-20` (965) eleva o limite do troco de R$ 1.000 para R$ 300.000 (delta v1.20) | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| `indDeduzDeson` (N28b) | Indica se o `vICMSDeson` deduz do valor; regra `N28-12` (652) para SUFRAMA (`motDesICMS=7`) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Importação com CPF | Campo `CPF` (`I23d1`) do adquirente/encomendante na importação por conta e ordem; RV `I23d1-10` | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Totais e desoneração | `W16-10` com exceção para `indDeduzDeson`; `X03-10`/`X03-20` desabilitadas | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `652` | `N28-12` | Informado indicador de desoneração inválido para a ZFM (SUFRAMA) |
+| `796` | `YA07a` | CNPJ recebedor do pagamento inválido |
+| `963` | `YA04-20` | Tipo de pagamento não aceita o grupo de cartões ou boletos |
+| `965` | `YA09-20` | Valor do troco acima do permitido |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 05/02/2024 |
+| Produção | 01/04/2024 |
+| Ativação de `YA09-20`/`YA04-20` | 01/10/2024 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2023.004 v1.20 |
+| Versão | v1.20; 1.20 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2023.004 v1.20 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2023.004 v1.20 (Outubro 2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2023.004 v.1.20 - Publicada em 07-10-2024.pdf`. Overlay dobrado em [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

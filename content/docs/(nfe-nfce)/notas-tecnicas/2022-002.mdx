@@ -1,0 +1,41 @@
+---
+title: NT 2022.002 v1.30a — Equiparação à exportação e outras alterações
+description: Flexibiliza as regras de validação do destinatário no exterior para combustível equiparado à exportação (CFOP 7.667/7.552/7.501), admite desoneração de ICMS para PCD no CST 20, uso opcional do CST 90 com diferimento e refNFeSig com código zerado em NF-e de ajuste. Vigente v1.30a, produção 06/04/2026.
+---
+
+A **NT 2022.002** ajusta regras de validação da NF-e 4.0 para permitir a emissão nas operações de combustíveis **equiparadas à exportação** do Convênio ICMS 55/2021, além de outras alterações de pequeno porte. A revisão vigente **v1.30a** consolida: a flexibilização das regras do destinatário no exterior (`E03a-10`/`E12-10`/`E14-10`/`E16a-20`) para o CFOP **7.667** (abastecimento presencial sem frete) e as exceções dos CFOP **7.552** e **7.501**; a desoneração do ICMS na venda de veículos a pessoa com deficiência (Ajuste SINIEF 40/25); o uso **opcional** do CST 90 nas operações com diferimento; e a aceitação de Chave de Acesso referenciada com código numérico zerado (`refNFeSig`) quando a NF-e for de **ajuste** (`finNFe=3`). Ver a [NT no Portal](https://www.nfe.fazenda.gov.br). A v1.30a traz apenas correções pontuais de leiaute sobre a v1.30.
+
+> 🔄 Vigente: v1.30a (Março 2026). Produção até **06/04/2026** (homologação até 30/03/2026). 📍 Exceções de combustível equiparado à exportação dependem do CFOP 7.667 com `comb/UFCons=EX`.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Destinatário no exterior (`idDest=3`) | `E03a-10`/`E12-10`/`E14-10`/`E16a-20` aceitam destinatário brasileiro, UF/país Brasil ou contribuinte de ICMS quando houver item com `comb/UFCons=EX` e CFOP **7.667**; as regras também não se aplicam aos CFOP **7.552** e **7.501** (rej. 720/727/510/790) | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| `refNFeSig` em NF-e de ajuste | `BA02a-10` passa a aceitar Chave de Acesso referenciada com código numérico (`cNF`) zerado também na finalidade **ajuste** (`finNFe=3`), além da normal (rej. 951) | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Desoneração de ICMS para PCD (CST 20) | `motDesICMS` (grupo `N04`) passa a admitir **10=Deficiente Condutor** e **11=Deficiente Não Condutor** (Convênio ICMS 38/12); a mesma desoneração entra no grupo de Partilha (`N10a`); mantém `indDeduzDeson` | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| CST 90 com diferimento (uso opcional) | O grupo `N10` (ICMS=90) passa a admitir o subgrupo de diferimento `vICMSOp`/`pDif`/`vICMSDif` (`N16a`), `cBenefRBC` em RBC, FCP diferido (`pFCPDif`/`vFCPDif`/`vFCPEfet`) e ST como subgrupos opcionais | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Dispensa de transportador no abastecimento | `X04-10` deixa de exigir a identificação do transportador quando houver item com `comb/UFCons=EX` e CFOP **7.667** (abastecimento presencial sem frete, `modFrete=9`); nos demais CFOP de combustível continua obrigatória por UF (rej. 362) | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — v1.30/v1.30a | até 30/03/2026 |
+| Produção — v1.30/v1.30a | até 06/04/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2022.002 v1.30a |
+| Versão | v1.30a; 1.30a |
+| Data | 26/03/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2022.002 v1.30a |
+| Schema/tabela relacionada | PL_010c_NT2022_002v1.30 |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2022.002 v1.30a (26/03/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2022.002 v.1.30a - Publicada em 26-03-2026.pdf`. Schema `leiauteNFe_v4.00` (PL_010c_NT2022_002v1.30). Overlay dobrado em [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Tributos](/docs/leiaute-e-rejeicoes/tributos) e [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

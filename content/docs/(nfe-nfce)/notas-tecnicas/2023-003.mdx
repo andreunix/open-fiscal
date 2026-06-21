@@ -1,0 +1,40 @@
+---
+title: NT 2023.003 v1.20 — CFOP 5.949 e correlatos na NFC-e
+description: Flexibiliza regras de validação de CFOP na NFC-e a critério da UF — CFOP 5.949 com CST 40/CSOSN 900 para gorjeta em SP, integração de pagamentos no RS, e 5.403/5.405 (RE 574.706/PR) no CE. Em produção desde 07/10/2024.
+---
+
+A **NT 2023.003** flexibiliza **regras de validação de CFOP na NFC-e** (modelo 65) para casos específicos **a critério de cada UF**. A revisão vigente **v1.20 libera, em SP**, o **CFOP 5.949 com CST 40 ou CSOSN 900** para registro de **gorjeta**; no **RS**, o 5.949 com CST 90/CSOSN 900 atende a **integração obrigatória de meios de pagamento eletrônicos**; e no **CE**, os CFOP 5.403/5.405 com CST 90/CSOSN 900 atendem o **RE 574.706/PR (STF)**. As mudanças são exceções por UF nas RVs `I08-150` (725), `N12-40` (382), `N12a-40` (386) e `N12-70` (508) — **sem novos códigos de rejeição**, pois esses cStat já vêm do MOC/NTs anteriores. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.20 (Setembro 2024). Em produção desde 07/10/2024. 📍 Exceções dependem da UF (SP, RS, CE).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `I08-150` (725) | NFC-e aceita CFOP 5.949 com CSOSN 900/CST 90 (RS) ou CSOSN 900/CST 40 (SP, gorjeta) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `N12-40` (382) | CST 90 com CFOP 5.949 (RS); CST 90 com 5.403/5.405 (CE); CST 40 com 5.949 (SP) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `N12a-40` (386) | CSOSN 900 com CFOP 5.949 (RS, SP); CST 90 com 5.403/5.405 (CE) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `N12-70` (508) | NF-e aceita CFOP 5.403/5.405 com CST 90/CSOSN 900 na operação com não contribuinte (CE) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 30/09/2024 |
+| Produção | 07/10/2024 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2023.003 v1.20 |
+| Versão | v1.20; 1.20 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2023.003 v1.20 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2023.003 v1.20 (Setembro 2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2023.003 v.1.20 - Publicada em 08-10-2024.pdf`. Os códigos 382/386/508/725 já existem no MOC/NTs anteriores — sem linha nova em Códigos de retorno. Overlay dobrado em [Tributos](/docs/leiaute-e-rejeicoes/tributos). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

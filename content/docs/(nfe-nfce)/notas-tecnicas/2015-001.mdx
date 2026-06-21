@@ -1,0 +1,52 @@
+---
+title: NT 2015.001 v1.30 — Evento de Pedido de Prorrogação do ICMS
+description: Acrescenta o modo de implementação "solicitação completa" (adotado por MG) ao evento de Pedido de Prorrogação da suspensão do ICMS, ao lado da "solicitação parcial" (SP), e torna o limite de pedidos pendentes parametrizável por UF. Em produção em MG desde 06/01/2025.
+---
+
+A **NT 2015.001** especifica o **evento de Pedido de Prorrogação da suspensão do ICMS** na remessa para industrialização (Convênio AE-15/74): decorridos 180 dias, o contribuinte pede a prorrogação por eventos vinculados à NF-e de remessa (`111500`/`111501`), podendo cancelá-los (`111502`/`111503`); a SEFAZ defere ou indefere por evento do Fisco (`411500`–`411503`). Todos os eventos são **síncronos** — o protocolo de registro **não** significa deferimento; vale sempre a **última** resposta do Fisco. A **v1.30** introduz um **segundo modo de implementação**: além da **solicitação parcial** (pedido item a item, adotada por **SP**), passa a existir a **solicitação completa** (só pedidos totais, com todos os itens e quantidades da NF-e), adotada por **MG**. Por enquanto só SP e MG adotam a NT. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.30 (06/12/2024). Novo modo **solicitação completa** em produção **somente em MG** desde 06/01/2025. A solicitação parcial (SP) é a anterior, mantida.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Solicitação completa | Novo modo: só aceita pedido **total** (todos os itens/quantidades da NF-e); pedido parcial é indeferido. Adotado por MG; SP mantém a solicitação parcial | [Pedido de Prorrogação do ICMS](/docs/eventos/prorrogacao-icms#modos-de-solicitação) |
+| Limite parametrizável | `P13-14`: o teto de pedidos do mesmo tipo (1º/2º) autorizados **sem resposta do Fisco** era fixo em 20; passa a ser parametrizável por UF, podendo cair a **1** (rej. 638/639) | [Pedido de Prorrogação do ICMS](/docs/eventos/prorrogacao-icms#como-interpretar) |
+| `P19` ampliada | Validação do `idPedido` passa a aceitar também a existência de **pedido de prorrogação deferido** para o `tpEvento` (rej. 809) | [Pedido de Prorrogação do ICMS](/docs/eventos/prorrogacao-icms#implicação-de-implementação) |
+| `justStatus` 7 | Justificativa "7 - Quantidade inconsistente com a quantidade do item" **não se aplica** à solicitação completa | [Pedido de Prorrogação do ICMS](/docs/eventos/prorrogacao-icms#resposta-do-fisco-juststatus) |
+| Distribuição DF-e | Pedido e cancelamento são disponibilizados **só ao destinatário**; a resposta do Fisco vai a emitente **e** destinatário | [Pedido de Prorrogação do ICMS](/docs/eventos/prorrogacao-icms#distribuição-df-e) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `638` | `P13-14` | Quantidade de Pedidos de Prorrogação 1º prazo excede o limite autorizado e sem resposta do Fisco (parametrizável por UF: 20 → 1) |
+| `639` | `P13-14` | Quantidade de Pedidos de Prorrogação 2º prazo excede o limite autorizado e sem resposta do Fisco (parametrizável por UF: 20 → 1) |
+| `808` | `P31` | Evento Fisco emitido por contribuinte (CNPJ do certificado difere do CNPJ da Fazenda) |
+| `809` | `P19` | ID do Pedido de Prorrogação ou Cancelamento não existe na base — ou não há pedido deferido para o `tpEvento` |
+| `810` | `P13`/`P19` | `tpEvento` do Evento Fisco não corresponde ao `tpEvento` do Pedido de Prorrogação/Cancelamento |
+| `811` | — | Pedido de Prorrogação deferido impede o cancelamento da NF-e |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — v1.30 | 29/10/2024 (somente MG) |
+| Produção | 06/01/2025 (somente MG) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2015.001 v1.30 |
+| Versão | v1.30; 1.30 |
+| Data | 06/12/2024 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2015.001 v1.30 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2015.001 v1.30 (06/12/2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2015.001 v.1.30 - Publicada em 06-12-2024.pdf`. Overlay dobrado em [Pedido de Prorrogação do ICMS](/docs/eventos/prorrogacao-icms) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno#overlay-de-nts). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

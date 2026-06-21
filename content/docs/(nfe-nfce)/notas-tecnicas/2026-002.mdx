@@ -1,0 +1,59 @@
+---
+title: NT 2026.002 v1.00 — Emissão offline, autorização com alerta e DANFE Simplificado Tipo 2
+description: Cria o DANFE Simplificado Tipo 2 (tpImp=6) que permite emitir NF-e modelo 55 em operações típicas de NFC-e, a contingência off-line tpEmis=9, e a autorização com alerta (cStat=120, até 5 alertas em PR13). Veda NF-e de saída referenciando NFC-e/CF-e. Cronograma escalonado de 15/06 a 05/10/2026.
+---
+
+A **NT 2026.002** (Ajustes SINIEF nº 32/25 e nº 13/26) reorganiza a emissão em operações presenciais e não presenciais. Cria o **DANFE Simplificado Tipo 2** (`tpImp=6`), que deixa o contribuinte emitir uma **NF-e modelo 55** numa operação que normalmente seria acobertada por NFC-e — herdando as restrições da NFC-e (CFOP, CST/CSOSN, consumidor final, sem referência a documento, com QR Code). Regulamenta a **contingência off-line** `tpEmis=9` para esse documento, introduz a **autorização com alerta** (novo `cStat=120`, inicialmente só na NFC-e) e **veda** a NF-e de saída que referencie uma NFC-e (mod. 65) ou CF-e (mod. 59), exceto NF-e complementar. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.00 (Maio 2026). Cronograma escalonado: **15/06/2026** (limite por UF), **03/08/2026** (vedação de referência + schema do Tipo 2), **05/10/2026** (autorização com alerta + `I08-180`/`I08-186` obrigatórias). 📍 Limite de NFC-e sem identificação do destinatário parametrizável por UF.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| DANFE Simplificado Tipo 2 (`tpImp=6`) | NF-e modelo 55 impressa como a NFC-e; herda as restrições da NFC-e (CFOP 5.101…5.933, CST/CSOSN restritos, consumidor final, `indPres` 1/4/5, sem `NFref`, sem IPI/II/PIS-ST/COFINS-ST/cobrança; frete somente quando `indPres=4`) | [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia#danfe-simplificado-tipo-2-tpimp--6) |
+| Contingência off-line (`tpEmis=9`) | Emissão off-line da NFC-e e da NF-e com DANFE Simplificado Tipo 2, com transmissão posterior; no modelo 55 só vale com `tpImp=6` (`B22-10`, rej. 711) | [Contingência da NF-e](/docs/contingencia/nfe#offline-do-danfe-simplificado-tipo-2-tpemis--9) |
+| Autorização com alerta (`cStat=120`) | Regra de validação "não fatal": a nota é autorizada e armazenada; a SEFAZ retorna até **5 alertas** em ocorrências de `PR13` (`cMsg`/`xMsg`). `5E17-65` é a primeira: destinatário CNPJ bloqueado/vedado no CCC gera alerta **172**, não rejeição | [Autorização (lote)](/docs/emissao-e-comunicacao/autorizacao#overlay-de-nts) |
+| Vedação de referência a NFC-e/CF-e | NF-e de saída (`tpNF=1`, `finNFe<>2`) não pode referenciar modelo 65 nem 59, via `NFref` (`BA02-35`) ou item (`VC02-40`); rej. **679** | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| QR Code versão 3 no modelo 55 | `qrCode` obrigatório e só a versão **3** é aceita na NF-e Tipo 2 (`ZX02-220`, rej. 672); offline acrescenta dia, `vNF`, identificação do destinatário e assinatura | [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| Restrições herdadas da NFC-e | Item, tributos e totais reaplicam as regras da NFC-e ao `tpImp=6` (sem grupo de medicamentos/veículos/armas, CST/CSOSN restritos, `W16-30` limite default R$ 200.000) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) · [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) · [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| Limite por UF sem destinatário | `W16-40` passa a aceitar valor-limite definido por UF para NFC-e sem identificação do destinatário; na ausência de tabela, mantém-se R$ 10.000,00 | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| `I08-180`/`I08-186` obrigatórias | NF-e modelo 55 com lançamento relativo a Cupom Fiscal (CFOP 5.929/6.929) referenciando NFC-e ou ECF: regras passam a obrigatórias em todas as UFs | [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `120` | autorização | Autorizado o uso da NF-e, com alerta (efeito "Autorização", inicialmente só NFC-e) |
+| `172` | `5E17-65` | Alerta: situação do CNPJ destinatário inabilitado (bloqueado/vedado) no momento da autorização |
+| `672` | `ZX02-220` | NF-e com DANFE Simplificado Tipo 2 com versão de `qrCode` diferente de 3 |
+| `679` | `BA02-35` / `VC02-40` | Chave de acesso referenciada com modelo inválido (NFC-e/CF-e em NF-e de saída) |
+| `704` | `B09-40` | NFC-e ou NF-e Tipo 2 com data-hora de emissão atrasada (> 5 min) |
+| `711` | `B22-10` | NF-e com contingência off-line (`tpEmis=9`) em operação não permitida (`tpImp<>6`) |
+| `794` | `B25b-10` | NF-e com indicativo de NFC-e com entrega a domicílio (`indPres=4`) |
+
+> Efeito **Alerta** é novidade: além de `100`/`150` (autorização) e `XXXX` (rejeição), surge `120`. Os códigos de alerta vão em `PR13`/`PR14`/`PR15` (grupo criado pela NT 2018.005), até 5 ocorrências. As demais rejeições do Tipo 2 (705–760, 780, 785, 787) reaproveitam os códigos já existentes da NFC-e.
+
+## Cronograma
+
+| Marco | Homologação | Produção |
+|---|---|---|
+| Limite por UF sem destinatário (`W16-40`) | 01/06/2026 | 15/06/2026 |
+| Vedação de referência (`BA02-35`) + schema do DANFE Simplificado Tipo 2 | 01/07/2026 | 03/08/2026 |
+| Autorização com alerta (`5E17-65`) + `I08-180`/`I08-186` obrigatórias | 01/09/2026 | 05/10/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2026.002 v1.00 |
+| Versão | v1.00; 1.00 |
+| Data | 25/05/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2026.002 v1.00; NT 2026.003 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2026.002 v1.00 (25/05/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2026.002 v.1.00 - Publicada em 25-05-2026.pdf`. Especificação do documento na [NT 2026.003](/docs/notas-tecnicas/2026-003). Overlay dobrado em [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia), [Contingência da NF-e](/docs/contingencia/nfe), [Autorização](/docs/emissao-e-comunicacao/autorizacao), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento), [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

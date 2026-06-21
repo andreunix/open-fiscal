@@ -1,0 +1,57 @@
+---
+title: NT 2020.006 v1.31 — Intermediador da Operação (Marketplace)
+description: Cria o indicador indIntermed (B25c) e o grupo infIntermed (YB), ajusta o grupo de pagamento (YA02/YA05) e novas regras de validação para identificar o intermediador/marketplace. Em produção desde 05/04/2021.
+---
+
+A **NT 2020.006** adequa a NF-e/NFC-e 4.0 aos Ajustes SINIEF 21/2020 e 22/2020, criando a identificação do **intermediador/marketplace** da operação. São quatro campos: `indIntermed` (B25c, flag de operação intermediada), o grupo `infIntermed` (YB) com `CNPJ` (YB02) e `idCadIntTran` (YB03 — identificação do vendedor no site do intermediador), além de ajustes no grupo de pagamento (`YA05` passa a ser "CNPJ da instituição de pagamento" e `YA02`/`tPag` passa a usar tabela externa). A revisão vigente v1.31 ajusta a RV `I08-90` para considerar local de entrega/retirada. Os campos estão disponíveis desde 05/04/2021, mas a validação obrigatória de `B25c-10` só começou em **04/04/2022**. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.31 (26/09/2022). Em produção; validação de `indIntermed` (`B25c-10`) exigida desde 04/04/2022 para notas de saída com finalidade normal.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `indIntermed` (B25c) | `0`=operação sem intermediador (site/plataforma próprios); `1`=site/plataforma de terceiros (marketplace) | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Grupo `infIntermed` (YB) | `CNPJ` (YB02) do intermediador e `idCadIntTran` (YB03, 2-60 caracteres) | [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| `YA05` (CNPJ) | Redefinido como "CNPJ da instituição de pagamento" (adquirente/subadquirente, ou do intermediador quando ele processa o pagamento) | [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| `YA02`/`tPag` e `xPag` (YA02a) | `tPag` passa a usar a tabela externa de meios de pagamento; `xPag` descreve o meio quando `tPag=99` | [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `434` | `B25c-10` | NF-e sem indicativo do intermediador (saída/finalidade normal, `indPres` 1/2/3/4/9) |
+| `435` | `B25c-20` | NF-e não pode ter o indicativo do intermediador (`indPres` fora de 1/2/3/4/9) |
+| `438` | `YB01-10` | Obrigatórias as informações do intermediador quando `indIntermed=1` |
+| `439` | `YB01-20` | Informações do intermediador preenchidas indevidamente (`indIntermed<>1`) |
+| `440` | `YB02-10` | CNPJ do intermediador da transação inválido |
+| `437` | `YA05-20` | CNPJ da instituição de pagamento inválido |
+| `441`/`442` | `YA02a-10`/`YA02a-20` | Descrição do pagamento (`xPag`) obrigatória / não permitida conforme `tPag=99` |
+| `443` | `YA06-10` | Código da bandeira de cartão (`tBand`) inexistente |
+
+> Exceção da `B25c-10`: não se aplica aos CFOP 5205–5207, 5251–5258 e 5301–5307 (energia elétrica e comunicação).
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Campos disponíveis em produção | 05/04/2021 |
+| Validação obrigatória de `B25c-10` (produção) | 04/04/2022 |
+| Homologação (teste) — v1.31 | até 03/10/2022 |
+| Produção — v1.31 | 10/10/2022 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2020.006 v1.31 |
+| Versão | v1.31; 1.31 |
+| Data | 26/09/2022 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2020.006 v1.31 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2020.006 v1.31 (26/09/2022), `tmp/nfe/notas-tecnicas/Nota Técnica 2020.006 - v.1.31 - Publicada em 26-09-2022.pdf`. Overlay dobrado em [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) e [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

@@ -1,0 +1,53 @@
+---
+title: NT 2026.001 v1.00 — Provedor de Assinatura e Autorização (PAA)
+description: Cria o Provedor de Assinatura e Autorização de Documentos Fiscais Eletrônicos (PAA) — intermediário homologado pelo ENCAT que assina (RSA avançada) e transmite NF-e/NFC-e em nome do emitente. Processo procEmi=4, série 970–979, grupo infPAA e rejeições 1178–1184. Produção 03/08/2026 na SVRS.
+---
+
+A **NT 2026.001** institui tecnicamente o **Provedor de Assinatura e Autorização de Documentos Fiscais Eletrônicos – PAA** (Ajuste SINIEF 9/22 e alterações), um intermediário homologado pelo ENCAT que gera, **assina** e transmite a NF-e/NFC-e em nome do emitente, com foco em MEI, produtor rural e optantes do Simples Nacional. O emitente solicita o vínculo no portal da **SVRS** (gov.br), recebe um par de chaves **RSA** gerado pela Plataforma de Emissão Simplificada (PES) e o PAA usa a chave privada para assinar o atributo `Id` do DF-e (RSA-SHA1, Base64), além de aplicar a assinatura ICP-Brasil do próprio provedor. A responsabilidade fiscal pelo conteúdo permanece do emitente. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br) e o MOPAA. Apenas a SVRS autoriza emissão via PAA.
+
+> 🔄 Vigente: v1.00 (Março 2026). Homologação **08/06/2026** / produção **03/08/2026**. 📍 Regras de validação do PAA implementadas somente na SVRS.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Fluxo e vínculo do PAA | Intermediário homologado pelo ENCAT assina (RSA avançada + ICP-Brasil) e transmite o DF-e à SVRS em nome do emitente; vínculo criado e encerrável no portal da SVRS, com efeito imediato | [Arquitetura](/docs/emissao-e-comunicacao/arquitetura#emissão-por-paa-procemi4) |
+| Processo de emissão e série | `procEmi=4` identifica emissão por PAA e exige série **970–979** atribuída ao vínculo; `B26-10`/`B26-20` casam faixa e processo (rej. 244/451) | [Séries e numeração](/docs/fundamentos/series-e-numeracao#faixas-de-série-reservadas) |
+| Elegibilidade por CRT | `C21-20` rejeita PAA para contribuinte do regime normal/excesso de sublimite (`CRT` 3 ou 2), exceto produtor rural identificado no CCC (`tpIE=5`); rej. **1178** | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Grupo `infPAA` (ZG) e assinatura RSA | `CNPJPAA`, `PAASignature/SignatureValue` (assinatura RSA do `Id`) e `RSAKeyValue` (`Modulus` + `Exponent=AQAB`); `F03`/`F03A` não se aplicam quando há `infPAA`; RVs `ZG01-10`/`ZG02-10`…`ZG02-40`/`ZG04-10` (rej. 1179–1184) | [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| Cancelamento por PAA | O evento de cancelamento pode levar o mesmo grupo `infPAA`; `P09-10` exige a SVRS (rej. 252) e aplicam-se as RVs do grupo `ZG` | [Cancelamento](/docs/eventos/cancelamento#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `1178` | `C21-20` | Utilização de PAA não permitida para contribuinte do regime normal |
+| `1179` | `ZG01-10` | Ambiente de autorização inválido para emissão pelo PAA (deve ser a SVRS) |
+| `1180` | `ZG02-10` | CNPJ do PAA inválido (zeros, DV) |
+| `1181` | `ZG02-20` | Provedor de Assinatura e Autorização não existe na base da SEFAZ |
+| `1182` | `ZG02-30` | Emitente não associado ao PAA |
+| `1183` | `ZG02-40` | Emissão por PAA deve ser assinada pelo CNPJ do provedor |
+| `1184` | `ZG04-10` | Emissão por PAA com assinatura RSA inválida |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 08/06/2026 |
+| Produção | 03/08/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2026.001 v1.00 |
+| Versão | v1.00; 1.00 |
+| Data | 22/04/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2026.001 v1.00 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2026.001 v1.00 (22/04/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2026.001 v.1.00 - Publicada em 22-04-2026.pdf`. Overlay dobrado em [Arquitetura](/docs/emissao-e-comunicacao/arquitetura), [Séries e numeração](/docs/fundamentos/series-e-numeracao), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais), [Cancelamento](/docs/eventos/cancelamento) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

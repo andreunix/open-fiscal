@@ -1,0 +1,72 @@
+---
+title: Notas Técnicas
+description: Páginas por Nota Técnica posterior ao MOC 7.0 — changelog navegável de cada overlay, com link para a página de tema onde o detalhe está dobrado.
+---
+
+Esta seção tem **uma página por Nota Técnica posterior ao MOC 7.0**. Cada página é o *resumo navegável por NT* (changelog): descreve o que aquela NT introduz — campos, regras de validação, cronograma — e **aponta** para a página de tema onde cada delta já foi dobrado.
+
+> 🔄 As NTs vivem em **duas camadas**. Quem lê por **tema** usa o overlay dobrado na página de leiaute/evento; quem lê por **Nota Técnica** usa a página à parte desta seção. A página à parte **não duplica** o overlay — linka para ele.
+
+## Duas camadas
+
+| Camada | O que é | Onde aparece |
+|---|---|---|
+| **A — overlay sobre o MOC** | o delta da NT dobrado **em contexto**, ao lado do grupo XML ou do `cStat` a que pertence | seção `## Overlay de NTs` das páginas de tema |
+| **B — página à parte** | o *changelog por NT*: o que muda, campos, cronograma, com link para o overlay | esta seção `notas-tecnicas/` |
+
+## Contagem
+
+As **39 Notas Técnicas posteriores ao MOC 7.0** — as únicas **não consolidadas no MOC** — se dividem em:
+
+| Grupo | Quantidade |
+|---|---:|
+| 🔄 Revisões vigentes (uma página à parte cada) | **36** |
+| 🕒 Revisões superadas (sem página à parte) | **3** |
+
+> As superadas — **NT 2016.003 v3.62** (→ v3.70) e **NT 2025.002 v1.36/v1.40** (→ v1.50) — não ganham página. As 65 NTs compiladas no MOC 7.0 também não entram aqui; o catálogo completo está em [Notas Técnicas no MOC 7.0](/docs/referencia/notas-tecnicas).
+
+## Nesta seção
+
+As 36 páginas à parte, agrupadas por ano da NT (a data exibida no índice mestre é a da revisão vigente).
+
+| Ano | Notas Técnicas |
+|---|---|
+| 2014 | [NT 2014.001](/docs/notas-tecnicas/2014-001) · [NT 2014.002](/docs/notas-tecnicas/2014-002) |
+| 2015 | [NT 2015.001](/docs/notas-tecnicas/2015-001) |
+| 2016 | [NT 2016.003](/docs/notas-tecnicas/2016-003) |
+| 2018 | [NT 2018.005](/docs/notas-tecnicas/2018-005) |
+| 2019 | [NT 2019.001](/docs/notas-tecnicas/2019-001) |
+| 2020 | [NT 2020.001](/docs/notas-tecnicas/2020-001) · [NT 2020.002](/docs/notas-tecnicas/2020-002) · [NT 2020.004](/docs/notas-tecnicas/2020-004) · [NT 2020.005](/docs/notas-tecnicas/2020-005) · [NT 2020.006](/docs/notas-tecnicas/2020-006) · [NT 2020.007](/docs/notas-tecnicas/2020-007) |
+| 2021 | [NT 2021.001](/docs/notas-tecnicas/2021-001) · [NT 2021.002](/docs/notas-tecnicas/2021-002) · [NT 2021.003](/docs/notas-tecnicas/2021-003) · [NT 2021.004](/docs/notas-tecnicas/2021-004) |
+| 2022 | [NT 2022.001](/docs/notas-tecnicas/2022-001) · [NT 2022.002](/docs/notas-tecnicas/2022-002) · [NT 2022.003](/docs/notas-tecnicas/2022-003) · [NT 2022.004](/docs/notas-tecnicas/2022-004) · [NT 2022.005](/docs/notas-tecnicas/2022-005) |
+| 2023 | [NT 2023.001](/docs/notas-tecnicas/2023-001) · [NT 2023.002](/docs/notas-tecnicas/2023-002) · [NT 2023.003](/docs/notas-tecnicas/2023-003) · [NT 2023.004](/docs/notas-tecnicas/2023-004) · [NT 2023.005](/docs/notas-tecnicas/2023-005) |
+| 2024 | [NT 2024.001](/docs/notas-tecnicas/2024-001) · [NT 2024.002](/docs/notas-tecnicas/2024-002) · [NT 2024.003](/docs/notas-tecnicas/2024-003) |
+| 2025 | [NT 2025.001 (corrigido)](/docs/notas-tecnicas/2025-001) · [NT Conjunta 2025.001](/docs/notas-tecnicas/2025-001-conjunta) · [NT 2025.002](/docs/notas-tecnicas/2025-002) |
+| 2026 | [NT 2026.001](/docs/notas-tecnicas/2026-001) · [NT 2026.002](/docs/notas-tecnicas/2026-002) · [NT 2026.003](/docs/notas-tecnicas/2026-003) · [NT 2026.004](/docs/notas-tecnicas/2026-004) |
+
+## Camadas para o open-fiscal
+
+```txt
+MOC 7.0 + Anexo I       = base até nov/2020 (65 NTs compiladas)
+Overlays pós-MOC        = camada atual incorporada (36 NTs vigentes)
+Schemas atuais          = fonte prática de validação XML
+Tabelas vigentes        = fonte prática de códigos/domínios
+```
+
+> A data exibida no índice mestre é a da revisão vigente. Uma NT antiga (ex.: 2014.001, 2015.001) reaparece como overlay porque sua revisão vigente é posterior a 2020. Confirme sempre a versão, os schemas e o cronograma de cada NT.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Notas Técnicas |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | não indicada |
+| Status | página índice; rastreabilidade detalhada nas páginas filhas |
+
+### Registro de origem
+
+PDFs em `tmp/nfe/notas-tecnicas/`. Índice mestre (catálogo das 101 NTs vigentes) em [Notas Técnicas no MOC 7.0](/docs/referencia/notas-tecnicas); roteamento NT → página de tema em [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

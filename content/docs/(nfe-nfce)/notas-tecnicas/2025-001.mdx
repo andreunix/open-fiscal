@@ -1,0 +1,58 @@
+---
+title: NT 2025.001 v1.03 — QR-Code v3, lote síncrono e controle de pagamentos
+description: "Simplificação operacional da NF-e/NFC-e: leiaute do QR-Code versão 3 (assinatura, sem CSC), resposta síncrona obrigatória para lote com 1 NF-e (modelo 55), redução do atraso de emissão de 30 para 7 dias, controle do indIEDest e novas regras de cobrança e pagamento. Vigente v1.03, produção 03/11/2025."
+---
+
+A **NT 2025.001** reúne várias mudanças de **simplificação operacional** da NF-e/NFC-e. As principais: o **QR-Code versão 3** da NFC-e, em que a autenticidade passa a ser garantida por **assinatura de campos** (só em contingência) e o **CSC deixa de ser necessário**; a **resposta síncrona obrigatória** para lote com **uma única NF-e (modelo 55)**, replicando o que já valia para a NFC-e; a redução do **atraso máximo da data de emissão** de 30 para **7 dias** (acima disso, `cStat=150`); o **controle do tipo de IE do destinatário** (`indIEDest`); e novas regras de **dados de cobrança** (parcelas) e **pagamento** (`tPag=91` pagamento posterior). A revisão vigente **v1.03** ajusta as regras de pagamento (`YA03-10`/`YA03-30` para o código 91) e a lista de UF da `E16a-30`. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.03 (Setembro 2025). 📍 QR-Code v3 por UF; resposta assíncrona para lote de 1 NF-e (`452`) rejeitada a partir de 13/10/2025; ajustes da v1.03 em produção 03/11/2025.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| QR-Code NFC-e versão 3 | Autenticidade por **assinatura** de campos do QR-Code, só em contingência (`tpEmis=9`); dispensa o CSC; URL reduzida (`chave|versao|tpAmb` online); família `ZX02-*` valida parâmetros, assinatura e versão | [DANFE NFC-e / QR Code](/docs/danfe/danfe-nfce-qrcode#validações-do-qr-code-nt-2025001) |
+| Resposta síncrona para lote de 1 NF-e | `GAP03a-3` (452) rejeita pedido **assíncrono** (`indSinc=0`) para lote com uma única NF-e modelo 55; `GAP03a-2` (776) para UF sem atendimento síncrono | [Autorização](/docs/emissao-e-comunicacao/autorizacao#overlay-de-nts) |
+| Atraso da data de emissão | `B09-20` (228): aceita atraso de até **7 dias** com `cStat=100`; acima disso, `cStat=150` (fora de prazo); a critério da UF, após 30 dias só em contingência | [Autorização](/docs/emissao-e-comunicacao/autorizacao#overlay-de-nts) |
+| Controle do `indIEDest` | `E16a-30` (805) rejeita contribuinte isento de IE em UF que não permite (lista de UF inclui ES e RJ na v1.03); `5E17-12` (300) confere o tipo de IE no CCC (implementação futura) | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Dados de cobrança (duplicatas) | `Y09-40` (853) veda grupo de parcelas (`dup`) em pagamento à vista; `Y09-50` (797) limita `dVenc` a 10 anos da data atual | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| Dados de pagamento e `tPag=91` | `YA03-10` (865), `YA03-20` (866), `YA03-30` (904) passam a tratar **pagamento posterior** (`tPag=91`); `YA04-10`/`YA05-10`/`YA05-20`/`YA06-10` de cartão estendidas à NF-e (implementação futura no modelo 55) | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `300` | `5E17-12` | Tipo da IE do destinatário difere de Não Contribuinte no cadastro da UF (impl. futura) |
+| `407` | `ZX02-220` | NFC-e com QR-Code na versão 3 em UF que não aceita |
+| `444` | `ZX02-222` | NFC-e com QR-Code na versão 2 para pessoa física |
+| `445` | `ZX02-330` | Parâmetro `assinatura` não deve ser informado no QR-Code (fora de contingência) |
+| `452` | `GAP03a-3` | Solicitada resposta assíncrona para lote com uma única NF-e |
+| `474` | `ZX02-334` | Parâmetro `assinatura` deve ser informado no QR-Code (contingência) |
+| `583` | `ZX02-338` | Valor da assinatura do QR-Code difere do calculado |
+| `797` | `Y09-50` | Data de vencimento da parcela superior a 10 anos da data atual |
+| `853` | `Y09-40` | Dados de cobrança não devem ser informados para pagamento à vista |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| QR-Code v3 e demais mudanças (v1.00) — produção | 01/09/2025 |
+| `GAP03a-3` (452) lote assíncrono de 1 NF-e — produção | 13/10/2025 |
+| `E16a-30` operações internas (805) — produção | 13/10/2025 |
+| Ajustes da v1.03 (`YA03-10`/`YA03-30`, `E16a-30`) — homologação / produção | 20/10/2025 / 03/11/2025 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.001 v1.03 |
+| Versão | v1.03; v3; 1.03 |
+| Data | 29/09/2025 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2025.001 v1.03; NT Conjunta 2025.001 |
+| Schema/tabela relacionada | QR Code |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2025.001 v1.03 corrigido (29/09/2025), `tmp/nfe/notas-tecnicas/Nota Técnica 2025.001. v.1.03 - Corrigido - Publicada em 29-09-2025.pdf`. Não confundir com a [NT Conjunta 2025.001](/docs/notas-tecnicas/2025-001-conjunta) (CNPJ alfanumérico). Overlay dobrado em [Autorização](/docs/emissao-e-comunicacao/autorizacao), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) e [DANFE NFC-e / QR Code](/docs/danfe/danfe-nfce-qrcode). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

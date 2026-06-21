@@ -1,0 +1,55 @@
+---
+title: NT 2021.002 v1.12 — Nota Fiscal Fácil (NFF)
+description: Cria o regime especial Nota Fiscal Fácil (tpEmis=3, procEmi=3) — XML da NF-e/NFC-e gerado pelo App NFF e autorizado pela SVRS, com grupos infSolicNFF (ZE), infProdNFF (I86) e infProdEmb (I87). A v1.12 estende a série da NFF para 000–999 e ajusta a lei de formação da chave. Em produção.
+---
+
+A **NT 2021.002** adequa o schema e as regras de validação da NF-e/NFC-e para o regime especial **Nota Fiscal Fácil (NFF)**: o **App NFF** (Aplicativo Emissor de Documentos Fiscais Eletrônicos) coleta os dados de emissão de produtores primários e o Portal Nacional da NFF gera o XML, **assinado e transmitido exclusivamente pela SVRS**. A emissão usa `tpEmis=3` (valor reaproveitado do antigo SCAN, desativado pela NT 2015/002) e `procEmi=3`. A NT reaproveita os espaços de **série** e **número** da chave para gravar dados do dispositivo e cria os grupos `infSolicNFF` (ZE, o pedido em JSON), `infProdNFF` (I86, código fiscal e operação) e `infProdEmb` (I87, padronização da embalagem). A **v1.12** estende a faixa de série da NFF para **000–999** e ajusta a **lei de formação da chave** — a série deixa de distinguir CPF de CNPJ, papel que passa ao 5º dígito do `nNF`. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.12 (28/01/2025). Implantação **imediata** da extensão de série (000–999); regime em produção desde a v1.00 (25/05/2021).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Faixa de série 000–999 | A NFF ocupa **toda** a faixa de série; `procEmi=3`, assinatura e transmissão pela SVRS. A série deixa de identificar CPF/CNPJ — o **5º dígito do `nNF`** passa a fazê-lo | [Séries e numeração](/docs/fundamentos/series-e-numeracao#chave-de-acesso-da-nff-tpemis3) |
+| `tpEmis=3` (ex-SCAN) | Valor reaproveitado do SCAN desativado; **não** é contingência. `B22-30` ainda rejeita (570) `tpEmis=3` interpretado como SCAN/SVC | [Escolha da modalidade](/docs/contingencia/escolha-da-modalidade#o-que-o-manual-diz) |
+| Certificado só SVRS | Assinatura (`F03`/`F03A`/`F03B`) e transmissão TLS (`A08`) da NFF só com certificado da SVRS; eventos da NFF também (CNPJ autor = SVRS). `C02a-*`, `E04-20`, `ZD`, `1C17-*`, `5E17-*` não se aplicam à NFF | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Grupo `infProdNFF` (I86) | `cProdFisco` (código fiscal, 14 díg.) e `cOperNFF` (operação selecionada na NFF). Só para `tpEmis=3` (rej. 820) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Grupo `infProdEmb` (I87) | Padroniza a embalagem: `xEmb`, `qVolEmb`, `uEmb`. Vale para NFF ou NF-e Avulsa `procEmi=1`/`2` (rej. 833) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Grupo `infSolicNFF` (ZE) | `xSolic` (2–5000) — o pedido do App NFF em **JSON**, anexado ao XML e ao pedido de evento. Só para `tpEmis=3` (rej. 819/834) | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `818` | `F03B` | CNPJ incorreto na assinatura da NFF (certificado fora da base CNPJ da SVRS) |
+| `819` | `ZE01-10` | `infSolicNFF` preenchido em emissão não-NFF (`tpEmis <> 3`) |
+| `820` | `I86-10` | `infProdNFF` informado fora de NFF |
+| `832` | `A08` | CNPJ incorreto na transmissão da NFF (certificado TLS fora da base CNPJ da SVRS) |
+| `833` | `I87-10` | `infProdEmb` informado fora de NFF / NF-e Avulsa |
+| `834` | `ZE01-20` | `infSolicNFF` não preenchido quando `tpEmis=3-NFF` |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Produção do regime (v1.00) | 25/05/2021 |
+| Série da NFF 000–999 (v1.12) | Imediato (28/01/2025) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2021.002 v1.12 |
+| Versão | v1.12; 1.12 |
+| Data | 28/01/2025 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2021.002 v1.12 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2021.002 v1.12 (28/01/2025), `tmp/nfe/notas-tecnicas/Nota Técnica 2021.002 v.1.12 - Publicada em 28-01-2025.pdf`. Overlay dobrado em [Séries e numeração](/docs/fundamentos/series-e-numeracao), [Escolha da modalidade](/docs/contingencia/escolha-da-modalidade), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno#overlay-de-nts). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).
+
+> Nota de proveniência: a lei de formação da chave NFF documenta no 5º dígito do `nNF` o identificador do emissor; o PDF (item 2.1) grafa explicitamente apenas `2 = CPF`. O overlay registra `1 = CNPJ` / `2 = CPF` por dedução (a série não distingue mais os dois), coerente com as faixas da tabela do item 2.2.

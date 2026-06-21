@@ -1,0 +1,58 @@
+---
+title: NT 2020.007 v1.40 — Evento Ator Interessado na NF-e (Transportador)
+description: Cria o evento Ator Interessado, pelo qual emitente, destinatário ou transportador contratado autorizam um transportador a baixar o XML da NF-e via Distribuição DF-e. A revisão v1.40 ajusta a RV 4P24-10. Em produção desde 01/08/2024.
+---
+
+A **NT 2020.007** cria o evento **Ator Interessado na NF-e – Transportador** (`tpEvento=110130` no catálogo), que permite informar o **transportador como pessoa autorizada a acessar o XML** da NF-e **a qualquer momento após a emissão**, sem depender do grupo `autXML` no documento original. O evento pode ser gerado pelo **emitente** (`tpAutor=1`), pelo **destinatário** (`tpAutor=2`, quando o frete é por conta dele) ou pelo **transportador contratado** (`tpAutor=3`, nos casos de redespacho/subcontratação). O campo `tpAutorizacao` (0/1) com `xCondUso` define se o transportador autorizado pode, por sua vez, autorizar outros transportadores. A partir do evento, o transportador busca o XML pelo **WebService de Distribuição de DF-e** (NT 2014.002). O evento só pode ser gerado **no prazo de 6 meses** após a autorização da NF-e e é recepcionado **unicamente no WebService de eventos do Ambiente Nacional**. A revisão vigente **v1.40 ajusta a RV `4P24-10`** (valida no CCC se o CNPJ/CPF autorizado é emitente de CT-e). Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.40 (Agosto 2024). Em produção desde 01/08/2024.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Evento Ator Interessado | Autoriza o transportador a acessar o XML da NF-e após a emissão; recepção só no WS de eventos do Ambiente Nacional | [Ator interessado](/docs/eventos/ator-interessado) |
+| `tpAutor` (P21) | `1`=emitente · `2`=destinatário · `3`=transportador contratado (redespacho/subcontratação) | [Ator interessado](/docs/eventos/ator-interessado#quem-gera-o-evento) |
+| `tpAutorizacao` (P26) + `xCondUso` (P27) | `0`=não permite · `1`=permite o transportador autorizado autorizar outros transportadores; `xCondUso` obrigatório quando `tpAutorizacao=1` | [Ator interessado](/docs/eventos/ator-interessado#quem-gera-o-evento) |
+| Prazo de 6 meses | Evento só pode ser gerado em até 6 meses após a autorização da NF-e (RV `H03`, rejeição 596) | [Ator interessado](/docs/eventos/ator-interessado#quem-gera-o-evento) |
+| `4P24-10` (v1.40) | Acesso ao CCC: o CNPJ/CPF autorizado deve ser emitente de CT-e ativo na UF — delta da revisão vigente | [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `371` | `4P24-10` | CNPJ/CPF Autorizado não é emitente de CT-e |
+| `421` | `2P24-10` | Informado o CNPJ/CPF do Emitente |
+| `422` | `P24-14` | Informado o CNPJ/CPF do Destinatário |
+| `423` | `P24-18` | CNPJ/CPF já está autorizado a acessar o XML da NF-e |
+| `448` | `4P21-10` | CNPJ/CPF Autor não é emitente de CT-e |
+| `449` | `2P21-14` | Modalidade de Frete não é por conta do Destinatário |
+| `585` | `3P15-21` | Transportador não autorizado a emitir evento para esse documento fiscal |
+| `827` | `P26-10` | Obrigatório informar o tipo de autorização |
+| `828` | `P26-20` | Não permitido informar o campo tipo de autorização |
+| `829` | `P27-10` | Condição de uso não informada para o tipo de autorização |
+| `830` | `P27-20` | Não permitido preencher o campo Condição de Uso |
+| `831` | `3P15-20` | Transportador Contratado não autorizado a liberar acesso à NF-e |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 25/07/2024 |
+| Produção | 01/08/2024 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2020.007 v1.40 |
+| Versão | v1.40; 1.40 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2020.007 v1.40 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2020.007 v1.40 (Agosto 2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2020.007 v.1.40 - Publicada em 02-08-2024.pdf`. Overlay dobrado em [Ator interessado](/docs/eventos/ator-interessado) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

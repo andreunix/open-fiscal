@@ -1,0 +1,55 @@
+---
+title: NT 2024.003 v1.10 — Produtos da agricultura, pecuária e produção florestal
+description: Cria o grupo ZF (agropecuario) na NF-e modelo 55 para receituário de agrotóxico e guias de trânsito (GTA/GTV/florestal), abre exceção do MEI para venda de ativo imobilizado (N12a-70) e remove a regra I08-94. Rejeições 308–312 e 835–839; ativação facultativa por UF/NCM.
+---
+
+A **NT 2024.003** cria, na NF-e modelo 55, o grupo **`ZF` (`agropecuario`)** para informar dados de **receituário de agrotóxico** (número e CPF do responsável técnico) e **guias de trânsito** de produtos animais, vegetais e florestais (GTA/TTA/DTA, ATV/PTV/GTV e guia florestal — DOF, SisFlora, SIAM), atendendo a ENCCLA e a normas estaduais/ambientais. A ativação das validações de guia é **facultativa**, acionada por UF e NCM. A revisão vigente **v1.10** consolida ajustes nas regras de validação de agrotóxicos; nas versões anteriores a NT abriu exceção da `N12a-70` para o **MEI** vender bem do ativo imobilizado (v1.04) e **removeu a regra `I08-94`** (rej. 771), liberando `idEstrangeiro` em operações interestaduais de abastecimento de embarcação estrangeira em cabotagem e comércio eletrônico com adquirente estrangeiro (v1.09). Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.10 (Maio 2026). Schema/RVs em produção desde 01/03/2026 (alinhado à NT 2025.002); ajustes de agrotóxicos da v1.10 homologação até 15/05/2026 / produção até 20/05/2026. 📍 Guias ativadas a critério da UF por NCM.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Grupo `ZF` (`agropecuario`) | `defensivo` (1–20): `nReceituario` e `CPFRespTec`; `guiaTransito` (0–1): `tpGuia`, `UFGuia`, `serieGuia`, `nGuia`. `ZF02-*` exigem/proíbem receituário conforme NCM do agrotóxico; `ZF05-*` exigem/proíbem guia por produto/UF/NCM; `ZF03a-10` valida CPF; `10ZF04-*` valida existência/uso da guia | [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| Exceção do MEI para ativo imobilizado | `N12a-70` deixa de rejeitar CSOSN 900 para emitente MEI (`CRT=4`) nas remessas de bem do ativo imobilizado com CFOP **5.551/6.551**; mantém a exceção estadual para CFOP 5.904/6.904 | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Remoção da regra `I08-94` | A v1.09 removeu a `I08-94` (rej. 771), que vetava `idEstrangeiro` em operação interestadual (`idDest=2`), liberando abastecimento de embarcação estrangeira em cabotagem e e-commerce com adquirente estrangeiro | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `308` | `ZF03a-10` | CPF inválido para responsável técnico do receituário de agrotóxico |
+| `309` | `ZF02-20` | Nenhum item é defensivo agrícola e foi informado receituário |
+| `310` | `ZF05-14` | Informação indevida de Guia de Trânsito Animal |
+| `311` | `ZF05-20` | Não informada Guia de Trânsito Vegetal |
+| `312` | `ZF05-24` | Informação indevida de Guia de Trânsito Vegetal |
+| `835` | `ZF02-10` | Produto agrotóxico sem receita/receituário |
+| `836` | `ZF05-10` | Não informada Guia de Trânsito Animal |
+| `837` | `10ZF04-10` | Guia de trânsito inválida |
+| `838` | `10ZF04-20` | Guia de trânsito já utilizada |
+| `839` | `ZF05-30` | Madeira sem documento de origem (implementação futura) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Schema XML / regras de validação — produção | 01/03/2026 |
+| GTA bovinos (NCM 0102) em BA/GO/MA/MT — produção | 01/10/2025 |
+| Ajustes de agrotóxicos (v1.10) — homologação / produção | até 15/05/2026 / até 20/05/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2024.003 v1.10 |
+| Versão | v1.10; 1.10 |
+| Data | 11/05/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2024.003 v1.10 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2024.003 v1.10 (11/05/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2024.003 v.1.10 - Publicada em 11-05-2026.pdf`. Overlay dobrado em [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

@@ -1,0 +1,45 @@
+---
+title: NT 2022.004 v1.10 — Aperfeiçoamento da regra de validação de ISSQN
+description: Reescreve a RV U01-20 para que cada UF parametrize com precisão se aceita NF-e/NFC-e com item de serviço (ISSQN) — não aceita, aceita, ou aceita só em nota conjugada com ICMS. Motivada pela NFS-e do DF. Em produção desde 02/01/2023.
+---
+
+A **NT 2022.004** aperfeiçoa a regra de validação do grupo de **ISSQN** (`U01`). O objetivo é permitir que cada UF **parametrize com precisão** se aceita a autorização de NF-e/NFC-e que contenha item de serviço sujeito ao ISSQN — refletido na RV **`U01-20`**, com três parametrizações possíveis: *não aceita item de serviço*, *aceita*, ou *aceita só na nota conjugada* (que também contenha item de ICMS). A motivação imediata foi a publicação de legislação do **Distrito Federal** para a NFS-e. A revisão vigente v1.10 apenas altera a data de ativação da `U01-20` em produção para o DF. A parametrização adotada por cada UF pode ser consultada em [nfce.encat.org](http://nfce.encat.org/), aba "Desenvolvedor" → "Regras de Validação". Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.10 (Fevereiro 2023). Em produção desde 02/01/2023 (corpo da NT); ativação da `U01-20` para o **DF** em 28/02/2023. 📍 Parametrização por UF.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `U01-20` (ISSQN) | Informado o grupo de ISSQN (`U01`) sem nenhum grupo de ICMS (`N01`) — aceitação parametrizável por UF | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Parametrizações por UF | `0` = não aceita item de serviço · `1` = aceita · `2` = aceita só na NF-e/NFC-e conjugada (com item de ICMS) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `592` | `U01-20` | Rejeição: A NF-e deve ter pelo menos um item de produto sujeito ao ICMS (quando a UF não aceita item só de serviço) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — v1.00 | até 28/12/2022 |
+| Produção — corpo da NT | 02/01/2023 |
+| Ativação da `U01-20` em produção — DF (v1.10) | 28/02/2023 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2022.004 v1.10 |
+| Versão | v1.10 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2022.004 v1.10 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2022.004 v1.10 (Fevereiro 2023), `tmp/nfe/notas-tecnicas/Nota Técnica 2022.004 - v1.10 - Publicada em 14-02-2023.pdf`. Overlay dobrado em [Tributos](/docs/leiaute-e-rejeicoes/tributos). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

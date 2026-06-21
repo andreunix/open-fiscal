@@ -1,0 +1,53 @@
+---
+title: NT 2014.002 v1.30 — Web Service de Distribuição de DF-e
+description: Regulamenta o Web Service NFeDistribuicaoDFe, que distribui DF-e e resumos de interesse de cada ator da NF-e (PF ou PJ) por NSU, NSU pontual ou chave de acesso, com retenção de 90 dias e controle de consumo indevido (rejeição 656). v1.30 inclui os eventos de Insucesso na Entrega na distribuição.
+---
+
+A **NT 2014.002** regulamenta o Web Service **`NFeDistribuicaoDFe`** (método `nfeDistDFeInteresse`, síncrono), que disponibiliza a cada ator da NF-e — emitente, destinatário, transportador, terceiros (`autXML`) e CNPJ do evento Ator Interessado — os **documentos e resumos de seu interesse**. A consulta é feita por **distribuição de conjunto a partir de um NSU** (`distNSU`), **NSU pontual** (`consNSU`) ou **chave de acesso** (`consChNFe`); o ator é autenticado pelo certificado (CNPJ base de 8 dígitos para PJ, ou CPF para PF), e os documentos ficam disponíveis por até **90 dias**. A NT define o **controle de consumo indevido** (rejeição **656**, com bloqueio temporário) e a tabela de quais documentos cada ator recebe. A revisão vigente **v1.30** inclui na distribuição os eventos **Insucesso na Entrega da NF-e** e **Insucesso na Entrega do CT-e propagado para NF-e**. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.30 (publicada 09/02/2026). Eventos de Insucesso na Entrega distribuídos desde 30/09/2024; consumo indevido (`656`) com bloqueio de 1 hora.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Serviço `NFeDistribuicaoDFe` | Distribuição de DF-e e resumos de interesse por `distNSU`/`consNSU`/`consChNFe`; processo síncrono, retenção de 90 dias; quem recebe NF-e, eventos e manifestações por papel do ator | [Distribuição DF-e](/docs/emissao-e-comunicacao/distribuicao-dfe#overlay-de-nts) |
+| Controle de NSU | Consulta deve usar o `ultNSU` da resposta anterior; quando `ultNSU = maxNSU` não há mais documentos; `cStat=137` (nenhum documento) exige aguardar 1 hora; `cStat=138` (documento localizado) | [Distribuição DF-e](/docs/emissao-e-comunicacao/distribuicao-dfe#overlay-de-nts) |
+| Eventos de Insucesso na Entrega (v1.30) | Inclui na distribuição o evento de **Insucesso na Entrega da NF-e** e o de **Insucesso na Entrega do CT-e propagado** (em linha com a NT 2023.005) | [Distribuição DF-e](/docs/emissao-e-comunicacao/distribuicao-dfe#overlay-de-nts) |
+| Consumo indevido e rejeição 656 | Consulta `distNSU` fora de sequência ou repetida após `cStat=137` gera **`656`** e **bloqueio de 1 hora**; `consChNFe`/`consNSU` têm limite por hora; `H061` (589) e retorno do `ultNSU` na 656 com `distNSU` para retomada | [Recibo e uso indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido#uso-indevido-nt-2018002) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `137` | — | Nenhum documento localizado (aguardar 1 hora antes de nova consulta) |
+| `138` | — | Documento(s) localizado(s) |
+| `589` | `H061` | NSU informado superior ao maior NSU do Ambiente Nacional |
+| `632` | — | Solicitação fora de prazo, NF-e não está mais disponível para download |
+| `640` | — | CNPJ/CPF do interessado sem permissão para consultar esta NF-e |
+| `656` | — | Consumo indevido (bloqueio temporário; retorna `ultNSU` em `distNSU` para retomada) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Versão inicial do serviço (v1.00) | 01/2014 |
+| Retorno do `ultNSU` na rejeição 656 (`distNSU`) (v1.14) | 24/03/2022 |
+| Evento Ator Interessado na distribuição (v1.20) | 03/06/2024 |
+| Eventos de Insucesso na Entrega (v1.30) — teste / produção | 30/09/2024 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2014.002 v1.30 |
+| Versão | v1.30; 1.30 |
+| Data | 09/02/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2014.002 v1.30 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2014.002 v1.30 (09/02/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2014.002 - v.1.30 - Publicada em 09-02-2026.pdf`. Overlay dobrado em [Distribuição DF-e](/docs/emissao-e-comunicacao/distribuicao-dfe) e [Recibo e uso indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

@@ -1,0 +1,51 @@
+---
+title: NT 2022.003 v1.11 — Regras de validação e novos campos (refNFeSig, NFref 999, emitente PF)
+description: Cria o referenciamento de NF-e por chave com código numérico zerado (refNFeSig) para preservar o sigilo fiscal, eleva o NFref de 500 para 999 ocorrências, libera a emissão por CPF e torna o controle de CRT (7C21-10) opcional por UF. Em produção desde 03/04/2023.
+---
+
+A **NT 2022.003** divulga novos campos e regras de validação da NF-e 4.0. A principal novidade é o campo **`refNFeSig`** no grupo de Documento Fiscal Referenciado (NFref), que permite referenciar uma NF-e modelo 55 pela chave **com o código numérico zerado** — preservando o **sigilo fiscal** da nota referenciada (a referência pela chave completa, `refNFe`, continua obrigatória em devolução, complementar e quando a legislação exigir). O grupo **NFref passa de 500 para 999 ocorrências**; o controle de emissão por **Contribuinte Pessoa Física (CPF)** deixa de ser barrado por RV (passa ao credenciamento da SEFAZ); e a `7C21-10` (controle de CRT/CSOSN) torna-se **opcional por UF**. A revisão vigente v1.11 é meramente documental. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.11 (Janeiro 2023). Em produção desde 03/04/2023.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `refNFeSig` (NFref) | Referencia NF-e modelo 55 pela chave com código numérico zerado, preservando o sigilo fiscal; RVs `BA02a-*` garantem a consistência | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| NFref 500 → 999 | Grupo de Documentos Fiscais Referenciados passa a aceitar até 999 ocorrências | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Emitente Pessoa Física | Eliminadas as RVs `C02a-04/08/14` que controlavam a emissão por CPF — passa ao credenciamento da UF | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| `7C21-10` (CRT/CSOSN) | Controle de CRT conforme cadastro passa a ser **opcional por UF** | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| `N17c-30` (FCP) | Aplicável **somente ao Ceará**, que controla o FCP de forma distinta das demais UF | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `474` | `N17c-30` | FCP não deve ser destacado na NF-e conforme legislação estadual (CE) |
+| `475` | `I08-194`/`I08-198` | Operação não permitida para não contribuinte do ICMS |
+| `951` | `BA02a-10` | Chave referenciada com código numérico zerado não permitida para finalidade diferente de normal |
+| `952` | `BA02a-100` | Chave referenciada com a mesma Chave Natural da nota atual |
+| `953` | `BA02-60`/`BA02a-110` | Chave de Acesso referenciada com tipo de emissão inválido |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 07/02/2023 |
+| Produção | 03/04/2023 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2022.003 v1.11 |
+| Versão | v1.11; 1.11 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2022.003 v1.11 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2022.003 v1.11 (Janeiro 2023), `tmp/nfe/notas-tecnicas/Nota Técnica 2022.003 - v.1.11 - Publicada em 25-01-2023.pdf`. Overlay dobrado em [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Tributos](/docs/leiaute-e-rejeicoes/tributos) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

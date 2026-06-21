@@ -1,0 +1,67 @@
+---
+title: NT 2019.001 v1.70 — cBenef × CST, crédito presumido e validações de cadastro
+description: "Lote de criação e atualização de regras de validação da NF-e/NFC-e 4.0: código de benefício fiscal por CST, grupo de crédito presumido (gCred), cBenefRBC no CST 51, modBCST=6 e validações de destinatário no CCC. v1.70 ativa as regras para SP (produção 06/04/2026)."
+---
+
+A **NT 2019.001** é um lote permanente de **criação e atualização de regras de validação** da NF-e/NFC-e versão 4.0, atualizado UF a UF desde 2019. Suas frentes principais são: o **Código de Benefício Fiscal (`cBenef`) por CST** (família de regras `N12-84` a `N12-98`, todas a critério da UF, com tabela `cBenef × CST` publicada por SEFAZ); o **grupo de Crédito Presumido `gCred` (I05g)** com `cCredPresumido`/`pCredPresumido`/`vCredPresumido`; o campo **`cBenefRBC` (N14a)** dentro do CST 51 (diferimento acumulado com redução de base); a sexta modalidade de BC do ICMS-ST (**`modBCST=6` = valor da operação**); e as validações de **identificação do destinatário no CCC** (`5E17-*` na autorização e `6P31-*` no EPEC, **sem denegação no EPEC**). A revisão vigente **v1.70** acrescenta a **ativação das regras para São Paulo** e ajusta o cronograma de Santa Catarina. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.70 (Agosto 2025). 📍 Regras `cBenef × CST` são por UF: SP entra em homologação 12/01/2026 e produção 06/04/2026; SC, RS, DF, GO, PR e RJ com datas próprias (quadro do item 3.6.1).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `cBenef × CST` (N12-84/85/86/88/90/94/97/98) | Exigem/vedam o `cBenef` conforme o CST e a tabela `cBenef × CST` da UF; `N12-98` verifica existência do `cBenef` (exceto Simples Nacional); exceções E1–E4 por finalidade/tipo de operação | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Grupo Crédito Presumido `gCred` (I05g) | Grupo opcional 0-4 após `cBenef`: `cCredPresumido` (I05h), `pCredPresumido` (I05i), `vCredPresumido` (I05j); `I05g-10` (507) restringe por UF, `I05h-10` (664) valida o código | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| `cBenefRBC` (N14a) no CST 51 | Código de benefício de **redução de BC** dentro do diferimento (`N14a-10`/`N14a-20`, rej. 665/666) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) · [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `modBCST=6` e diferimento CST 51 | Sexta modalidade de BC do ICMS-ST (valor da operação); `N07-10` (929) exige os campos do CST 51; `N18-10`/`N18-20` (932/933) para ST por MVA | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `cNF` e documentos referenciados | `B03-10` (897) impede `cNF` fraco ou igual a `nNF`; `BA10-40/50`, `BA20-20/30` (320/922/923/924) tratam contranota de produtor e referência indevida | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Ordem sequencial do item | `H02-10` (927) exige `nItem` em ordem incremental a partir de 1 (a critério da UF) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Validações do destinatário no CCC | `E03a-30`/`E14-30`/`E16a-40` (925/926/696) e `5E17-10`…`5E17-80` (IE/CPF, bloqueio, vedação) na autorização | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| EPEC sem denegação | `6P31-10`…`6P31-63` replicam as checagens de destinatário no Evento Prévio, mas **rejeitam** em vez de denegar | [EPEC](/docs/eventos/epec#overlay-de-nts) |
+| Limite da base do ICMS | `W03-20` (935) impede `vBC` total acima do limite da SEFAZ (padrão R$ 200.000,00), por modelo | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `305` | `5E17-43`/`63`, `6P31-43`/`63` | Destinatário bloqueado na UF |
+| `306` | `5E17-46`, `6P31-46` | IE do destinatário não está ativa na UF |
+| `507` | `I05g-10` | Grupo de Crédito Presumido não permitido na UF |
+| `626` | `N28-20` | CFOP de operação isenta para ZFM diferente do previsto |
+| `664` | `I05h-10` | `cCredPresumido` incorreto, inexistente ou incompatível na UF |
+| `665` | `N14a-10` | Não informado `cBenefRBC` com redução de BC > 0 no diferimento |
+| `666` | `N14a-20` | `cBenefRBC` incorreto, inexistente ou incompatível na UF |
+| `696` | `E16a-40` | Operação com não contribuinte deve indicar consumidor final |
+| `897` | `B03-10` | Código numérico (`cNF`) em formato inválido |
+| `922`–`927` | `BA10-50`/`BA20`/`E03a-30`/`E14-30`/`H02-10` | Referência indevida, estrangeiro+IE, país Brasil no exterior, item fora de ordem |
+| `928`–`934` | `I05f`/`N12-*` | Família `cBenef × CST` (sem benefício, CST incompatível, diferimento, desoneração) |
+| `935` | `W03-20` | Base de cálculo total acima do limite da UF |
+| `936` | `1C03-10` | Razão Social do emitente diverge do cadastro (opcional) |
+| `946` | `N12-97` | `cBenef` incorreto ou inexistente na UF |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Leiaute (`gCred`, `cBenefRBC`, schema PL) — produção | 01/04/2024 (schema 06/05/2024) |
+| `N12-85` em SC — produção | 01/09/2025 |
+| `N12-86`/`N12-94`/`N12-98`/`I05h-10` em SC — produção | 03/11/2025 |
+| `N14a-10`/`N14a-20` em SC — produção | 06/04/2026 |
+| Regras `cBenef × CST` em SP — homologação / produção | 12/01/2026 / 06/04/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2019.001 v1.70 |
+| Versão | v1.70; 1.70 |
+| Data | 18/08/2025 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2019.001 v1.70 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2019.001 v1.70 (18/08/2025), `tmp/nfe/notas-tecnicas/Nota Técnica 2019.001.v.1.70 - Publicada em 18-08-2025.pdf`. Overlay dobrado em [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) e [EPEC](/docs/eventos/epec). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

@@ -1,0 +1,61 @@
+---
+title: NT 2018.005 v1.52 — Responsável técnico/CSRT, Local de Retirada/Entrega e Repasse do ICMS-ST
+description: Grupo do responsável técnico (CSRT/hashCSRT), endereço completo nos grupos de Local de Retirada e Entrega, mensagem de interesse da SEFAZ no protocolo e campos de Complemento/Restituição do ICMS-ST. v1.52 fecha o cronograma do CSRT no Paraná (obrigatório em produção até 23/02/2026).
+---
+
+A **NT 2018.005** é um lote de alterações de leiaute da NF-e/NFC-e em torno de quatro frentes: o **grupo `infRespTec`** de identificação do responsável técnico pelo software emissor (com o **CSRT** e o `hashCSRT`), a identificação completa de endereço nos grupos de **Local de Retirada (F)** e **Local de Entrega (G)**, a **mensagem de interesse da SEFAZ** no protocolo de resposta (incluindo o retorno do protocolo na rejeição por duplicidade) e novos campos de **Complemento/Restituição do ICMS-ST** no Grupo de Repasse. A revisão vigente **v1.52** fecha o cronograma do CSRT no **Paraná** (modelo 55): `idCSRT`/`hashCSRT` ficam facultativos em homologação até 19/01/2026 e em produção até 23/02/2026, tornando-se obrigatórios após essas datas. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.52 (Julho 2025). 📍 CSRT/`hashCSRT` no Paraná (mod. 55): facultativos até 23/02/2026 em produção, obrigatórios depois; demais UF conforme `ZD07-10` (implementação futura).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Grupo `infRespTec` (ZD) — CSRT | Identificação do responsável técnico (CNPJ, contato) + `idCSRT`/`hashCSRT`; CSRT alfanumérico (16-36 bytes), hash SHA-1 da concatenação CSRT + chave de acesso em Base64; máx. 5 CSRT válidos por UF | [Responsável técnico](/docs/fundamentos/responsavel-tecnico#vigência) |
+| Local de Retirada (grupo F) e Entrega (grupo G) | Endereço completo do expedidor/recebedor: `CNPJ`/`CPF`, `xNome`, `CEP`, `cPais`/`xPais`, `fone`, `email`, `IE`; `F11-10`/`G11-10` (país, rej. 970) e `F15-10`/`G15-10` (IE, rej. 971) | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Repasse do ICMS-ST / Complemento e Restituição | `pST` (N26a) e `vICMSSubstituto` (N26b) passam a ocorrência **0-1** no Grupo de Repasse e nos grupos CST 60 / CSOSN 500; novos campos de apuração do Complemento/Restituição, a critério da UF | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Regras do ICMS-ST a consumidor final | `N12-81`/`N12a-50` exigem `vBCSTRet`/`pST`/`vICMSSubstituto`/`vICMSSTRet` fora de consumidor final (rej. 938, não no mod. 65); `N12-82`/`N12a-60` exigem o ICMS Efetivo a consumidor final (rej. 906); `N33-10` eliminada | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Mensagem de interesse da SEFAZ | Grupo opcional no `protNFe` com mensagem tabelada (código + descrição) ao emitente/comprador; retorno do protocolo de autorização na rejeição por duplicidade | — (estrutura de retorno do protocolo) |
+| DANFE | Exibição dos endereços de Local de Retirada e Entrega quando preenchidos e orientação de preenchimento da Modalidade do Frete | [DANFE NF-e](/docs/danfe/danfe-nfe#vigência) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `906` | `N12-82`/`N12a-60`/`N33-10` | Não informados os campos do ICMS Efetivo (consumidor final) |
+| `938` | `N12-81`/`N12a-50` | Não informada `vBCSTRet`/`pST`/`vICMSSubstituto`/`vICMSSTRet` |
+| `970` | `F11-10`/`G11-10` | Código de País inexistente (local de retirada/entrega) |
+| `971` | `F15-10`/`G15-10` | IE inválida (local de retirada/entrega) |
+| `972` | `ZD01-10` | Obrigatórias as informações do responsável técnico |
+| `973` | `ZD02-10` | CNPJ do responsável técnico inválido |
+| `974` | `7ZD02-10` | CNPJ do responsável técnico diverge do cadastrado |
+| `975` | `ZD07-10` | Obrigatória a informação do `idCSRT` e do `hashCSRT` |
+| `976` | `7ZD08-10` | Identificador do CSRT não cadastrado na SEFAZ |
+| `977` | `7ZD08-20` | Identificador do CSRT revogado |
+| `978` | `7ZD09-10` | Hash do CSRT diverge do calculado |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Leiaute base (grupos F/G, ZD, repasse) — produção | 07/05/2019 |
+| `ZD01-10`/`ZD02-10` (resp. técnico) — produção | 03/06/2019 (AM, MS, PE, PR, SC, TO) |
+| CSRT `idCSRT`/`hashCSRT` validados quando informados | 01/10/2024 |
+| CSRT obrigatório no Paraná (mod. 55) — homologação | 19/01/2026 |
+| CSRT obrigatório no Paraná (mod. 55) — produção | 23/02/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2018.005 v1.52 |
+| Versão | v1.52; 1.52 |
+| Data | 10/07/2025 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2018.005 v1.52 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2018.005 v1.52 (10/07/2025), `tmp/nfe/notas-tecnicas/Nota Técnica 2018.005 v.1.52 - Publicada em 10-07-2025.pdf`. Overlay dobrado em [Responsável técnico](/docs/fundamentos/responsavel-tecnico), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [DANFE NF-e](/docs/danfe/danfe-nfe) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

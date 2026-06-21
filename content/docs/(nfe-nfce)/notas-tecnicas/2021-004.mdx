@@ -1,0 +1,60 @@
+---
+title: NT 2021.004 v1.35 — Regras de validação e novos campos (FCP-ST, veículos, medicamentos, transporte)
+description: Lote de campos e RVs da NF-e/NFC-e 4.0 — FCP-ST na partilha do ICMS, observações de uso livre por item (obsItem), validação de tipo/espécie de veículo, grupo de medicamento, item da lista de ISSQN e conferência do transportador por modalidade de frete. Em produção desde 12/09/2022.
+---
+
+A **NT 2021.004** é um lote de criação e atualização de regras de validação e novos campos da NF-e/NFC-e 4.0. Os deltas tocam **quatro páginas de tema**: inclui o grupo de **FCP-ST na partilha do ICMS** (Grupo N10a, motivado pelo Decreto 8.242/2021 do Paraná), o grupo **`obsItem`** de observações de uso livre do Fisco/contribuinte por item, a validação de **tipo e espécie de veículo**, a obrigatoriedade do grupo de **medicamento** por NCM, a validação do **item da lista de serviços (ISSQN)** e a conferência do **transportador conforme a modalidade do frete**. A revisão vigente v1.35 deixa as RVs `Z02-10`/`Z02-20` (infAdFisco de SC) para implementação futura; a `K01-10` (medicamento obrigatório por NCM) foi suspensa na v1.34. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.35 (Outubro 2022). Em produção desde 12/09/2022 (corpo da NT); `K01-10` suspensa e `Z02-10`/`Z02-20` 📍 com implementação futura.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| FCP-ST na partilha (Grupo N10a) | `vBCFCPST` (N23.1), `pFCPST`, `vFCPST` no grupo de Partilha do ICMS-ST | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| ISSQN — `cListServ` (U06) | Item da Lista de Serviços passa a ser validado por tabela do Portal (RV `U06-10`) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| Grupo `obsItem` (VA) | Observações de uso livre do Fisco e do contribuinte, semiestruturadas, no nível do item | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Veículos — `tpVeic`/`espVeic` | RVs `J19-10`/`J20-10`/`J20-20` conferem tipo e espécie do veículo contra a tabela do Portal | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Medicamentos — grupo `med` | `K01-10` obriga o grupo por NCM (3001–3006) — **suspensa na v1.34**; `K01-20` revisada; `cProdANVISA` aceita 11 dígitos | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Transporte por modalidade de frete | `X03-30` proíbe o grupo `transporta` com `modFrete=9`; `X04-30…X04-100` conferem o transportador no transporte próprio (`modFrete=3/4`) | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| `tpAto` em `procRef`/`infAdic` | Tipo do Ato Concessório quando `indProc=0` (originado na SEFAZ); RV `Z13-10` | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| `infAdFisco` na NFC-e (SC) | `Z02-10`/`Z02-20` exigem Informações Adicionais de Interesse do Fisco na NFC-e — 📍 SC, implementação futura | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `840` | `K01-10` | NCM de medicamento sem o grupo `med` (suspensa na v1.34) |
+| `841` | `J19-10` | Código do Tipo de Veículo inexistente |
+| `842` | `J20-10` | Código da espécie de Veículo inexistente |
+| `843` | `J20-20` | Espécie de Veículo incompatível com o tipo |
+| `844` | `U06-10` | Código de Item da Lista de Serviços inexistente |
+| `845` | `X03-30` | Grupo Transportador não pode ser preenchido para a modalidade de frete informada |
+| `846`–`849` | `X04-30…X04-100` | Transportador divergente no transporte próprio por conta do remetente/destinatário |
+| `941`–`948` | `5A`/`5B` | Regime especial inválido; IE do local de retirada/entrega não cadastrada ou não vinculada |
+| `949`/`950` | `Z02-10`/`Z02-20` | NFC-e sem `infAdFisco`, ou abaixo do tamanho mínimo exigido pela UF (SC, futura) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — corpo da NT | até 25/07/2022 |
+| Produção — corpo da NT | 12/09/2022 |
+| `K01-10` (medicamento por NCM) | suspensa (v1.34) |
+| `Z02-10`/`Z02-20` (infAdFisco SC) | implementação futura (v1.35) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2021.004 v1.35 |
+| Versão | v1.35; 1.35 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2021.004 v1.35 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2021.004 v1.35 (Outubro 2022), `tmp/nfe/notas-tecnicas/Nota Técnica 2021.004 - v.1.35 - Publicada em 01-11-2022.pdf`. Overlay dobrado em [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) e [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

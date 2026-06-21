@@ -1,0 +1,49 @@
+---
+title: NT 2024.002 v1.00 — Evento de Conciliação Financeira (ECONF)
+description: Cria os eventos 110750 (ECONF) e 110751 (cancelamento), para anotar na NF-e/NFC-e as transações financeiras da operação — meio de pagamento, valor, data, instituição e beneficiário — facilitando a conciliação entre documento fiscal e recurso recebido. Facultativo. Em produção desde 02/09/2024.
+---
+
+A **NT 2024.002** cria o **Evento de Conciliação Financeira – ECONF** (`110750`) e seu cancelamento (`110751`), conforme os Ajustes SINIEF 3/2023 e 10/2023. O evento permite **anotar na NF-e/NFC-e as transações financeiras** vinculadas à operação — meio de pagamento, valor, data, instituição financeira e estabelecimento beneficiário — resolvendo o caso de pagamentos que ocorrem **distantes da data de emissão** do documento fiscal. O detalhamento vai no grupo **`detPag`** (até 100 ocorrências): `tPag`, `vPag`, `dPag`, `CNPJPag`/`UFPag`, `CNPJIF`, `tBand`, `cAut`, `CNPJReceb`/`UFReceb`. Para o modelo 55 a autorização é na **SVRS**; para o modelo 65, no WS de eventos próprio da UF. A utilização é **facultativa**, voltada à demonstração de conformidade fiscal. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.00 (Maio 2024). Evento facultativo, em produção desde 02/09/2024.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Evento `110750` (ECONF) | Conciliação Financeira — grupo `detPag` (1–100) com meio, valor e data do pagamento, instituição e beneficiário | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| Evento `110751` | Cancelamento da Conciliação Financeira (informa `nProtEvento` do registro a cancelar) | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| Grupo `detPag` | `indPag`, `tPag`, `xPag`, `vPag`, `dPag`, `CNPJPag`/`UFPag`, `CNPJIF`, `tBand`, `cAut`, `CNPJReceb`/`UFReceb` | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| WS por modelo | Modelo 55 → SVRS; modelo 65 → WS de eventos da UF (mesma URL do cancelamento) | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `657` | `P26-10` | Data de pagamento maior que a data de processamento |
+| `618` | `P12-28` | Chave de Acesso inválida (modelo diferente de 55/65) |
+| `961` | `P28-10` | CNPJ transacional do pagamento inválido |
+| `437` | `P30-10` | CNPJ da instituição de pagamento inválido |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | até 01/07/2024 |
+| Produção | 02/09/2024 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2024.002 v1.00 |
+| Versão | v1.00; 1.00 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2024.002 v1.00 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2024.002 v1.00 (Maio 2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2024.002 - v.1.00 - Publicada em 27-05-2024.pdf`. Overlay dobrado em [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

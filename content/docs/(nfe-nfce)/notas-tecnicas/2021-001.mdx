@@ -1,0 +1,55 @@
+---
+title: NT 2021.001 v1.01 — Evento Comprovante de Entrega da NF-e
+description: Cria os eventos 110130 (Comprovante de Entrega da NF-e) e 110131 (cancelamento), com hash da imagem, data/hora e GPS; impede o cancelamento da NF-e com entrega registrada. Facultativo.
+---
+
+A **NT 2021.001** institui uma infraestrutura digital de comprovação de entrega da mercadoria para a NF-e (modelo 55), quando a entrega não está vinculada a um CT-e. São criados dois eventos a serem gerados pela **empresa emitente**: `110130 - Comprovante de Entrega da NF-e` e `110131 - Cancelamento do Comprovante de Entrega da NF-e`. O comprovante carrega o `hashComprovante` (SHA-1/Base64 da imagem capturada), data/hora da entrega, nome e documento de quem assinou e, opcionalmente, coordenadas GPS. Implementado unicamente no Web Service de Eventos do **Ambiente Nacional**. A implementação é **facultativa**; a v1.01 apenas corrige o formato das datas na documentação. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.01 (06/07/2022). Evento facultativo, em produção. O par de eventos para **Insucesso na Entrega** (`110192/110193`) veio depois pela [NT 2023.005](/docs/notas-tecnicas/2023-005).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Evento `110130` | Comprovante de Entrega da NF-e — `hashComprovante`, `dhEntrega`, `nDoc`/`xNome` do recebedor, `latGPS`/`longGPS` | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| Evento `110131` | Cancelamento do Comprovante de Entrega (informa `nProtEvento` do registro a cancelar) | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| Trava no cancelamento da NF-e | Evento de Entrega (110130) ou de Entrega do CT-e (610130) não cancelado **impede** o cancelamento da NF-e (`4P15-30`) | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `821` | `P30-10` | Data-hora de entrega superior à data de emissão do evento |
+| `822` | `P36-10` | Data-hora do hash do comprovante superior à data de emissão do evento |
+| `823` | `2P30-10` | Data-hora de entrega inferior à data de emissão da NF-e |
+| `824` | `2P36-10` | Data-hora do hash do comprovante inferior à data de emissão da NF-e |
+| `825` | `3P15-10` | Não permitido mais de um evento de Entrega para a NF-e |
+| `826` | `4P15-30` | Pedido de cancelamento para NF-e com evento de registro de Entrega |
+| `460` | `4P23-10` (alterado) | Protocolo do evento difere do cadastrado |
+
+> Nota de proveniência: esses códigos **nascem nesta NT 2021.001** (evento de Entrega). Na página de [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno#overlay-de-nts) eles estão tabulados sob a linha da **NT 2023.005 v1.02**, que reaproveitou os mesmos `cStat` (460, 821–826) para o evento de **Insucesso na Entrega** — a fonte (PDF) registra a origem aqui.
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | até 01/06/2021 (v1.00) |
+| Produção | até 22/06/2021 (v1.00) |
+
+> v1.01 (06/07/2022) é apenas correção de documentação do formato das datas, sem impacto para o contribuinte.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2021.001 v1.01 |
+| Versão | v1.01; 1.01 |
+| Data | 06/07/2022 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2021.001 v1.01 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2021.001 v1.01 (06/07/2022), `tmp/nfe/notas-tecnicas/Nota Técnica 2021.001 - v.1.01 - Publicada em 06-07-2022.pdf`. Overlay dobrado em [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

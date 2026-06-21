@@ -1,0 +1,55 @@
+---
+title: NT 2022.001 v1.00 — Consulta GTIN via Web Service
+description: Cria o Web Service ccgConsGTIN para consultar os dados reduzidos do GTIN no CCG antes da emissão. Em produção desde 31/05/2022.
+---
+
+A **NT 2022.001** viabiliza a **consulta automatizada** aos dados reduzidos do GTIN no Cadastro Centralizado de GTIN (CCG), via Web Service, para quem quiser antecipar a validação de `cEAN`/`cEANTrib` antes de emitir a NF-e/NFC-e. O serviço `ccgConsGTIN` (síncrono, hospedado na SVRS) recebe um GTIN, aplica a **normalização** (completa com zeros à esquerda até 14 posições, confere o prefixo GS1) e devolve `xProd`, `NCM`, `CEST` e a situação do GTIN no CCG. Disponível em produção desde 31/05/2022 — ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.00 (31/05/2022). WS facultativo, em produção. A revisão vigente do CCG é estendida pela [NT 2021.003](/docs/notas-tecnicas/2021-003).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| WS `ccgConsGTIN` | Novo Web Service síncrono na SVRS para consulta reduzida ao CCG; requer certificado de emitente de NF-e/NFC-e | [GTIN e CCG](/docs/fundamentos/gtin-e-ccg#consulta-gtin-via-web-service) |
+| Normalização do GTIN | GTIN de 8/12/13/14 posições normalizado a 14; só GTIN com prefixo GS1 **789/790** (Brasil) | [GTIN e CCG](/docs/fundamentos/gtin-e-ccg#consulta-gtin-via-web-service) |
+| Retorno `retConsGTIN` | `xProd`, `NCM`, `CEST` (0-3 ocorrências) e situação do GTIN | [GTIN e CCG](/docs/fundamentos/gtin-e-ccg#consulta-gtin-via-web-service) |
+
+## Regras de validação / rejeições
+
+Códigos próprios do Web Service de consulta (não são `cStat` de autorização da NF-e):
+
+| Código | Regra |
+|---|---|
+| `9490` | Consulta realizada com sucesso |
+| `9491` | GTIN com dígito verificador inválido (`P10-10`) |
+| `9492` | GTIN não possui prefixo 789 ou 790 — Brasil (`P10-20`) |
+| `9493` | CNPJ/CPF do certificado de transmissão não é emitente de NF-e/NFC-e (`1P10-10`) |
+| `9494` | GTIN inexistente no CCG (`2P10-10`) |
+| `9495` | GTIN existe no CCG com situação inválida — `sitGTIN <> 1` (`2P10-20`) |
+| `9496` | GTIN existe no CCG, mas dono da marca não autorizou a publicação (`2P10-30`) |
+| `9497` | GTIN existe no CCG com NCM não cadastrado (`2P10-40`) |
+| `9498` | GTIN existe no CCG com NCM inválido ou fora de vigência (`2P10-50`) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 13/05/2022 |
+| Produção | 31/05/2022 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2022.001 v1.00 |
+| Versão | v1.00; 1.00 |
+| Data | 31/05/2022 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2022.001 v1.00 |
+| Schema/tabela relacionada | GTIN |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2022.001 v1.00 (31/05/2022), `tmp/nfe/notas-tecnicas/Nota Técnica 2022.001 - v.1.00 - Publicada em 31-05-2022.pdf`. Overlay dobrado em [GTIN e CCG](/docs/fundamentos/gtin-e-ccg). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

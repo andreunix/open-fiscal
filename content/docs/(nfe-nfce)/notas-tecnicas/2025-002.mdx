@@ -1,0 +1,64 @@
+---
+title: NT 2025.002 v1.50 — Reforma Tributária do Consumo
+description: Adapta NF-e/NFC-e ao IBS, à CBS e ao Imposto Seletivo, com novos grupos, finalidades, eventos, validações e totais. A v1.50 reformula a monofasia de combustíveis; produção em 03/11/2026.
+---
+
+A **NT 2025.002-RTC** substitui a RT NT 2024.002 v1.10 no âmbito da NF-e/NFC-e e adapta os modelos 55 e 65 à **LC 214/2025**: cria os grupos de **IBS**, **CBS** e **Imposto Seletivo (IS)**, finalidades de nota de crédito/débito, eventos para a apuração assistida, totais e regras vinculadas a tabelas externas. A revisão vigente **v1.50** consolida as revisões anteriores e reformula a tributação monofásica de combustíveis. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=pD4YrecPV6s=).
+
+> 🔄 Vigente: v1.50 (03/06/2026). O leiaute-base já está em produção; para `CRT=3`, a obrigatoriedade em homologação começa em **01/07/2026** e em produção, **03/08/2026**. O leiaute monofásico da v1.50 entra em homologação até **01/09/2026** e em produção em **03/11/2026**. Orientações para Simples Nacional, excesso de sublimite, MEI e monofasia a partir de 2027 ficam para NT futura.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Numeração das respostas | Amplia `cStat` de 3 para **3–4 posições** e `nProt` de 15 para **15 ou 17 posições**; o protocolo longo usa sequencial anual de 12 dígitos. Nesta revisão, somente a SEFAZ-SP o adota para NFC-e | [Séries e numeração](/docs/fundamentos/series-e-numeracao#numeração-de-protocolos-rtc) |
+| Autorização síncrona | Aplica os novos tamanhos a `retEnviNFe` e `protNFe`; códigos de 4 dígitos ficam reservados às rejeições de IBS/CBS/IS | [Autorização](/docs/emissao-e-comunicacao/autorizacao#overlay-de-nts) |
+| Consulta do recibo | O `protNFe` de `retConsReciNFe` passa a aceitar `cStat` de 3–4 posições e `nProt` de 15/17 | [Retorno da autorização](/docs/emissao-e-comunicacao/ret-autorizacao#overlay-de-nts) |
+| Inutilização e eventos | `retInutNFe` e os retornos de eventos recebem os novos tamanhos de status/protocolo; o `Id` acompanha o protocolo autorizado | [Inutilização](/docs/emissao-e-comunicacao/inutilizacao#overlay-de-nts) |
+| Identificação e atores | Cria `dPrevEntrega`, `cMunFGIBS`, `finNFe=5/6`, `tpNFCredito`, `tpNFDebito`, `cIndOp`, compras governamentais, notas de antecipação e `ISUFEmit` | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Novos grupos no XML | Acrescenta `UB` (`IS`/`IBSCBS`), `VB` (`vItem`) e `VC` (`DFeReferenciado`) ao fluxo do item | [Mapa do XML](/docs/leiaute-e-rejeicoes/mapa-do-xml) |
+| Campos e referências do item | Cria `tpCredPresIBSZFM`, `indBemMovelUsado` e `DFeReferenciado`; na devolução, a referência por item migra exclusivamente para `VC` em 01/09/2026 | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| IBS, CBS e IS | Cria os grupos de base, diferimento, devolução, redução, tributação regular, compra governamental, transferência/estorno/ajuste e crédito presumido | [Tributos do item](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo) |
+| Monofasia de combustíveis — v1.50 | Separa IBS e CBS em ramos **ad rem/ad valorem**, com tributação própria, retenção, retido anteriormente e diferença de biocombustível; a escolha muda conforme o ano | [Monofasia de combustíveis](/docs/leiaute-e-rejeicoes/tributos#monofasia-de-combustíveis-na-v150) |
+| Totais RTC | Cria `ISTot`, `IBSCBSTot`, `gMono`, `gEstornoCred`, `vItem` e `vNFTot`; os totais devem reconciliar as mesmas naturezas informadas nos itens | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| Rejeições RTC | Abre a faixa de quatro dígitos e cria validações de finalidade, classificação, grupos tributários, créditos, referências, SUFRAMA, compras governamentais, totais e monofasia | [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno) |
+| Eventos da apuração | Cria eventos da NF-e modelo 55 para pagamento, apropriação/transferência de crédito, perdas, imobilização, antecipação e previsão de entrega, autorizados pela SVRS; `110001` cancela evento RTC | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-da-reforma-tributária) |
+| Tabelas externas | `CST`, `cClassTrib`, `cClassTribIS`, `cCredPres`, alíquotas e parâmetros ativam ou vedam grupos e regras; carregue sempre a revisão vigente do Portal | [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `1000–1218` | Famílias `B`, `BB`, `C`, `E`, `I`, `UB`, `VB`, `VC`, `W` e eventos | Finalidade crédito/débito, IBS/CBS/IS, SUFRAMA/ALC, compras governamentais, referências, créditos e totais; identifique a causa pela regra e por `xMotivo` |
+| `1200–1202` | Finalidade × classificação | `cClassTrib` incompatível com a finalidade ou com o tipo da nota de débito/crédito |
+| `1219–1272` | Famílias `UB85a–UB104b` | Escolha temporal ad rem/ad valorem, presença dos grupos monofásicos e cálculos de IBS/CBS, retenção e diferença de biocombustível |
+
+> A faixa não representa uma causa única e contém códigos usados em contextos distintos. Não decida somente pelo número: processe também `xMotivo` e a identificação da regra.
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Leiaute-base e regras em produção, com preenchimento facultativo | 06/10/2025 |
+| Valor jurídico dos novos tributos e aplicação das regras quando informados | 01/01/2026 |
+| Obrigatoriedade de IBS/CBS para `CRT=3` — homologação | 01/07/2026 |
+| Campos e regras da v1.40 — produção | 03/08/2026 |
+| Referência de devolução exclusivamente em `DFeReferenciado` | 01/09/2026 |
+| Leiaute monofásico v1.50 — homologação | até 01/09/2026 |
+| Leiaute monofásico v1.50 — produção | 03/11/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 |
+| Versão | v1.50; v1.36; v1.40; 1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2025.002-RTC v1.50; NT 2025.002 v1.50 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2025.002-RTC v1.50 (03/06/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2025.002 v.1.50 - Publicada em 03-06-2026.pdf`. Revisões v1.36 e v1.40 superadas pela v1.50. Overlay dobrado nas 12 páginas ligadas em **O que muda**. As alterações de DANFE permanecem “em estudo” na fonte, sem leiaute publicado nesta revisão. O evento `211120` aparece na lista do item 8.1, mas o próprio item 8.5 registra sua remoção pela LC 227/2026; trate-o como histórico. Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

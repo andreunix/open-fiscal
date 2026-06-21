@@ -1,0 +1,44 @@
+---
+title: NT 2026.004 v1.01 — CNPJ alfanumérico nos schemas da NF-e
+description: Atualiza os schemas XML da NF-e/NFC-e e dos web services para o CNPJ alfanumérico (IN RFB 2229/2024) — campos do tipo CNPJ e chaves de acesso passam de numérico para texto (C), nas 12 primeiras posições do CNPJ. Complementa a NT Conjunta 2025.001. Produção 01/07/2026.
+---
+
+A **NT 2026.004** é o complemento **operacional de schema** da [NT Conjunta DFe 2025.001](/docs/notas-tecnicas/2025-001-conjunta), que estabeleceu as regras do **CNPJ alfanumérico** (IN RFB nº 2.229/2024). Enquanto a Conjunta define a lei de formação, o DV e os impactos, esta NT muda os **schemas XML** do ecossistema NF-e/NFC-e: todos os campos do tipo **CNPJ** e as **chaves de acesso** dos DFe passam de numérico (`N`) para **texto** (`C`), aceitando `[A-Z0-9]` nas 12 primeiras posições do CNPJ (os 2 dígitos verificadores seguem numéricos). Não altera regras de validação de negócio — é uma mudança de tipo no leiaute e nos web services. Schema no pacote `PL_010d_NT2026.004`. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br) e o [schema da NF-e](/docs/schemas/nfe#campos-que-mudam--cnpj-alfanumérico).
+
+> 🔄 Vigente: v1.01 (Junho 2026). Homologação até **15/06/2026** / produção **01/07/2026**. A v1.01 alterou a data de homologação e incluiu o layout do web service `NFeInutilizacao`. Não aplique conversão numérica, _trim_ nem mudança de caixa nos campos atingidos.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Chave de acesso alfanumérica | A chave de 44 posições aceita letras nas posições do CNPJ do emitente; campos `refNFe`, `refNFeSig`, `refCTe`, `chNFe` viram texto | [Chave de acesso](/docs/fundamentos/chave-de-acesso#cnpj-alfanumérico-nt-conjunta-2025001) |
+| Atores e documentos referenciados | CNPJ de emitente (C), destinatário (E), retirada/entrega (F/G), `autXML` (GA) e emitentes referenciados (BA) passam ao tipo texto; `refNFe`, `refNFeSig` e `refCTe` aceitam chave alfanumérica | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Campos CNPJ e chaves nos itens | `CNPJFab` (I05e), CNPJ do adquirente/encomendante na DI (I23d), `chNFe` da exportação indireta (I54) e `chaveAcesso` do `DFeReferenciado` (VC02) passam ao tipo texto | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| CNPJ do produtor no IPI | `CNPJProd` (O03) passa ao tipo texto de 14 posições | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| CNPJ do transportador | `CNPJ` do transportador (X04) passa ao tipo texto de 14 posições | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| CNPJ nos grupos finais | `CNPJPag` (YA), CNPJ do intermediador (YB) e CNPJ do responsável técnico (ZD) passam ao tipo texto de 14 posições | [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#overlay-de-nts) |
+| Web services → texto | `NfeRetAutorizacao`, `NFeRecepcaoEvento` (parte geral, cancelamento/substituição, EPEC, Ator Interessado), `NfeConsultaProtocolo`, `NfeConsultaCadastro`, `NfeDistribuicaoDFe`, `NfeInutilizacao` aceitam CNPJ/chaves alfanuméricos; em Consulta Cadastro o CNPJ aceita **3–14** caracteres | [Web Services](/docs/emissao-e-comunicacao/web-services#overlay-de-nts) |
+| Schema (pacote) | `tiposBasico_v4.00` com padrões alfanuméricos no pacote `PL_010d_NT2026.004` | [Schema da NF-e](/docs/schemas/nfe#campos-que-mudam--cnpj-alfanumérico) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | até 15/06/2026 |
+| Produção | 01/07/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2026.004 v1.01 |
+| Versão | v1.01; 1.01 |
+| Data | 08/06/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2026.004 v1.01; NT Conjunta 2025.001 |
+| Schema/tabela relacionada | schemas |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2026.004 v1.01 (08/06/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2026.004 v.1.01 - Publicada em 08-06-2026.pdf`. Regras de formação, DV e impactos na [NT Conjunta 2025.001](/docs/notas-tecnicas/2025-001-conjunta). Sem `cStat` novos — é mudança de tipo de campo. Overlay dobrado em [Chave de acesso](/docs/fundamentos/chave-de-acesso), [Web Services](/docs/emissao-e-comunicacao/web-services), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento), [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) e [Schema da NF-e](/docs/schemas/nfe). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

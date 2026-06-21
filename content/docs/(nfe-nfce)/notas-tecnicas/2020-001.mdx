@@ -1,0 +1,40 @@
+---
+title: NT 2020.001 v1.60 — Evento de manifestação do destinatário
+description: Unifica os eventos de manifestação do destinatário (PJ e PF/CPF) e, na revisão vigente v1.60, reduz de 180 para 90 dias o prazo máximo de registro da manifestação conclusiva (Ajuste SINIEF 14/26). Produção 01/06/2026.
+---
+
+A **NT 2020.001** substitui as NTs 2012.002 e 2013.001 e unifica os quatro eventos de **manifestação do destinatário** da NF-e modelo 55 — Confirmação da Operação (`210200`), Ciência da Emissão (`210210`), Desconhecimento da Operação (`210220`) e Operação não Realizada (`210240`) — estendendo o serviço também à pessoa física (CPF). A revisão vigente **v1.60** adequa a documentação ao **Ajuste SINIEF 14/26**, que reduz de **180 para 90 dias** o prazo máximo de registro da manifestação conclusiva, contado da data de autorização da NF-e (observado o prazo de retificação do § 3º da cláusula 15-C do Ajuste SINIEF 7/05). A v1.50 já havia permitido até **2 ocorrências** de cada manifestação conclusiva por NF-e (valendo a última registrada). Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.60 (Abril 2026). Manifestação conclusiva em até **90 dias**; homologação 15/05/2026 / produção 01/06/2026.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Prazo da manifestação conclusiva | Reduzido de 180 para **90 dias** da autorização da NF-e (Ajuste SINIEF 14/26, cláusula 15-C); `H03` rejeita evento fora do prazo (rej. 596). Prazos legais: Ciência 10 dias, demais conclusivas 90 dias | [Manifestação do destinatário](/docs/eventos/manifestacao-do-destinatario#vigência) |
+| Até 2 eventos conclusivos por tipo | O destinatário pode registrar até 2 ocorrências de cada manifestação conclusiva por NF-e; só vale a **última** registrada (`H02`, `nSeqEvento` máx. 2; rej. 594) | [Manifestação do destinatário](/docs/eventos/manifestacao-do-destinatario#regra-de-mudança-importante) |
+| Manifestação por pessoa física (CPF) | O serviço passa a atender destinatário PF: autor identificado por CPF, assinatura por e-CPF; WS `RecepcaoEvento` (lote de 1 a 20 eventos) e Portal Nacional | [Manifestação do destinatário](/docs/eventos/manifestacao-do-destinatario#como-operacionalizar) |
+| Obrigatoriedade | Mantida a obrigação do Anexo II do Ajuste SINIEF 7/05 (combustíveis, álcool, cigarros, bebidas, água) com a exceção dos lubrificantes (tabela de códigos ANP) | [Manifestação do destinatário](/docs/eventos/manifestacao-do-destinatario#quando-a-manifestação-é-obrigatória) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — v1.60 | 15/05/2026 |
+| Produção — v1.60 | 01/06/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2020.001 v1.60 |
+| Versão | v1.60; 1.60 |
+| Data | 23/04/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2020.001 v1.60 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2020.001 v1.60 (23/04/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2020.001 v.1.60 - Publicada em 23-04-2026.pdf`. Overlay dobrado em [Manifestação do destinatário](/docs/eventos/manifestacao-do-destinatario). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

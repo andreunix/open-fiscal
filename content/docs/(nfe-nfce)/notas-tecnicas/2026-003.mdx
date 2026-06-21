@@ -1,0 +1,41 @@
+---
+title: NT 2026.003 v1.00 — Especificação do DANFE Simplificado Tipo 2
+description: "Manual de impressão do DANFE Simplificado Tipo 2 (Ajuste SINIEF 13/26): divisões I–IX — inclusive III-A para IBS/CBS —, papel ≥56 mm, QR Code v3 mínimo 25×25 mm com parâmetros online/offline, e a tabela padronizada de mensagens da consulta pública. Produção 03/08/2026."
+---
+
+A **NT 2026.003** estabelece as especificações técnicas e operacionais do **DANFE Simplificado Tipo 2**, instituído pelo **Ajuste SINIEF nº 13/26** (alteração do Ajuste SINIEF 07/05). É o manual de impressão do documento que a [NT 2026.002](/docs/notas-tecnicas/2026-002) criou no leiaute (`tpImp=6`): define as **divisões I a IX**, com a divisão adicional **III-A**, os requisitos de papel e margens, as dimensões e os parâmetros do **QR Code v3** (online e offline), e a tabela padronizada de mensagens da **consulta pública** da NF-e. Segue o leiaute do "Manual de Especificações Técnicas do DANFE-NFC-e e QR Code" (Ajuste SINIEF 19/16), adaptado à NF-e modelo 55. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.00 (Maio 2026). Homologação **01/07/2026** / produção **03/08/2026** — alinhado ao schema do Tipo 2 da [NT 2026.002](/docs/notas-tecnicas/2026-002).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Divisões do layout | Divisões I–IX, contando a adicional **III-A**: I cabeçalho · II produtos/serviços · III totais · III-A IBS/CBS (LC 214/2025) · IV consulta por chave · V QR Code · VI consumidor · VII identificação/protocolo · VIII mensagem fiscal · IX mensagem do contribuinte (Lei 12.741/2012) | [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia#danfe-simplificado-tipo-2-tpimp--6) |
+| Papel e margens | Largura mínima **56 mm**, altura suficiente, legibilidade por ≥ 6 meses; impressão a partir do XML e do retorno de autorização | [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia#danfe-simplificado-tipo-2-tpimp--6) |
+| QR Code v3 — dimensões e parâmetros | Mínimo **25 × 25 mm** (22 mm de conteúdo + 3 mm de _quiet zone_; acima disso, margem de 10%); online `chNFe\|3\|tpAmb`, offline acrescenta dia, `vNF`, tipo e identificação do destinatário e assinatura | [QR Code v3](/docs/danfe/simplificado-e-contingencia#qr-code-v3) |
+| Impressão em contingência | Segunda via e mensagens de contingência off-line (`tpEmis=9`); protocolo/autorização em hora local exceto na contingência | [Contingência da NF-e](/docs/contingencia/nfe#offline-do-danfe-simplificado-tipo-2-tpemis--9) |
+| Consulta pública padronizada | Tabela de códigos/mensagens da consulta (versão e parâmetros do QR Code, situação da nota) com texto a exibir ao consumidor | [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia#qr-code-v3) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | 01/07/2026 |
+| Produção | 03/08/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2026.003 v1.00 |
+| Versão | v1.00; 1.00 |
+| Data | 25/05/2026 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2026.003 v1.00; NT 2026.002 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2026.003 v1.00 (25/05/2026), `tmp/nfe/notas-tecnicas/Nota Técnica 2026.003 v.1.00 - Publicada em 25-05-2026.pdf`. Leiaute e regras de validação na [NT 2026.002](/docs/notas-tecnicas/2026-002). É um manual de impressão — não cria `cStat` de autorização; os códigos não contíguos 211–247 da consulta pública são mensagens de exibição. Overlay dobrado em [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia) e [Contingência da NF-e](/docs/contingencia/nfe). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

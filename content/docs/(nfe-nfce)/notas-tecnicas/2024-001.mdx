@@ -1,0 +1,57 @@
+---
+title: NT 2024.001 v1.20 — CRT=4 (MEI) e fim da denegação
+description: Cria o CRT=4 (MEI) com CSOSN e CFOP próprios, torna GTIN e NCM facultativos para o MEI em operação interna, e elimina a denegação também no modelo 55 (substituída por rejeição). Regras gerais em produção desde 16/09/2024; regras específicas do MEI a partir de 01/04/2025.
+---
+
+A **NT 2024.001** cria o código de regime tributário **`CRT=4` – Simples Nacional / Microempreendedor Individual (MEI)** (Convênio S/N de 1970) e ajusta o leiaute para o MEI: os grupos **`ICMSSN102` e `ICMSSN900`** passam a admitir CRT=4, o **GTIN** (`I03-30`/`I12-60`) e o **NCM** (`I05-10`, em operação interna pode ser `00000000`) tornam-se **facultativos**, e há **CSOSN e CFOP próprios do MEI** (regras `N12a-80/81` e `N12a-90/91`). A NT também **elimina o processo de denegação para o modelo 55** (antes restrito à NFC-e), substituindo-o por **rejeição**, conforme o Ajuste SINIEF 43/23: a `1C17-40` é **excluída**, e as RVs `1C17-50`, `5E17-40` e `5E17-60` deixam de denegar e passam a rejeitar (307/302/303). A revisão vigente consolida as datas: as regras que **não afetam o MEI** entram em produção em **16/09/2024**, enquanto as específicas do MEI (`N12a-80/81/90/91` e a obs. 2 da `I08-140`) valem a partir de **01/04/2025**. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.20 (Agosto 2024). Regras gerais em produção desde 16/09/2024; regras do MEI a partir de 01/04/2025.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `CRT=4` (MEI) | Novo código de regime tributário no grupo `C` (emitente); `ICMSSN102`/`ICMSSN900` admitem CRT=4; `7C21-10` verifica o enquadramento real como MEI | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| CSOSN e CST do MEI | `N12-20`/`N12a-10` exigem CSOSN e vedam CST para CRT=1 ou 4; `N12a-80/81` validam o CSOSN do MEI; origem da mercadoria obrigatória (`N11-10`, rejeição 966) | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| GTIN facultativo (MEI) | `I03-30`/`I12-60`: GTIN e GTIN da unidade tributável facultativos quando CRT=4 | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| NCM facultativo interno (MEI) | `I05-10`: em operação interna o MEI pode informar NCM `00000000`; em interestadual/exterior o NCM completo é obrigatório | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| CFOP do MEI | `N12a-90/91` (337) validam os CFOP permitidos ao MEI; `I08-140` (devolução) e CFOP 5.910 na NFC-e (`I08-150`) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| Fim da denegação no modelo 55 | `1C17-40` excluída; `1C17-50`→307, `5E17-40`→302, `5E17-60`→303 (rejeição em vez de denegação) — Ajuste SINIEF 43/23 | [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `307` | `1C17-50` | Emitente bloqueado pela UF de destino, em operação com consumidor final (era denegação) |
+| `302` | `5E17-40` | Irregularidade fiscal do destinatário (era denegação) |
+| `303` | `5E17-60` | Destinatário não habilitado a operar na UF (era denegação) |
+| `337` | `N12a-90`/`91` | CFOP inválido para emitente MEI (CRT=4) |
+| `590` | `N12-20` | Informado CST para emissor do Simples Nacional (CRT=1 ou 4) |
+| `591` | `N12a-10` | Informado CSOSN para emissor que não é do Simples Nacional |
+| `781` | `1C17-38` | Emissor não habilitado para emissão da NF-e/NFC-e |
+| `782` | `N12a-80`/`81` | CSOSN inválido para emitente MEI (CRT=4) |
+| `966` | `N11-10` | Obrigatório o preenchimento da origem da mercadoria |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) | até 01/07/2024 |
+| Produção (regras gerais) | 16/09/2024 |
+| Produção (regras do MEI: `N12a-80/81/90/91`, `I08-140` obs. 2) | 01/04/2025 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2024.001 v1.20 |
+| Versão | v1.20; 1.20 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2024.001 v1.20 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2024.001 v1.20 (Agosto 2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2024.001 v.1.20 - Publicada em 29-08-2024.pdf`. Overlay dobrado em [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

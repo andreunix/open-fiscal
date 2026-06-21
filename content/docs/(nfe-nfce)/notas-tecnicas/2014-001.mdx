@@ -1,0 +1,41 @@
+---
+title: NT 2014.001 v1.30 — Evento Prévio de Emissão em Contingência (EPEC)
+description: Define o EPEC (tpEvento=110140) da NF-e; a revisão vigente estende ao emitente Pessoa Física, concede tolerância de 5 min na data do evento e atualiza a consulta pública no Portal. Em produção desde 02/05/2022.
+---
+
+A **NT 2014.001** é a especificação viva do **EPEC** — Evento Prévio de Emissão em Contingência (`tpEvento=110140`), uma das modalidades de contingência da NF-e: autorizado o EPEC com dados reduzidos da NF-e, permite-se imprimir o DANFE em papel comum, sob condição resolutória de posterior transmissão da NF-e. Esta NT é anterior ao MOC 7.0, mas reaparece como overlay porque sua **revisão vigente (v1.30)** é posterior: além do EPEC já consolidado, ela acumula três deltas pós-2019 — emissão por **Pessoa Física**, **tolerância de 5 min** na data do evento e a nova **consulta pública** do EPEC no Portal Nacional. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.30 (21/06/2022). EPEC em produção. Há EPEC específico para **NFC-e** (NT 2014.003); `tpEmis=4` indica a modalidade.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| EPEC para Pessoa Física (v1.20) | `tpAutor=1` passa a ser "Empresa Emitente/Pessoa Física"; valida CPF do autor (`P11-21`, rejeição 495) | [EPEC](/docs/eventos/epec#overlay-de-nts) |
+| Tolerância de 5 min (v1.21) | `P23-10` aceita até 5 min de diferença entre a data do evento e a de processamento (sincronismo de relógio) | [EPEC](/docs/eventos/epec#overlay-de-nts) |
+| Consulta pública no Portal (v1.30) | Atualizada a consulta pública do EPEC no Portal Nacional da NF-e | [EPEC](/docs/eventos/epec#overlay-de-nts) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| EPEC Pessoa Física — produção (v1.20) | 16/03/2020 |
+| Tolerância de 5 min — produção (v1.21) | 23/11/2021 |
+| Consulta no Portal — homologação (v1.30) | 08/03/2022 |
+| Consulta no Portal — produção (v1.30) | 02/05/2022 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2014.001 v1.30 |
+| Versão | v1.30; 1.30 |
+| Data | 21/06/2022 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2014.001 v1.30 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2014.001 v1.30 (21/06/2022), `tmp/nfe/notas-tecnicas/Nota Técnica 2014.001 - v.1.30 - Publicada em 21-06-2022.pdf`. Overlay dobrado em [EPEC](/docs/eventos/epec). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

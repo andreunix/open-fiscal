@@ -1,0 +1,58 @@
+---
+title: NT 2020.005 v1.21 — Criação e atualização de regras de validação
+description: Lote de novos campos e RVs da NF-e/NFC-e 4.0 — códigos de barra fora do GTIN, ICMS-ST desonerado, FCP diferido (CST 51), modBCST=6 e PIS/COFINS-ST no total da nota. Em produção desde 01/09/2021.
+---
+
+A **NT 2020.005** é um lote de criação e atualização de regras de validação e campos da NF-e/NFC-e 4.0, adaptado ao MOC 7.0. Os deltas se espalham por vários temas de leiaute: novos códigos de barra fora do padrão GTIN, ajustes nas declarações de importação (DUImp), campos de **ICMS-ST desonerado**, **FCP diferido** no CST 51, nova modalidade de base de cálculo do ICMS-ST e os indicadores que dizem se a ST de PIS/COFINS integra o total da nota. A revisão vigente v1.21 corrige descrições de FCP e restringe as RVs `NA15-10`/`NA17-10` às notas de saída. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.21 (15/10/2021). Em produção desde 01/09/2021 (campos e RVs base); correções da v1.20/v1.21 até 25/10/2021.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| `cBarra`/`cBarraTrib` (I03a/I12a) | Código de barras próprio ou de terceiros, fora do padrão GTIN, sem validação | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| `tpViaTransp` (I23a) e DUImp | Novos modais de via de transporte internacional; grupo de adição passa a aceitar a Declaração Única de Importação | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| `cAgreg` (I85) alfanumérico | Código de Agregação do grupo de rastreabilidade (I80) passa de numérico a alfanumérico | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| ICMS-ST desonerado | `vICMSSTDeson` (N33a) e `motDesICMSST` (N33b) nos grupos CST 10, 70 e 90 | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| FCP diferido — CST 51 | `pFCPDif` (N17d), `vFCPDif` (N17e) e `vFCPEfet` (N17f); `vFCP` (N17c) passa a ser o FCP realmente devido | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `modBCST=6` | Nova modalidade de BC do ICMS-ST = "Valor da Operação" nos grupos CST 70 e 90 | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| `indSomaPISST`/`indSomaCOFINSST` (R07/T07) | Indicam se `vPIS`/`vCOFINS` da ST compõem o total da nota | [Tributos](/docs/leiaute-e-rejeicoes/tributos#overlay-de-nts) |
+| RV `W16-10` | Fórmula do `vNF` passa a somar `vPIS`/`vCOFINS` da ST quando os indicadores R07/T07 = 1 | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| RVs `NA15-10`/`NA17-10` | Conferem o ICMS interestadual para as UF de destino/remetente; não se aplicam a notas de entrada | [Cálculo interestadual](/docs/referencia/calculo-interestadual) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `242` | `B00` (SOAP) | Mensagem SOAP inválida |
+| `446` | `I05c-10` | Informado CEST inexistente |
+| `452` | `GAP03a-3` | Solicitada resposta assíncrona para lote com apenas 1 NFC-e |
+| `939` | `4P15-30` | Cancelamento de NF-e com evento de Averbação para Exportação |
+| `940` | `4P15-34` | Cancelamento de NF-e com evento Financeiro |
+| `307` | — | Uso Denegado: emitente bloqueado pela UF de destino, em operação com consumidor final |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — v1.00/v1.10 | 01/07/2021 |
+| Produção — v1.00/v1.10 | 01/09/2021 |
+| Correções v1.20 (produção) | 04/10/2021 |
+| Correções v1.21 (produção) | até 25/10/2021 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2020.005 v1.21 |
+| Versão | v1.21; 1.21 |
+| Data | 15/10/2021 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2020.005 v1.21 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2020.005 v1.21 (15/10/2021), `tmp/nfe/notas-tecnicas/Nota Técnica 2020.005 - v.1.21 - Publicada em 15-10-2021.pdf`. Overlay dobrado em [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento), [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno) e [Cálculo interestadual](/docs/referencia/calculo-interestadual). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

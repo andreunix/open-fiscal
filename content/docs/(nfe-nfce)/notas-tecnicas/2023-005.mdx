@@ -1,0 +1,54 @@
+---
+title: NT 2023.005 v1.02 — Evento de Insucesso na Entrega da NF-e
+description: Cria os eventos 110192 (Insucesso na Entrega da NF-e) e 110193 (cancelamento), para registrar a tentativa de entrega frustrada com motivo, GPS e hash da imagem, substituindo a ressalva no verso do DANFE. Só modelo 55, no WS de eventos da SVRS. Em produção desde 24/06/2024.
+---
+
+A **NT 2023.005** cria o par de eventos de **Insucesso na Entrega da NF-e** (modelo 55), conforme o Ajuste SINIEF 58/2022: `110192 - Insucesso na Entrega da NF-e` e `110193 - Cancelamento do Insucesso na Entrega da NF-e`. Quando a entrega não envolve um CT-e, o **emitente** registra na própria NF-e que a entrega não pôde ser concluída — informando o motivo (`tpMotivo`: recebedor não encontrado, recusa, endereço inexistente ou outros), data/hora da tentativa, opcionalmente GPS e o `hashTentativaEntrega` (SHA-1/Base64 da imagem capturada). O evento substitui a ressalva manuscrita no **verso do DANFE** e dispensa portar o documento impresso. Implementado **unicamente** no Web Service de Eventos da **SVRS**. A implementação é **facultativa**; a v1.02 fixa o ambiente de autorização na SVRS e ajusta a documentação. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.02 (Abril 2024). Evento facultativo, em produção desde 24/06/2024. Reaproveita os `cStat` 460 e 821–826 do evento de Comprovante de Entrega ([NT 2021.001](/docs/notas-tecnicas/2021-001)).
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Evento `110192` | Insucesso na Entrega da NF-e — `tpMotivo`, `nTentativa`, `xJustMotivo`, `dhTentativaEntrega`, `latGPS`/`longGPS`, `hashTentativaEntrega` | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| Evento `110193` | Cancelamento do Insucesso na Entrega (informa `nProtEvento` do registro a cancelar) | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| Web Service SVRS | Só modelo 55; autorização unicamente no WS de Eventos da SVRS | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+| Trava no cancelamento da NF-e | Evento de Insucesso (110192) ou propagado do CT-e (610190) não cancelado **impede** o cancelamento da NF-e (`4P15-32`, rejeição 826) | [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-do-emitente) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `821` | `P30-10` | Data-hora de entrega superior à data de emissão do evento |
+| `822` | `P37-10` | Data-hora do hash de entrega superior à data de emissão do evento |
+| `823` | `2P30-10` | Data-hora de entrega inferior à data de emissão da NF-e |
+| `824` | `2P36-10` | Data-hora do hash de entrega inferior à data de emissão da NF-e |
+| `825` | `3P15-14` | Não permitido mais de um evento de Insucesso para a NF-e (anteriores devem estar cancelados) |
+| `826` | `4P15-32` | Pedido de cancelamento para NF-e com evento de Entrega/Insucesso não cancelado |
+| `460` | `4P22-10` | Protocolo do evento difere do cadastrado |
+
+> Nota de proveniência: os `cStat` 460 e 821–826 **nascem na [NT 2021.001](/docs/notas-tecnicas/2021-001)** (evento de Comprovante de Entrega) e são **reaproveitados** aqui para o Insucesso na Entrega. Em [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno#overlay-de-nts) eles estão tabulados sob esta NT 2023.005.
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação (teste) — v1.02 | 29/04/2024 |
+| Produção | 24/06/2024 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2023.005 v1.02 |
+| Versão | v1.02; 1.02 |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2023.005 v1.02 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2023.005 v1.02 (Abril 2024), `tmp/nfe/notas-tecnicas/Nota Técnica 2023.005 - v.1.02 - Publicada em 26-04-2024.pdf`. Overlay dobrado em [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

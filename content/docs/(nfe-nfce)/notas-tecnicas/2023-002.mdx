@@ -1,0 +1,56 @@
+---
+title: NT 2023.002 v1.01 — NFC-e por produtor rural (CPF)
+description: Permite a emissão de NFC-e por emitente pessoa física (produtor rural com IE vinculada ao CPF), em substituição à Nota Fiscal modelo 04; elimina o lote com mais de 1 NFC-e e a denegação na NFC-e. v1.01 habilita a emissão por nota avulsa em SC.
+---
+
+A **NT 2023.002** permite a emissão de **NFC-e por emitente pessoa física** — o produtor rural que possui Inscrição Estadual vinculada ao **CPF** — em substituição à Nota Fiscal modelo 04 (Ajuste SINIEF 54/2022). O CPF passa a constar na **chave de acesso** (com zeros à esquerda, 14 posições), a NFC-e é assinada por **e-CPF** com software próprio (**série reservada 920–969**) ou pelo certificado da SVRS via aplicativo **NFF**, e o **envio por lote fica limitado a 1 NFC-e** (resposta síncrona, rejeição 126). A NT também consolida o **fim da denegação na NFC-e** (Ajuste SINIEF 10/2023): emitente irregular passa a ser **rejeitado** (`781`), não denegado. A revisão vigente **v1.01** ajusta as RVs `B26-30`/`B26-50` para habilitar a emissão por **Nota Fiscal Avulsa em Santa Catarina**. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.01 (Novembro 2025). 📍 NFC-e por produtor rural CPF em produção desde 04/09/2023; emissão por nota avulsa em SC: homologação 19/01/2026, produção 02/02/2026.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| CPF na chave de acesso da NFC-e | O CPF do produtor rural ocupa as 14 posições do emitente na chave (precedido de zeros); assinatura por e-CPF (software próprio) ou e-CPF da SVRS (NFF) | [Chave de acesso](/docs/fundamentos/chave-de-acesso#vigência) |
+| Série reservada do produtor rural | Faixa **920–969** para emitente CPF com aplicativo próprio (`procEmi<>1,2`); NFF identifica o CPF por outro campo da chave (NT 2021.002) | [Séries e numeração](/docs/fundamentos/series-e-numeracao#numeração-do-produtor-rural) |
+| Emitente CPF e nota avulsa SC | `C02a-10` (495), `C02a-20` (401), `C02a-30` (560) validam série/CPF do emitente; `B26-30` (370) e `B26-50` (957) ganham exceção para nota avulsa e contingência offline em **SC** | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Lote de 1 NFC-e (síncrono) | `GAP03a-4` (126) rejeita lote com mais de 1 NFC-e — a NFC-e elimina a requisição assíncrona | [Autorização](/docs/emissao-e-comunicacao/autorizacao#overlay-de-nts) |
+| Fim da denegação na NFC-e | `1C17-40` (301, denegação) deixa de denegar; emitente irregular cai na `1C17-38` (781, rejeição) | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| Cancelamento com chave/autor em CPF | `G04e` (617) aceita CPF na faixa 920–969; `G06` (494) e `G08` (574) tratam chave inexistente e divergência do autor por CNPJ/CPF | [Cancelamento](/docs/eventos/cancelamento#overlay-de-nts) |
+
+## Regras de validação / rejeições
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `126` | `GAP03a-4` | Enviado lote com mais de 1 NFC-e |
+| `401` | `C02a-20` | CPF do emitente inválido |
+| `494` | `G06` | Chave de acesso inexistente |
+| `560` | `C02a-30` | CNPJ base/CPF do emitente difere do da primeira NF-e do lote |
+| `574` | `G08` | Autor do evento diverge do emissor da NF-e |
+| `617` | `G04e` | Chave de acesso inválida (CNPJ/CPF zerado ou dígito inválido) |
+| `781` | `1C17-38` | Emissor não habilitado para emissão da NFC-e (substitui a denegação) |
+| `957` | `B26-50` | Tipo de emissão incompatível com o processo de emissão |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| NFC-e por produtor rural CPF e fim do lote (v1.00) — produção | 04/09/2023 |
+| Emissão por nota avulsa em SC (v1.01) — homologação | 19/01/2026 |
+| Emissão por nota avulsa em SC (v1.01) — produção | 02/02/2026 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2023.002 v1.01 |
+| Versão | v1.01; 1.01 |
+| Data | 18/11/2025 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2023.002 v1.01 |
+| Schema/tabela relacionada | não indicada |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2023.002 v1.01 (18/11/2025), `tmp/nfe/notas-tecnicas/Nota Técnica 2023.002 v.1.01 - Publicada em 18-11-2025.pdf`. Overlay dobrado em [Chave de acesso](/docs/fundamentos/chave-de-acesso), [Séries e numeração](/docs/fundamentos/series-e-numeracao), [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Autorização](/docs/emissao-e-comunicacao/autorizacao) e [Cancelamento](/docs/eventos/cancelamento). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).

@@ -1,0 +1,54 @@
+---
+title: NT 2021.003 v1.40 — Validação de GTIN
+description: Substitui a NT 2017.001 e ativa por etapas a validação de cEAN/cEANTrib contra o Cadastro Centralizado de GTIN (CCG). A v1.40 acrescenta o grupo IV de NCM — alimentos com redução a zero de IBS/CBS (LC 214/2025). Em produção por etapas.
+---
+
+A **NT 2021.003** consolida e substitui a **NT 2017.001** (já recepcionada no MOC 7.0) na **validação do GTIN** informado em `cEAN`/`cEANTrib` contra o **Cadastro Centralizado de GTIN (CCG)**. A validação é ativada **por etapas** e só incide quando o GTIN tem **prefixo Brasil (789/790)**, o **NCM** pertence a um dos grupos do Anexo I **e** o **CFOP** é de venda de produção do estabelecimento (Anexo II). A **v1.40** apenas amplia a lista de NCM sujeita à validação: cria o **grupo IV** — produtos destinados à alimentação humana submetidos à **redução a zero das alíquotas de IBS/CBS** da **LC 214/2025** (exceto hortícolas, frutas e ovos do Anexo XV, e exceto documentos de produtores primários ou produtos sem GTIN). Não cria campo nem regra nova — é consequência da Reforma Tributária do Consumo. Ver a [NT no Portal](https://www.nfe.fazenda.gov.br).
+
+> 🔄 Vigente: v1.40 (26/02/2025). Grupo IV: homologação **01/07/2025** / produção **01/10/2025**. As etapas anteriores (grupos I–III) já estão em produção; a Etapa 2 (NCM) e o confronto de CEST seguem o cronograma por autorizadora.
+
+## O que muda
+
+| Delta | Detalhe | Onde está dobrado |
+|---|---|---|
+| Grupo IV de NCM | Alimentos com **redução a zero de IBS/CBS** (Anexo I da LC 214/2025); exclui hortícolas/frutas/ovos (Anexo XV), produtores primários e produtos sem GTIN | [GTIN e CCG](/docs/fundamentos/gtin-e-ccg#ativação-da-validação-no-ccg-por-grupo-de-ncm) |
+| Etapa 1 — existência no CCG | `9I03-10` (`cEAN`) e `9I12-10` (`cEANTrib`): GTIN com prefixo Brasil deve existir no CCG. Já ativa | [GTIN e CCG](/docs/fundamentos/gtin-e-ccg#ativação-da-validação-no-ccg-por-grupo-de-ncm) |
+| Etapa 2 — confronto de NCM | `9I03-20`/`9I12-20`: NCM informada na NF-e deve coincidir com a cadastrada no CCG | [GTIN e CCG](/docs/fundamentos/gtin-e-ccg#ativação-da-validação-no-ccg-por-grupo-de-ncm) |
+| Confronto de CEST / GTIN Contido | `9I03-30`/`9I12-30` (CEST) e `9I03-40` (GTIN-14 vs. GTIN Contido): **implementação futura** | [GTIN e CCG](/docs/fundamentos/gtin-e-ccg#ativação-da-validação-no-ccg-por-grupo-de-ncm) |
+
+## Regras de validação / rejeições
+
+A NT **elimina** a rejeição **889** (obrigatoriedade de GTIN) e ativa os códigos de existência/compatibilidade no CCG. 611/612 e 882–888 já vêm do MOC 7.0.
+
+| cStat | Regra | Descrição |
+|---|---|---|
+| `890` | `9I03-10` | GTIN (`cEAN`) inexistente no CCG |
+| `891` | `9I03-20` | GTIN (`cEAN`) incompatível com a NCM |
+| `894` | `9I12-10` | GTIN da unidade tributável (`cEANTrib`) inexistente no CCG |
+| `895` | `9I12-20` | GTIN da unidade tributável incompatível com a NCM |
+| `892`/`893`/`896` | `9I03-30`/`9I03-40`/`9I12-30` | CEST e GTIN Contido — implementação futura |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Grupo IV — homologação (teste) | 01/07/2025 |
+| Grupo IV — produção | 01/10/2025 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2021.003 v1.40 |
+| Versão | v1.40; 1.40 |
+| Data | 26/02/2025 |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | NT 2021.003 v1.40; NT 2022.001 |
+| Schema/tabela relacionada | GTIN; NCM |
+| Status | revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+NT 2021.003 v1.40 (26/02/2025), `tmp/nfe/notas-tecnicas/Nota Técnica 2021.003 - v.1.40 - Publicada em 26-02-2025.pdf`. Overlay dobrado em [GTIN e CCG](/docs/fundamentos/gtin-e-ccg) e [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno#overlay-de-nts). Consulta automatizada ao CCG pela [NT 2022.001](/docs/notas-tecnicas/2022-001). Ver [Notas Técnicas](/docs/referencia/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia#notas-técnicas-dobradas).
+
+> Nota de proveniência: o overlay caracteriza o grupo IV como "NCM com redução/zero de IBS/CBS da LC 214/2025"; o PDF (Anexo I – Grupo IV) é mais específico — **produtos destinados à alimentação humana** com redução **a zero** das alíquotas, exceto hortícolas, frutas e ovos (Anexo XV). A fonte prevalece.
