@@ -1,0 +1,81 @@
+---
+title: NF-e de exportação
+description: Caso de NF-e idDest=3 — saída para o exterior, CFOP 7.xxx, grupo exporta/detExport e destinatário estrangeiro. Valores fictícios.
+---
+
+## Contexto fiscal
+
+Saída de mercadoria para o **exterior** (`idDest=3`, CFOP `7.xxx`). O destinatário pode ser **estrangeiro** (`idEstrangeiro`), o ICMS é em regra **não incidente** (imunidade da exportação) e a nota carrega o grupo **`exporta`** (UF de embarque e local) e, por item, **`detExport`** quando há drawback ou exportação indireta.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** Confirme CFOP, tratamento do ICMS e exigência de `detExport` conforme a operação e a UF de embarque.
+
+## Trecho principal do XML
+
+```xml
+<ide>
+  <mod>55</mod><natOp>Exportacao</natOp>
+  <tpNF>1</tpNF><idDest>3</idDest>      <!-- exterior -->
+  <finNFe>1</finNFe><indFinal>1</indFinal>
+  <!-- ... -->
+</ide>
+<dest>
+  <idEstrangeiro>00000000000</idEstrangeiro>   <!-- destinatário no exterior -->
+  <xNome>FOREIGN BUYER CO</xNome>
+  <enderDest><UF>EX</UF><cPais>2496</cPais><xPais>PORTUGAL</xPais><!-- ... --></enderDest>
+  <indIEDest>9</indIEDest>
+</dest>
+<det nItem="1">
+  <prod>
+    <cProd>SKU-EXP</cProd><xProd>Produto para exportacao</xProd>
+    <NCM>09011110</NCM><CFOP>7102</CFOP>
+    <uCom>KG</uCom><qCom>1000.0000</qCom><vUnCom>10.0000000000</vUnCom>
+    <vProd>10000.00</vProd><indTot>1</indTot>
+    <detExport>
+      <chNFe>35260500999988000100550010000005551000005550</chNFe>  <!-- export. indireta -->
+    </detExport>
+  </prod>
+  <imposto>
+    <ICMS><ICMS40><orig>0</orig><CST>41</CST></ICMS40></ICMS>   <!-- não tributada -->
+  </imposto>
+</det>
+<exporta><UFSaidaPais>SP</UFSaidaPais><xLocExporta>Porto de Santos</xLocExporta></exporta>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `idDest` / `CFOP` | `3` / `7102` | exterior exige CFOP 7.xxx — ver [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| `dest/idEstrangeiro` | exterior | usa `idEstrangeiro`, `UF=EX` e país ≠ Brasil |
+| grupo `exporta` | UF/local de saída | obrigatório na exportação — ver [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#comércio-exterior-compras-e-cana) |
+| `detExport` | export. indireta/drawback | `chNFe` da nota de remessa ou `nDraw` — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos#grupos-condicionais) |
+| ICMS | CST 41 (não tributada) | imunidade da exportação |
+
+## Validações esperadas
+
+- CFOP, destino e tratamento do ICMS coerentes; `exporta` presente. Sucesso: **`cStat 100`**.
+- Regras especiais de combustível equiparado à exportação (`UFCons=EX`, CFOP 7.667) flexibilizam destinatário/transporte — ver [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) e [Totais](/docs/leiaute-e-rejeicoes/totais-e-fechamento).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 720 / 727 / 510 | destino/destinatário incompatível com `idDest=3` | [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| 926 | país de destino `1058-Brasil` com endereço no exterior | corrigir país |
+| falta de `exporta` | exportação sem grupo de saída | [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I (grupos E, I/detExport, ZA/exporta); NT 2022.002 v1.30a; NT 2024.003 v1.10. |
+| Versão | v1.30a; v1.10 |
+| Data | 26/03/2026; 11/05/2026 |
+| Páginas/capítulo | Anexo I, grupos E, I e ZA |
+| NT relacionada | NT 2022.002 v1.30a; NT 2024.003 v1.10 |
+| Schema/tabela relacionada | leiauteNFe_v4.00; tabela de países (BACEN) |
+| Status | exemplo ilustrativo, valores fictícios — confirmar CFOP/ICMS por operação e UF |
+
+### Registro de origem
+
+Montado a partir de [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) (destinatário estrangeiro), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos) (`detExport`) e [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) (`exporta`). Schema: leiauteNFe_v4.00.

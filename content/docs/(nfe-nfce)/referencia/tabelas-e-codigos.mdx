@@ -42,11 +42,11 @@ A diferença prática é entre **estrutura** (estável, com algoritmo de DV que 
   - **`tPag` (meios de pagamento)** — IT 2024.002 v1.11 (fev/2026); **meios de pagamento p/ Split** — IT 2026.001 v1.00 (fev/2026)
   - **Classificação IBS/CBS (`cClassTrib`/`CST`/`cClassTribIS`/`cCredPres`)** — IT 2025.002 v1.50 (15/04/2026); **alíquotas da CBS** — IT 2026.002 v1.00 (12/05/2026); **índice de biocombustível (`pBio`)** — IT 2025.004 v1.10 (06/04/2026)
 - 🔄 Enquadramento Legal do IPI (`cEnq`): a NT 2020.002 v1.01 acrescentou os códigos **163, 164 e 165**. A tabela `tPag` (meios de pagamento) passou a ser externa, publicada no Portal Nacional (NT 2020.006). A **NT 2025.001** criou o meio `tPag=91-Pagamento Posterior` (postergação total/parcial), tratado como `90-sem pagamento` na soma dos pagamentos (ver [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais)).
-- 🔄 A NT 2025.002 v1.50 usa tabelas externas e versionadas para `CST`/`cClassTrib` do IBS/CBS, `CSTIS`/`cClassTribIS`, `cCredPres`, alíquotas, produtos monofásicos, índice obrigatório de biocombustível e valores de referência. Os indicadores dessas tabelas **ativam ou vedam grupos XML e regras de validação**; não basta validar a existência do código. NCM e `cClassTribIS` do Imposto Seletivo ainda constam como “a publicar” na revisão.
+- 🔄 A NT 2025.002 v1.50 usa tabelas externas e versionadas para `CST`/`cClassTrib` do IBS/CBS, `CSTIS`/`cClassTribIS`, `cCredPres`, alíquotas, produtos monofásicos, índice obrigatório de biocombustível e valores de referência. Os indicadores dessas tabelas **ativam ou vedam grupos XML e regras de validação**; não basta validar a existência do código. NCM e `cClassTribIS` do Imposto Seletivo ainda constam como “a publicar” na revisão. A visão navegável dessas tabelas, na trilha da Reforma, está em [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc).
 
 ## Snapshots das tabelas baixadas
 
-Registro das tabelas auxiliares baixadas em `tmp/nfe/diversos/`. A coluna **linhas** é a contagem aproximada de registros (sem cabeçalho); a **vigência** vem do nome do arquivo. São fotografias versionadas — recarregue a versão vigente do Portal antes de implementar.
+Registro das tabelas auxiliares baixadas em `tmp/nfe/diversos/`. A coluna **linhas** é a contagem aproximada de registros (sem cabeçalho); a **vigência** vem do nome do arquivo. São fotografias versionadas — recarregue a versão vigente do Portal antes de implementar. A versão **estruturada e consumível por código** dessas tabelas (TSV em `data/tabelas/`, com vigência e fonte por registro) está em [Dados versionados](/docs/referencia/dados-versionados).
 
 | Tabela | Vigência do arquivo | Colunas-chave | Linhas | Onde é usada |
 |---|---|---|--:|---|
@@ -82,7 +82,7 @@ A Tabela de Padrões de Regime Especial define, por UF, o formato do número do 
 
 ## Implicação de implementação
 
-> **Implementação:** implemente os algoritmos de DV (município, país, SUFRAMA, RECOPI) como validação local; carregue os **valores** de tabelas versionadas com data de vigência e fonte. Nunca embuta listas grandes no código.
+> **Implementação:** implemente os algoritmos de DV (município, país, SUFRAMA, RECOPI) como validação local; carregue os **valores** de tabelas versionadas com data de vigência e fonte — ver os catálogos em [Dados versionados](/docs/referencia/dados-versionados). Nunca embuta listas grandes no código.
 
 ## Fonte
 

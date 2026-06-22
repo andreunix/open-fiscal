@@ -10,6 +10,8 @@
     "generate-routes": "tsr generate",
     "nfe:download": "bun scripts/download-nfe.ts",
     "nfe:check": "bun scripts/check-nfe-updates.ts",
+    "tabelas:build": "bun scripts/build-tabelas.ts",
+    "tabelas:check": "bun scripts/check-tabelas.ts",
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "vite build && wrangler deploy",

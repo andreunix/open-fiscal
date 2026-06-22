@@ -1,0 +1,55 @@
+---
+title: Alagoas (AL)
+description: Configuração e regras fiscais estaduais da NF-e e NFC-e em Alagoas (AL) — autorizador, contingência, cancelamento, CSC e particularidades, com fonte e data.
+---
+
+Configuração de emissão e regras fiscais estaduais para **Alagoas (AL)**. A camada técnica (XSD, leiaute, eventos) é nacional; o que muda aqui é **operação e regra estadual**. Resolva a emissão por `(modelo, UF, ambiente, serviço, data)`.
+
+> 🔄 **Dados voláteis.** Os valores estaduais abaixo mudam por decreto e nota da SEFAZ. Tratados como referência inicial **sujeita a verificação** na fonte oficial — ver [Fonte](#fonte). Sempre confirmar na [SEFAZ-AL](<http://www.sefaz.al.gov.br/nfe/>) antes de produção.
+
+## Configuração técnica (Portal Nacional)
+
+| Item | Valor |
+|---|---|
+| Autorizador NF-e | [SVRS](/docs/operacao/servicos-por-uf#svrs) |
+| Contingência SVC | [SVC-AN](/docs/operacao/servicos-por-uf#svc-an) |
+| Portal estadual | [SEFAZ-AL](<http://www.sefaz.al.gov.br/nfe/>) |
+| Schema | NF-e `4.00`, XSD nacional — ver [Schemas](/docs/schemas) |
+| Endpoints | ver [Serviços por UF](/docs/operacao/servicos-por-uf) |
+
+## Regras fiscais estaduais
+
+| Campo | Valor (sujeito a verificação) |
+|---|---|
+| Credenciamento NF-e/NFC-e | pela SEFAZ-AL, com homologação antes de produção — ver [Credenciamento](/docs/comece-aqui/credenciamento-e-ambientes) |
+| NFC-e ativa | sim |
+| Prazo de cancelamento NF-e | 24 horas (regra nacional para cancelamento com efeito pleno) |
+| Prazo de cancelamento NFC-e | 30 minutos no padrão nacional; ⚠️ confirmar valor estadual na SEFAZ-AL (rejeição **501** se exceder o prazo legal) |
+| Contingência offline NFC-e | **offline** (transmitir até o 1º dia útil seguinte) — ver [Contingência NFC-e](/docs/contingencia/nfce) |
+| EPEC para NFC-e | EPEC de NFC-e disponível, no padrão nacional, **apenas para SP**; nesta UF a contingência da NFC-e é a offline — ⚠️ confirmar exceções na SEFAZ-AL |
+| CSC/token e QR Code | gerado e mantido no **Portal DF-e** do autorizador (SVRS); a responsabilidade pelo CSC/token é da SEFAZ-AL — ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode) |
+| Inutilização | serviço nacional `NfeInutilizacao`; prazo/forma conforme regulamento estadual — ⚠️ confirmar na SEFAZ-AL |
+| cBenef × CST | tabela de `cBenef` publicada pela SEFAZ-AL; confirmar vigência e CST associada no portal estadual |
+| SAT/ECF | ECF legado descontinuado; confirmar exigências residuais de PDV na SEFAZ-AL |
+
+## Particularidades
+
+- Sem particularidade estadual relevante registrada além do padrão nacional; confirmar na fonte oficial antes de produção.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Portal Nacional da NF-e (config. técnica) + [SEFAZ-AL](<http://www.sefaz.al.gov.br/nfe/>) (regra estadual) + tabela consolidada de prazos de cancelamento |
+| Versão | NF-e/NFC-e leiaute `4.00`; regra estadual vigente |
+| Data | técnica: 20/06/2026 (Portal Nacional); estadual: 21/06/2026 (captura inicial) |
+| Páginas/capítulo | não aplicável |
+| NT relacionada | NTs de NFC-e e QR Code; não vinculada a uma única |
+| Schema/tabela relacionada | leiaute NF-e/NFC-e `4.00` — ver [Schemas](/docs/schemas) |
+| Status | base mapeada; **valores estaduais sujeitos a verificação** na SEFAZ-AL antes de produção |
+
+### Registro de origem
+
+- Autorizador, SVC e portal: Portal Nacional da NF-e, captura de 20/06/2026 (ver [Serviços por UF](/docs/operacao/servicos-por-uf)).
+- Prazo de cancelamento de NF-e: tabela consolidada por UF (fonte secundária), confrontar com o RICMS-AL.
+- Regras de NFC-e (cancelamento, EPEC/offline, CSC): padrão nacional + exceções conhecidas (SP, PR); demais valores a confirmar na [SEFAZ-AL](<http://www.sefaz.al.gov.br/nfe/>).

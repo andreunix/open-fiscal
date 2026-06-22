@@ -1,0 +1,77 @@
+---
+title: Matriz estadual
+description: Comparativo por UF — autorizador, SVC, prazo de cancelamento NF-e, NFC-e ativa e modalidade de contingência da NFC-e, com fonte e data.
+---
+
+Comparativo por UF dos campos que mais variam entre Estados. Use para escolher rápido e abra a página da UF para o detalhe. A tabela é **referência inicial sujeita a verificação** — cada valor estadual deve ser confirmado na SEFAZ da UF (ver coluna *Página*).
+
+> 🔄 **Data da captura:** técnica (autorizador, SVC) **20/06/2026**, do Portal Nacional; prazos e regras de NFC-e **21/06/2026**, de fontes consolidadas e padrão nacional. Regra estadual muda por decreto — confirmar na fonte oficial da UF antes de produção.
+
+## Comparativo
+
+| UF | Autorizador | SVC | Cancel. NF-e | NFC-e | Conting. NFC-e | EPEC NFC-e |
+|---|---|---|---|---|---|---|
+| [AC](/docs/ufs/acre) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [AL](/docs/ufs/alagoas) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [AM](/docs/ufs/amazonas) | AM | SVC-RS | 24h | sim | offline | não (offline) |
+| [AP](/docs/ufs/amapa) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [BA](/docs/ufs/bahia) | BA | SVC-RS | 24h | sim | offline | não (offline) |
+| [CE](/docs/ufs/ceara) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [DF](/docs/ufs/distrito-federal) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [ES](/docs/ufs/espirito-santo) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [GO](/docs/ufs/goias) | GO | SVC-RS | 24h | sim | offline | não (offline) |
+| [MA](/docs/ufs/maranhao) | SVAN | SVC-RS | 24h | sim | offline | não (offline) |
+| [MG](/docs/ufs/minas-gerais) | MG | SVC-AN | 24h | sim | offline | não (offline) |
+| [MS](/docs/ufs/mato-grosso-do-sul) | MS | SVC-RS | 24h | sim | offline | não (offline) |
+| [MT](/docs/ufs/mato-grosso) | MT | SVC-RS | 8h | sim | offline | não (offline) |
+| [PA](/docs/ufs/para) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [PB](/docs/ufs/paraiba) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [PE](/docs/ufs/pernambuco) | PE | SVC-RS | 24h | sim | offline | não (offline) |
+| [PI](/docs/ufs/piaui) | SVRS | SVC-AN | 1.440h | sim | offline | não (offline) |
+| [PR](/docs/ufs/parana) | PR | SVC-RS | 168h | sim | offline (única) | não (offline) |
+| [RJ](/docs/ufs/rio-de-janeiro) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [RN](/docs/ufs/rio-grande-do-norte) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [RO](/docs/ufs/rondonia) | SVRS | SVC-AN | 720h | sim | offline | não (offline) |
+| [RR](/docs/ufs/roraima) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [RS](/docs/ufs/rio-grande-do-sul) | RS | SVC-AN | 168h | sim | offline | não (offline) |
+| [SC](/docs/ufs/santa-catarina) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [SE](/docs/ufs/sergipe) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+| [SP](/docs/ufs/sao-paulo) | SP | SVC-AN | 24h | sim | EPEC ou SAT | sim |
+| [TO](/docs/ufs/tocantins) | SVRS | SVC-AN | 24h | sim | offline | não (offline) |
+
+## Como ler
+
+| Coluna | Significado |
+|---|---|
+| Autorizador | ambiente técnico normal de autorização (próprio da UF, **SVRS** ou **SVAN**) |
+| SVC | ambiente nacional de contingência da UF (**SVC-AN** ou **SVC-RS**) |
+| Cancel. NF-e | prazo regulamentar de cancelamento da NF-e modelo 55 com efeito pleno; o padrão nacional é **24h** |
+| NFC-e | se a NFC-e modelo 65 está ativa na UF |
+| Conting. NFC-e | modalidade de contingência da NFC-e aceita pela UF |
+| EPEC NFC-e | se a UF aceita **EPEC** como contingência da NFC-e |
+
+## Notas de leitura
+
+- **EPEC para NFC-e** é, no padrão nacional, aceito **apenas em SP**; nas demais UFs a contingência da NFC-e é a **offline** (transmitir até o 1º dia útil seguinte). Confirmar exceções por UF.
+- **SP** não usa contingência offline para NFC-e: usa **EPEC** ou **CF-e-SAT** (modelo 59).
+- **PR** adota **somente** a contingência offline para NFC-e.
+- O **prazo de cancelamento da NFC-e** segue, em geral, **30 minutos**, mas varia por UF (rejeição **501** se exceder o prazo legal) — confirmar na página da UF.
+- O **endpoint** de cada autorizador/SVC está em [Serviços por UF](/docs/operacao/servicos-por-uf); o **conceito** dos ambientes em [Autorizadoras e ambientes](/docs/operacao/autorizadoras-e-ambientes).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Portal Nacional da NF-e (autorizador/SVC) + tabela consolidada de prazos de cancelamento + padrão nacional de contingência da NFC-e |
+| Versão | NF-e/NFC-e leiaute `4.00` |
+| Data | técnica: 20/06/2026; estadual: 21/06/2026 (captura inicial) |
+| Páginas/capítulo | não aplicável |
+| NT relacionada | NTs de NFC-e e QR Code |
+| Schema/tabela relacionada | leiaute NF-e/NFC-e `4.00` — ver [Schemas](/docs/schemas) |
+| Status | comparativo mapeado; **valores estaduais sujeitos a verificação** por UF antes de produção |
+
+### Registro de origem
+
+- Autorizador e SVC: Portal Nacional da NF-e, captura de 20/06/2026 (ver [Serviços por UF](/docs/operacao/servicos-por-uf)).
+- Prazo de cancelamento de NF-e por UF: tabela consolidada (fonte secundária), confrontar com o RICMS de cada Estado.
+- Contingência da NFC-e (EPEC/offline) e exceções de SP e PR: padrão nacional e documentação técnica de NFC-e; confirmar por UF na SEFAZ.

@@ -1,0 +1,52 @@
+---
+title: LC 214/2025 — Reforma Tributária do Consumo
+description: Lei Complementar que institui IBS, CBS e Imposto Seletivo; impacto para implementação na NF-e/NFC-e — base legal dos novos grupos, eventos e tabelas.
+---
+
+A **Lei Complementar 214/2025** institui a **Reforma Tributária do Consumo (RTC)**: o **IBS** (Imposto sobre Bens e Serviços), a **CBS** (Contribuição sobre Bens e Serviços) e o **Imposto Seletivo (IS)**. É a base jurídica de tudo que a NF-e e a NFC-e passaram a registrar para a RTC.
+
+> ⚖️ Esta página é a **base legal**. A trilha técnica completa da Reforma (campos, totais, tabelas, eventos, cronograma) é overlay próprio e navegável: ver [Reforma Tributária](/docs/reforma-tributaria) e a [NT 2025.002](/docs/notas-tecnicas/2025-002). Aqui fica o *porquê jurídico*; lá, o *como preencher*.
+
+## Impacto para implementação
+
+| O que a LC institui | Onde aparece no documento fiscal |
+|---|---|
+| **IBS** e **CBS** sobre operações com bens e serviços | grupos de IBS/CBS no item e nos totais — ver [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| **Imposto Seletivo (IS)** sobre bens e serviços prejudiciais à saúde/meio ambiente | grupo de IS — ver [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| **Crédito presumido** com fundamento legal | `cCredPres`, classificado por fundamento da LC 214/2025 — ver [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| **Apuração assistida** e operações de crédito/débito | eventos da RTC — ver [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) |
+| **Classificação tributária** por finalidade | `cClassTrib` e CST do IBS/CBS — ver [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) e [IT 2025.002](/docs/informes-tecnicos/2025-002) |
+
+## Norma viva — acompanhar alterações
+
+A LC 214/2025 já recebeu alteração relevante para o leiaute: o art. 57, §6º (destinação para consumo pessoal) foi **revogado pela LC 227/2026**, o que tornou **histórico** o evento `211120` — ver [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo). Trate a RTC como norma em evolução: confirme a redação vigente e a NT/IT correspondente antes de implementar.
+
+## Cadeia legal → técnica da RTC
+
+| Camada | Documento | Papel |
+|---|---|---|
+| Lei | **LC 214/2025** (alt. LC 227/2026) | institui IBS, CBS e IS |
+| Nota Técnica | NT 2025.002-RTC | cria grupos, eventos, totais e regras no leiaute |
+| Informe Técnico | IT 2025.002 | publica tabelas de `cClassTrib`, CST e `cCredPres` |
+| Schema | pacotes XSD da RTC | forma do dado dos novos grupos |
+| Cronograma | faseamento de implantação | datas de homologação/produção — ver [Cronograma](/docs/schemas/cronograma) |
+
+## Onde se aplica
+
+[Tributos](/docs/leiaute-e-rejeicoes/tributos) · [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) · [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) · [NT 2025.002](/docs/notas-tecnicas/2025-002) · [IT 2025.002](/docs/informes-tecnicos/2025-002) · [Cronograma](/docs/schemas/cronograma)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Lei Complementar nº 214, de 16 de janeiro de 2025 |
+| Versão | texto vigente; alterada pela LC 227/2026 (entre outras) |
+| Data | 16/01/2025 (publicação); acompanhar alterações posteriores |
+| Páginas/capítulo | normas gerais do IBS, CBS e IS; art. 57 (revogação parcial pela LC 227/2026) |
+| NT relacionada | [NT 2025.002-RTC](/docs/notas-tecnicas/2025-002) |
+| Schema/tabela relacionada | [IT 2025.002](/docs/informes-tecnicos/2025-002); pacotes XSD da RTC |
+| Status | vigente; norma em evolução — confrontar com NT/IT e cronograma vigentes |
+
+### Registro de origem
+
+LC 214/2025 publicada pela Presidência da República (`https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm`). Base jurídica da Reforma Tributária do Consumo; o detalhamento técnico está na [NT 2025.002](/docs/notas-tecnicas/2025-002) e na [IT 2025.002](/docs/informes-tecnicos/2025-002). Resumo de impacto, não transcrição (Decisão 3). Liga ao Estágio 5 do plano (trilha própria da Reforma Tributária).

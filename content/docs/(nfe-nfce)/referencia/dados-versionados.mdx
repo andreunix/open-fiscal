@@ -1,0 +1,71 @@
+---
+title: Dados versionados
+description: Catálogos estruturados (TSV) de tabelas auxiliares e endpoints por UF, com vigência e fonte em cada registro, consumíveis por código e verificáveis por script.
+---
+
+As páginas de documentação explicam **estrutura e regra**; os **valores** (NCM, CFOP, municípios, endpoints por UF…) vivem em catálogos versionados em `data/`, fora do MDX. Assim documentação e ferramenta consomem a **mesma fonte versionada**, e tabelas grandes não ficam coladas à mão nas páginas.
+
+> 🔄 Estes arquivos são **fotografias datadas**. Cada registro carrega vigência e fonte; antes de usar em produção, rode a verificação e confronte com a versão vigente no Portal Nacional.
+
+## Onde ficam
+
+```txt
+data/
+  endpoints/
+    autorizadores.tsv   # UF -> autorizador, consulta cadastro, SVC, schema, portal
+    webservices.tsv     # autorizador -> serviço, versão, ambiente, URL
+  tabelas/
+    manifest.tsv        # registro de cada tabela auxiliar (vigência + fonte)
+    checksums.tsv       # hash + linhas do snapshot extraído (detecta alteração)
+    <id>.tsv            # extração fiel do snapshot .xlsx (municipios, ncm, cfop…)
+```
+
+Todos os arquivos são **TSV com cabeçalho** (separador tab), escolhidos para `git diff` legível e leitura trivial por qualquer linguagem.
+
+## Catálogo de tabelas (`tabelas/manifest.tsv`)
+
+O `manifest.tsv` é o índice de proveniência: uma linha por tabela auxiliar, com `id`, `descricao`, `vigencia`, `versao_it`, `colunas_chave`, `arquivo` (snapshot de origem), `fonte_url`, `onde_usada` e `status`. As tabelas com `status = extraido` têm o `data/tabelas/<id>.tsv` correspondente; `paises` (`.ods`) e `unidades-medida` (`.xls` legado) ficam só registrados, sem extração automática.
+
+A relação completa (NCM, CFOP, municípios, `cProdANP`, combustíveis monofásicos, `pBio`, `cClassTrib`, `cCredPres`, alíquotas da CBS, FCP por UF, `tPag`, `tBand`, tipo/espécie de veículo, lista de serviços, regime especial, `cClass` NFAg, prefixo GS1 e NF-e ABI) e a leitura por coluna estão em [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) e na [Proveniência](/docs/referencia/proveniencia).
+
+> **cBenef** não tem tabela nacional única: o código de benefício fiscal é **por UF/SEFAZ** (com o CSC). Veja [Serviços por UF](/docs/operacao/servicos-por-uf) e a [matriz estadual](/docs/ufs/matriz-estadual).
+
+## Catálogo de endpoints (`endpoints/`)
+
+- `autorizadores.tsv` resolve `UF → (autorizador NF-e, consulta cadastro, SVC, versão de schema, portal estadual)`.
+- `webservices.tsv` lista, por autorizador, cada `(serviço, versão, ambiente, URL)`.
+
+A chave de roteamento mínima é `(modelo, UF, serviço, ambiente, tipo de emissão)`; o schema resolve por `(modelo, versão do leiaute, pacote XSD, data)`. A captura atual é de **20/06/2026**, ambiente de **produção** (os endpoints de homologação não estão nesta captura). A visão navegável está em [Serviços por UF](/docs/operacao/servicos-por-uf); a orientação de versionamento, em [Versionamento](/docs/operacao/versionamento).
+
+## Convenções
+
+- **Vigência e fonte em todo registro** (Decisão 2). O `manifest` e os catálogos de endpoints carregam data e origem; sem isso o dado não entra em produção.
+- **Datas como serial Excel.** Colunas de data extraídas dos `.xlsx` vêm como número serial do Excel (epoch `1899-12-30`) — converta no consumo. É um valor determinístico e fiel ao snapshot.
+- **Extração fiel, sem edição manual.** Os `<id>.tsv` reproduzem a primeira planilha do snapshot (NF-e ABI é minuta com várias abas; só a primeira é extraída).
+
+## Como gerar e verificar
+
+```bash
+bun run tabelas:build   # extrai os snapshots .xlsx de tmp/nfe/diversos/ -> data/tabelas/<id>.tsv + checksums
+bun run tabelas:check   # valida campos obrigatórios, integridade (hash) e vigências
+```
+
+O `tabelas:check` falha (`exit 1`) quando falta `fonte`/`vigencia` em algum registro; com `--fail-on-change` também falha se um snapshot foi alterado (hash diferente do `checksums.tsv`) ou se um TSV extraído está ausente — útil em CI para flagrar **tabela alterada ou vencida**. Ele ainda imprime as vigências da mais antiga para a mais nova. Para detectar **novas versões publicadas** no Portal, use [`bun run nfe:check`](/docs/operacao/versionamento).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Catálogos derivados do Portal Nacional da NF-e (tabelas auxiliares e Relação de Serviços Web) e dos snapshots versionados do projeto. |
+| Versão | ver `versao_it` por linha no `manifest.tsv` |
+| Data | endpoints capturados em 20/06/2026; tabelas conforme `vigencia` por linha |
+| Páginas/capítulo | não se aplica |
+| NT relacionada | NT 2025.002 (IBS/CBS) e Informes Técnicos das tabelas auxiliares |
+| Schema/tabela relacionada | `data/tabelas/manifest.tsv`, `data/endpoints/` |
+| Status | base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes |
+
+### Registro de origem
+
+- Portal Nacional da NF-e — tabelas auxiliares (Documentos diversos) e [Relação de Serviços Web](https://www.nfe.fazenda.gov.br/portal/webServices.aspx?tipoConteudo=OUC/YVNWZfo=).
+- Snapshots em `tmp/nfe/diversos/`; manifesto de documentos em `data/nfe/index.tsv`.
+- Scripts `scripts/build-tabelas.ts`, `scripts/check-tabelas.ts` e `scripts/xlsx.ts`.

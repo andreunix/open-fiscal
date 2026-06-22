@@ -1,0 +1,55 @@
+---
+title: Mato Grosso (MT)
+description: Configuração e regras fiscais estaduais da NF-e e NFC-e em Mato Grosso (MT) — autorizador, contingência, cancelamento, CSC e particularidades, com fonte e data.
+---
+
+Configuração de emissão e regras fiscais estaduais para **Mato Grosso (MT)**. A camada técnica (XSD, leiaute, eventos) é nacional; o que muda aqui é **operação e regra estadual**. Resolva a emissão por `(modelo, UF, ambiente, serviço, data)`.
+
+> 🔄 **Dados voláteis.** Os valores estaduais abaixo mudam por decreto e nota da SEFAZ. Tratados como referência inicial **sujeita a verificação** na fonte oficial — ver [Fonte](#fonte). Sempre confirmar na [SEFAZ-MT](<http://www.sefaz.mt.gov.br/portal/nfe/>) antes de produção.
+
+## Configuração técnica (Portal Nacional)
+
+| Item | Valor |
+|---|---|
+| Autorizador NF-e | [MT](/docs/operacao/servicos-por-uf#mt) |
+| Contingência SVC | [SVC-RS](/docs/operacao/servicos-por-uf#svc-rs) |
+| Portal estadual | [SEFAZ-MT](<http://www.sefaz.mt.gov.br/portal/nfe/>) |
+| Schema | NF-e `4.00`, XSD nacional — ver [Schemas](/docs/schemas) |
+| Endpoints | ver [Serviços por UF](/docs/operacao/servicos-por-uf) |
+
+## Regras fiscais estaduais
+
+| Campo | Valor (sujeito a verificação) |
+|---|---|
+| Credenciamento NF-e/NFC-e | pela SEFAZ-MT, com homologação antes de produção — ver [Credenciamento](/docs/comece-aqui/credenciamento-e-ambientes) |
+| NFC-e ativa | sim |
+| Prazo de cancelamento NF-e | 8 horas |
+| Prazo de cancelamento NFC-e | 30 minutos no padrão nacional; ⚠️ confirmar valor estadual na SEFAZ-MT (rejeição **501** se exceder o prazo legal) |
+| Contingência offline NFC-e | **offline** (transmitir até o 1º dia útil seguinte) — ver [Contingência NFC-e](/docs/contingencia/nfce) |
+| EPEC para NFC-e | EPEC de NFC-e disponível, no padrão nacional, **apenas para SP**; nesta UF a contingência da NFC-e é a offline — ⚠️ confirmar exceções na SEFAZ-MT |
+| CSC/token e QR Code | gerado e mantido pela própria SEFAZ-MT, no [portal estadual](<http://www.sefaz.mt.gov.br/portal/nfe/>) (opção de geração/manutenção de CSC) — ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode) |
+| Inutilização | serviço nacional `NfeInutilizacao`; prazo/forma conforme regulamento estadual — ⚠️ confirmar na SEFAZ-MT |
+| cBenef × CST | tabela de `cBenef` publicada pela SEFAZ-MT; confirmar vigência e CST associada no portal estadual |
+| SAT/ECF | ECF legado descontinuado; confirmar exigências residuais de PDV na SEFAZ-MT |
+
+## Particularidades
+
+- Prazo de cancelamento de **NF-e** difere do padrão de 24h: **8 horas**.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Portal Nacional da NF-e (config. técnica) + [SEFAZ-MT](<http://www.sefaz.mt.gov.br/portal/nfe/>) (regra estadual) + tabela consolidada de prazos de cancelamento |
+| Versão | NF-e/NFC-e leiaute `4.00`; regra estadual vigente |
+| Data | técnica: 20/06/2026 (Portal Nacional); estadual: 21/06/2026 (captura inicial) |
+| Páginas/capítulo | não aplicável |
+| NT relacionada | NTs de NFC-e e QR Code; não vinculada a uma única |
+| Schema/tabela relacionada | leiaute NF-e/NFC-e `4.00` — ver [Schemas](/docs/schemas) |
+| Status | base mapeada; **valores estaduais sujeitos a verificação** na SEFAZ-MT antes de produção |
+
+### Registro de origem
+
+- Autorizador, SVC e portal: Portal Nacional da NF-e, captura de 20/06/2026 (ver [Serviços por UF](/docs/operacao/servicos-por-uf)).
+- Prazo de cancelamento de NF-e: tabela consolidada por UF (fonte secundária), confrontar com o RICMS-MT.
+- Regras de NFC-e (cancelamento, EPEC/offline, CSC): padrão nacional + exceções conhecidas (SP, PR); demais valores a confirmar na [SEFAZ-MT](<http://www.sefaz.mt.gov.br/portal/nfe/>).

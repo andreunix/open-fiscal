@@ -1,0 +1,101 @@
+---
+title: NFC-e normal (varejo)
+description: Caso completo de NFC-e modelo 65 — venda presencial a consumidor final, CSOSN/CST, pagamento, QR Code e grupos proibidos no varejo. Valores fictícios.
+---
+
+## Contexto fiscal
+
+Venda **presencial** no varejo a consumidor final (`mod=65`, `indFinal=1`, `indPres=1`). O destinatário pode ser **omitido** dentro dos limites estaduais; o pagamento é obrigatório e o **QR Code** vai em `infNFeSupl`, fora de `infNFe`. Vários grupos de transporte e tributos do modelo 55 são **proibidos** aqui.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** Chave, CNPJ, valores e o `qrCode` são inventados. Gere o QR Code conforme o [manual vigente](/docs/danfe/danfe-nfce-qrcode); confirme nomes-folha e cardinalidade no [schema vigente](/docs/schemas).
+
+## Trecho principal do XML
+
+```xml
+<infNFe versao="4.00" Id="NFe35260600111122000199650010000004561000004560">
+  <ide>
+    <cUF>35</cUF><cNF>00000456</cNF>
+    <natOp>Venda ao consumidor</natOp>
+    <mod>65</mod><serie>1</serie><nNF>456</nNF>
+    <dhEmi>2026-06-21T19:30:00-03:00</dhEmi>
+    <tpNF>1</tpNF><idDest>1</idDest><cMunFG>3550308</cMunFG>
+    <tpImp>4</tpImp>          <!-- DANFE NFC-e -->
+    <tpEmis>1</tpEmis><cDV>0</cDV>
+    <tpAmb>2</tpAmb><finNFe>1</finNFe>
+    <indFinal>1</indFinal>    <!-- consumidor final -->
+    <indPres>1</indPres>      <!-- presencial -->
+  </ide>
+  <emit>
+    <CNPJ>11112200019 9</CNPJ><xNome>VAREJO EXEMPLO LTDA</xNome>
+    <enderEmit><UF>SP</UF><!-- ... --></enderEmit>
+    <IE>111111111111</IE><CRT>1</CRT>   <!-- Simples Nacional -->
+  </emit>
+  <!-- dest pode ser omitido na NFC-e dentro dos limites da UF -->
+  <det nItem="1">
+    <prod>
+      <cProd>7891000</cProd><cEAN>7891000000000</cEAN>
+      <xProd>Refrigerante lata 350ml</xProd>
+      <NCM>22021000</NCM><CFOP>5102</CFOP>
+      <uCom>UN</uCom><qCom>2.0000</qCom><vUnCom>5.0000000000</vUnCom>
+      <vProd>10.00</vProd>
+      <cEANTrib>7891000000000</cEANTrib>
+      <uTrib>UN</uTrib><qTrib>2.0000</qTrib><vUnTrib>5.0000000000</vUnTrib>
+      <indTot>1</indTot>
+    </prod>
+    <imposto>
+      <ICMS><ICMSSN102><orig>0</orig><CSOSN>102</CSOSN></ICMSSN102></ICMS>
+    </imposto>
+  </det>
+  <total><ICMSTot><vBC>0.00</vBC><vICMS>0.00</vICMS><vProd>10.00</vProd><vNF>10.00</vNF></ICMSTot></total>
+  <transp><modFrete>9</modFrete></transp>
+  <pag><detPag><tPag>17</tPag><vPag>10.00</vPag></detPag></pag>  <!-- 17 = PIX -->
+</infNFe>
+<infNFeSupl>
+  <qrCode>https://www.homologacao.nfce.fazenda.sp.gov.br/qrcode?p=3526...|2|2|1|HASH</qrCode>
+  <urlChave>https://www.homologacao.nfce.fazenda.sp.gov.br/consulta</urlChave>
+</infNFeSupl>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `mod` / `tpImp` | `65` / `4` | NFC-e usa DANFE NFC-e — ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode) |
+| `indFinal` / `indPres` | `1` / `1` | consumidor final, presencial |
+| `CRT` × grupo ICMS | `1` → `ICMSSN102` (CSOSN) | Simples usa **CSOSN** — ver [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| `tPag` | `17` (PIX) | tabela do MOC/NT; pagamento obrigatório — ver [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#pagamentos) |
+| `infNFeSupl/qrCode` | versão vigente | fica **fora** de `infNFe`; gere pelo CSC — ver [QR Code](/docs/danfe/danfe-nfce-qrcode) |
+
+## Validações esperadas
+
+- Sucesso: **`cStat 100`**. O QR Code deve resolver para a consulta da chave; o DANFE NFC-e é impresso/exibido.
+- Grupos **proibidos** no modelo 65 (transporte detalhado, IPI, II, partilha, ICMSUFDest, devolução de tributos) não devem ser serializados — ver [Tributos](/docs/leiaute-e-rejeicoes/tributos) e [Totais](/docs/leiaute-e-rejeicoes/totais-e-fechamento).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 781 | emissor não habilitado para NFC-e (substituiu a denegação) | [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| 725 | CFOP não permitido na NFC-e (`I08-150`) | [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| 387/388/grupo proibido | grupo do modelo 55 indevido no 65 | remover o grupo |
+| 297/298 | assinatura ou QR Code fora do padrão | [Erros de assinatura](/docs/seguranca/erros-comuns) |
+
+## Montando o caso completo
+
+Se o caixa ficar offline, ver [NFC-e em contingência offline](/docs/exemplos/nfce-contingencia-offline). Para boas práticas de varejo, ver [Boas práticas NFC-e](/docs/operacao/boas-praticas-nfce).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I; Ajuste SINIEF 19/16; Manual de Padrões Técnicos do DANFE NFC-e e QR Code. |
+| Versão | v1.00 |
+| Data | 22/04/2026 |
+| Páginas/capítulo | Anexo I, p. 8–66; Anexo do QR Code |
+| NT relacionada | base do leiaute do modelo 65 |
+| Schema/tabela relacionada | leiauteNFe_v4.00; tabela de `tPag`/`tBand` do Portal Nacional |
+| Status | exemplo ilustrativo, valores fictícios — gerar QR Code pelo manual vigente |
+
+### Registro de origem
+
+Caso de varejo montado a partir de [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) e [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode). Base legal em [Ajuste SINIEF 19/16](/docs/legislacao/ajuste-sinief-19-16-nfce). Schema: leiauteNFe_v4.00.

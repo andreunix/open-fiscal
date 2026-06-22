@@ -1,0 +1,74 @@
+---
+title: Carta de correção (evento 110110)
+description: Caso de CC-e — xCorrecao dentro dos limites legais, xCondUso fixo e nSeqEvento incremental. Valores fictícios.
+---
+
+## Contexto fiscal
+
+A **Carta de Correção Eletrônica (CC-e, `110110`)** corrige informações da NF-e **dentro dos limites da legislação** — sem mudar o **valor do imposto**, as **partes** da operação nem a **data**. Tem o texto da correção (`xCorrecao`) e um termo legal **fixo** (`xCondUso`). Cada CC-e tem `nSeqEvento` próprio; a última **não** apaga as anteriores.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** Em regra a NFC-e **não** usa CC-e (Ajuste 19/16 prevê só cancelamento e EPEC).
+
+## Trecho principal do XML
+
+```xml
+<evento versao="1.00">
+  <infEvento Id="ID110110352606001111220001995500100000012310000012341">
+    <cOrgao>35</cOrgao><tpAmb>2</tpAmb>
+    <CNPJ>11112200019 9</CNPJ>
+    <chNFe>35260600111122000199550010000001231000001234</chNFe>
+    <dhEvento>2026-06-21T12:00:00-03:00</dhEvento>
+    <tpEvento>110110</tpEvento>
+    <nSeqEvento>1</nSeqEvento>      <!-- incremental por chave -->
+    <verEvento>1.00</verEvento>
+    <detEvento versao="1.00">
+      <descEvento>Carta de Correcao</descEvento>
+      <xCorrecao>Correcao da informacao complementar: transportadora ABC</xCorrecao>
+      <xCondUso>A Carta de Correcao e disciplinada pelo paragrafo 1o-A do art. 7o do Convenio S/N, de 15 de dezembro de 1970 ...</xCondUso>
+    </detEvento>
+  </infEvento>
+  <!-- Signature XMLDSig sobre o Id do infEvento -->
+</evento>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `tpEvento` | `110110` | CC-e; `descEvento` fixo = `Carta de Correcao` — ver [Carta de correção](/docs/eventos/carta-de-correcao) |
+| `xCorrecao` | 15–1000 caracteres | o que está sendo corrigido (dentro dos limites legais) |
+| `xCondUso` | **literal fixo** | termo do Convênio S/N de 1970 — reproduzir, não redigir |
+| `nSeqEvento` | incremental | cada CC-e soma ao histórico da chave |
+
+## Validações esperadas
+
+- Estrutura válida e `xCondUso` igual ao literal do schema. Sucesso: **`cStat 135`**.
+- O que pode/não pode corrigir é **regra de legislação**, não de schema: o XSD aceita o texto, mas a correção de imposto/partes/data é vedada.
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 297/298 | assinatura do evento fora do padrão | [Erros de assinatura](/docs/seguranca/erros-comuns) |
+| 215/225 | `xCorrecao`/`xCondUso` fora do schema | [Carta de correção](/docs/eventos/carta-de-correcao) |
+| 494 | chave inexistente | conferir a chave |
+
+## Quando não cabe CC-e
+
+Se o erro afeta tributo ou identifica outra pessoa, o caminho é **cancelar e reemitir** ([cancelamento](/docs/exemplos/cancelamento)) ou, para diferença de valor/imposto, [complementar](/docs/exemplos/nfe-complementar).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral §3.1.1 (Tabela 3-1, evento 110110); Convênio S/N de 1970. |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | §3, p. 28 |
+| NT relacionada | NT 2011.003 (consolidação da CC-e) |
+| Schema/tabela relacionada | e110110_v1.00 |
+| Status | exemplo ilustrativo, valores fictícios — limites do que pode ser corrigido seguem a legislação vigente |
+
+### Registro de origem
+
+Montado a partir de [Carta de correção](/docs/eventos/carta-de-correcao) (estrutura do evento, `xCondUso` fixo). Schema: e110110_v1.00.

@@ -1,0 +1,43 @@
+---
+title: LC 214/2025 — base legal da trilha
+description: O que a Lei Complementar 214/2025 institui para a NF-e/NFC-e — IBS, CBS, Imposto Seletivo, crédito presumido e finalidades — como porta de entrada da trilha técnica da Reforma.
+---
+
+A **Lei Complementar 214/2025** é a base jurídica da Reforma Tributária do Consumo. Esta página é o **nó legal da trilha**: situa a lei dentro da implementação NF-e/NFC-e e aponta para o detalhe. O resumo jurídico completo (artigos, revogações, norma viva) fica na camada de legislação.
+
+> ⚖️ **Lei ≠ leiaute.** A LC diz *o que existe e é obrigatório*; a [NT 2025.002](/docs/reforma-tributaria/nt-2025-002) e o [IT 2025.002](/docs/reforma-tributaria/tabelas-rtc) dizem *como preencher e validar*. A página canônica da base legal é [Legislação → LC 214/2025](/docs/legislacao/lc-214-2025-rtc).
+
+## O que a lei institui — e onde isso aparece no documento fiscal
+
+| O que a LC 214/2025 cria | Onde entra na NF-e/NFC-e |
+|---|---|
+| **IBS** sobre bens e serviços (competência estadual/municipal) | grupo `IBSCBS` no item e `IBSCBSTot` — ver [IBS](/docs/reforma-tributaria/ibs) |
+| **CBS** sobre bens e serviços (competência federal) | grupo `IBSCBS` no item e `IBSCBSTot` — ver [CBS](/docs/reforma-tributaria/cbs) |
+| **Imposto Seletivo (IS)** sobre bens/serviços prejudiciais à saúde/meio ambiente | grupo `IS` no item e `ISTot` — ver [Imposto Seletivo](/docs/reforma-tributaria/imposto-seletivo) |
+| **Crédito presumido** por fundamento legal | `cCredPres` classificado por artigo da LC — ver [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc) |
+| **Apuração assistida**, débito/crédito e sucessão | eventos da RTC — ver [Eventos da RTC](/docs/reforma-tributaria/eventos-rtc) |
+| **Finalidades** de nota de crédito e de débito | `finNFe=5/6`, `tpNFCredito`, `tpNFDebito` — ver [Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce) |
+
+## Norma viva — confirme a redação vigente
+
+A LC 214/2025 evolui. A alteração mais relevante para o leiaute até aqui foi a **revogação do art. 57, §6º** (destinação para consumo pessoal) pela **LC 227/2026**, que tornou **histórico** o evento `211120` — ver [Eventos da RTC](/docs/reforma-tributaria/eventos-rtc). Trate a RTC como norma em evolução: o fundamento legal de cada `cCredPres` e de cada finalidade pode mudar; confronte com a NT/IT e o cronograma vigentes antes de implementar.
+
+## Próximo na trilha
+
+[NT 2025.002 — como a Nota Técnica estrutura a RTC](/docs/reforma-tributaria/nt-2025-002) · [Base legal completa](/docs/legislacao/lc-214-2025-rtc)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Lei Complementar nº 214, de 16 de janeiro de 2025 |
+| Versão | texto vigente; alterada pela LC 227/2026 (entre outras) |
+| Data | 16/01/2025 (publicação); acompanhar alterações posteriores |
+| Páginas/capítulo | normas gerais do IBS, CBS e IS; art. 57 (revogação parcial pela LC 227/2026) |
+| NT relacionada | [NT 2025.002-RTC v1.50](/docs/reforma-tributaria/nt-2025-002) |
+| Schema/tabela relacionada | [IT 2025.002 v1.50](/docs/reforma-tributaria/tabelas-rtc); pacotes XSD da RTC |
+| Status | vigente; norma em evolução — confrontar com NT/IT e cronograma vigentes |
+
+### Registro de origem
+
+Nó legal da trilha Reforma Tributária (Estágio 5 do plano). Resumo de impacto, não transcrição (Decisão 3). A página canônica da base jurídica, com o detalhamento da norma e a cadeia legal→técnica, é [Legislação → LC 214/2025](/docs/legislacao/lc-214-2025-rtc); fonte primária na Presidência da República (`https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm`).

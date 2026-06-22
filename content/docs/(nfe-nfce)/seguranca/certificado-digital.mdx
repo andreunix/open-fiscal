@@ -1,0 +1,63 @@
+---
+title: Certificado digital
+description: Certificado ICP-Brasil A1 e A3 na NF-e/NFC-e — OIDs de CNPJ/CPF, key usage e a diferença entre o certificado de assinatura e o de transmissão.
+---
+
+A NF-e/NFC-e usa certificado **ICP-Brasil**, tipo **A1 ou A3**, em dois momentos independentes. Tratá-los como uma coisa só é a origem de boa parte das rejeições de assinatura e das falhas de TLS.
+
+## O que o manual diz
+
+| Momento | Para que serve | Requisito do certificado |
+|---|---|---|
+| **Assinatura** do XML (NF-e, cancelamento, inutilização, eventos…) | identidade jurídica do documento | CNPJ/CPF de um estabelecimento da emissora; *Key Usage* habilitando assinatura digital |
+| **Transmissão** (TLS) | autenticar a conexão com a SEFAZ | CNPJ do responsável pela transmissão (pode não ser o emissor); *Extended Key Usage* "Autenticação de Cliente" |
+
+> 🔐 **São configurações distintas.** O certificado que assina e o que transmite podem ter **CNPJs diferentes** (ex.: contabilidade ou software house que transmite por vários emitentes). Modele os dois como parâmetros separados — ver [TLS mútuo](/docs/seguranca/tls-mutuo).
+
+## Identificação do titular (OtherName)
+
+O CNPJ/CPF do titular fica em uma extensão `OtherName` do certificado:
+
+| Documento | OID |
+|---|---|
+| CNPJ | `2.16.76.1.3.3` |
+| CPF | `2.16.76.1.3.1` |
+
+A SEFAZ extrai esse identificador do certificado de assinatura e o confronta com o emitente do XML (grupo E do [pipeline](/docs/leiaute-e-rejeicoes/pipeline-de-validacao#grupos-e-e-f-certificado-e-assinatura)). Vínculo incompatível rejeita, mesmo com assinatura criptograficamente válida.
+
+## A1 × A3
+
+| | **A1** | **A3** |
+|---|---|---|
+| Armazenamento | arquivo (`.pfx`/`.p12`) em software | token, smartcard ou HSM |
+| Chave privada | exportável (protegida por senha) | não exportável do dispositivo |
+| Uso típico | servidores e emissão em alto volume | operação com mídia física |
+| Validade usual | 1 ano | até 3 anos |
+
+Para emissão automatizada em servidor, o A1 é o mais comum; o A3 exige a mídia presente e, em geral, middleware/PKCS#11. A escolha não altera o leiaute nem a forma da assinatura — só onde a chave privada reside.
+
+## Cadeia entregue na assinatura
+
+- **EndCertOnly:** inclua **apenas o certificado do usuário final** no `KeyInfo` da assinatura, não a cadeia inteira. Ver [Assinatura XML](/docs/seguranca/assinatura-xml).
+- **Não** envie a lista de certificados revogados: cada SEFAZ monta e valida a sua na conferência — ver [Cadeia de certificação](/docs/seguranca/cadeia-certificado).
+- Não inclua `<X509SubjectName>`, `<X509IssuerSerial>` nem `<KeyValue>`: esses dados são derivados do próprio certificado.
+
+## Implicação de implementação
+
+> **Implementação:** guarde a chave privada com o cuidado de um segredo de produção (HSM, cofre ou, no mínimo, store protegida do SO) — ela vincula juridicamente a emissora. Monitore a **validade** dos dois certificados com antecedência: a expiração do de assinatura para a emissão e a do de transmissão derruba o TLS. O **CSRT** do responsável técnico (NT 2018.005) é outro segredo, ligado ao software emissor, não ao certificado — ver [Responsável técnico](/docs/fundamentos/responsavel-tecnico).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral, §4.2 (Certificado Digital), p. 49–55. |
+| Versão | v1.00 |
+| Data | 22/04/2026 |
+| Páginas/capítulo | §4.2; p. 49–55 |
+| NT relacionada | NT 2018.005 (CSRT, correlato); NT 2026.001 v1.00 (PAA) |
+| Schema/tabela relacionada | não indicada |
+| Status | base oficial; confrontar OIDs e key usage com o certificado emitido |
+
+### Registro de origem
+
+MOC 7.0 — Visão Geral, capítulo 4 (§4.2), p. 49–55. Consolida o conteúdo de certificado disperso em [Arquitetura](/docs/emissao-e-comunicacao/arquitetura#certificado-digital). OIDs `2.16.76.1.3.3` (CNPJ) e `2.16.76.1.3.1` (CPF) conforme padrão ICP-Brasil (DOC-ICP).

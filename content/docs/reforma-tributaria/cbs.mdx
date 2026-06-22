@@ -1,0 +1,58 @@
+---
+title: CBS — Contribuição sobre Bens e Serviços
+description: A CBS na NF-e/NFC-e — competência federal, base comum com o IBS no grupo IBSCBS, alíquota ad valorem em transição (0,9% em 2026) e monofasia de combustíveis.
+---
+
+A **CBS** (Contribuição sobre Bens e Serviços) é o tributo de competência **federal** da Reforma Tributária, instituído pela [LC 214/2025](/docs/reforma-tributaria/lc-214-2025). Compartilha o grupo `IBSCBS` e a **base comum** com o [IBS](/docs/reforma-tributaria/ibs), mas tem alíquota e valor próprios e **não** se divide em parcelas UF/Município.
+
+> 🧩 IBS e CBS andam juntos no `gIBSCBS`. O que é específico da CBS: é **federal e única** (sem split estadual/municipal) e tem a **transição de alíquota** própria. O detalhe campo a campo está em [Tributos → IBS, CBS e IS](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo).
+
+## Onde a CBS aparece
+
+| Camada | Conteúdo da CBS |
+|---|---|
+| Item — `gIBSCBS` | base comum; valor da **CBS**; diferimento, devolução e redução de alíquota |
+| Item — grupos especiais | `gTribRegular`, `gTribCompraGov`, `gTransfCred`, `gAjusteCompet`, `gEstornoCred`, `gCredPresOper` |
+| Totais — `IBSCBSTot` | somatório da CBS, monofasia, créditos presumidos e estornos — ver [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+A CBS é lançada **"por fora"** — não compõe `vNF`.
+
+## Alíquota em transição
+
+> 🔄 **Valor volátil.** A tributação **ad valorem** da CBS começa em **0,9% (2026)**; a alíquota de **2027 em diante aguarda legislação** e é publicada pelo IT 2026.002. Não fixe a alíquota no código: carregue a tabela vigente. Ver [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc) e [Tabelas e códigos → alíquotas da CBS](/docs/referencia/tabelas-e-codigos).
+
+## Monofasia de combustíveis
+
+Na v1.50, dentro de `gIBSCBSMono`, a CBS tem ramos **ad rem** e **ad valorem**; a escolha depende do ano da emissão:
+
+| Ano da emissão | CBS monofásica |
+|---:|---|
+| 2026 | ad valorem |
+| 2027–2028 | ad rem |
+| 2029 em diante | ad rem |
+
+O total do item fica em `vTotCBSMonoItem`. Note que o calendário da **CBS difere do IBS** já em 2027 — ver [IBS → Monofasia](/docs/reforma-tributaria/ibs#monofasia-de-combustíveis) e o detalhe em [Tributos → Monofasia](/docs/leiaute-e-rejeicoes/tributos#monofasia-de-combustíveis-na-v150).
+
+## Classificação e crédito presumido
+
+Como no IBS, o par **`CST` + `cClassTrib`** ativa ou veda os grupos da CBS por indicadores das tabelas vigentes; o crédito presumido segue `cCredPres`, com apropriação por NF-e ou por evento conforme `ind_gCBSCredPres`. Ver [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc).
+
+## Próximo na trilha
+
+[Imposto Seletivo](/docs/reforma-tributaria/imposto-seletivo) · [Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce) · [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 — grupo `IBSCBS` (família UB) |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | overlay sobre o MOC 7.0; detalhe em [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| NT relacionada | NT 2025.002-RTC v1.50 |
+| Schema/tabela relacionada | `cClassTrib`/`CST` da CBS — [IT 2025.002 v1.50](/docs/reforma-tributaria/tabelas-rtc); alíquotas — IT 2026.002 v1.00 (12/05/2026) |
+| Status | revisão consolidada; alíquota de 2027+ aguarda legislação — confrontar com o Portal |
+
+### Registro de origem
+
+Página de síntese da CBS na trilha Reforma Tributária (Estágio 5 do plano). Visão centrada no tributo; detalhe dobrado em [Tributos do item](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo) e [Tabelas e códigos](/docs/referencia/tabelas-e-codigos), sem duplicação (Decisão 1). Alíquota 2026 = 0,9% conforme IT 2026.002 v1.00. Base legal em [LC 214/2025](/docs/reforma-tributaria/lc-214-2025).

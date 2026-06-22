@@ -1,0 +1,82 @@
+---
+title: Exemplos e casos de teste
+description: Casos completos de NF-e/NFC-e por cenário — contexto fiscal, trecho de XML, campos críticos, validações esperadas e rejeições comuns. Valores fictícios, para montar o caso inteiro, não só entender um campo.
+---
+
+Esta seção transforma a regra em **caso verificável**. Cada página parte de um cenário fiscal real, mostra o **trecho principal do XML**, lista os **campos críticos**, o que a SEFAZ **valida** e as **rejeições comuns** — para você montar o documento inteiro, não apenas entender um campo isolado.
+
+> ⚠️ **Valores fictícios.** Chaves de acesso, CNPJ, valores, datas e protocolos nestes exemplos são **inventados** para ilustrar a montagem. Eles **não** são fixtures validáveis: confirme nomes-folha, ordem e cardinalidade no [schema vigente](/docs/schemas), recalcule o DV da chave e os totais, e teste em [homologação](/docs/operacao/testes-e-homologacao) antes de produção. Onde um campo depende de tabela externa volátil, a página marca a fonte e a data.
+
+## Como cada exemplo é estruturado
+
+Toda página segue o mesmo padrão, para servir de checklist de montagem:
+
+| Bloco | O que traz |
+|---|---|
+| **Contexto fiscal** | a operação que o documento representa e por que ela escolhe esse leiaute |
+| **Trecho principal do XML** | os grupos que caracterizam o cenário — não a nota inteira |
+| **Campos críticos** | os campos que decidem aceitação/rejeição, com o valor de exemplo |
+| **Validações esperadas** | o que a SEFAZ confere e o `cStat` de sucesso |
+| **Rejeições comuns** | os erros típicos do cenário, por `cStat`, e onde corrigir |
+| **Fonte** | MOC, NT, schema e tabela que sustentam o exemplo |
+
+A seção **não duplica** o leiaute: cada campo aponta para a página dona em [Leiaute e rejeições](/docs/leiaute-e-rejeicoes), [Eventos](/docs/eventos), [Emissão e comunicação](/docs/emissao-e-comunicacao) ou [Segurança](/docs/seguranca).
+
+## Catálogo de cenários
+
+### Emissão
+
+| Exemplo | Cenário |
+|---|---|
+| [NF-e normal](/docs/exemplos/nfe-normal) | venda interna entre contribuintes, modelo 55, regime normal (CST) |
+| [NFC-e normal](/docs/exemplos/nfce-normal) | venda no varejo a consumidor final, modelo 65, pagamento e QR Code |
+| [NF-e de devolução](/docs/exemplos/nfe-devolucao) | `finNFe=4` referenciando a nota de origem, com teto de valores |
+| [NF-e complementar](/docs/exemplos/nfe-complementar) | `finNFe=2` para complementar valor/imposto da nota original |
+| [NF-e de ajuste](/docs/exemplos/nfe-ajuste) | `finNFe=3` para acerto sem circulação de mercadoria |
+| [NF-e de exportação](/docs/exemplos/nfe-exportacao) | `idDest=3`, grupo `exporta`/`detExport` e CFOP 7.xxx |
+| [NF-e de importação](/docs/exemplos/nfe-importacao) | grupo `DI` e adições, II e tributos do desembaraço |
+
+### Itens específicos
+
+| Exemplo | Cenário |
+|---|---|
+| [Combustível](/docs/exemplos/combustivel) | grupo `comb`, ICMS monofásico (ad rem), `cProdANP` e `pBio` |
+| [Medicamento](/docs/exemplos/medicamento) | grupo `med`, `cProdANVISA` e rastreabilidade (`rastro`) |
+
+### Contingência
+
+| Exemplo | Cenário |
+|---|---|
+| [NFC-e offline](/docs/exemplos/nfce-contingencia-offline) | `tpEmis=9`, `dhCont`/`xJust` e transmissão posterior com a mesma chave |
+| [EPEC](/docs/exemplos/epec) | evento prévio `110140` com leiaute mínimo antes da NF-e definitiva |
+
+### Eventos e pós-emissão
+
+| Exemplo | Cenário |
+|---|---|
+| [Cancelamento](/docs/exemplos/cancelamento) | evento `110111` com `nProt` e `xJust` |
+| [Carta de correção](/docs/exemplos/carta-correcao) | evento `110110` (CC-e) com `xCorrecao` e `xCondUso` |
+| [Inutilização](/docs/exemplos/inutilizacao) | `inutNFe` de faixa de numeração não usada |
+| [Distribuição de DF-e](/docs/exemplos/distribuicao-dfe) | consulta por NSU no Ambiente Nacional |
+
+## Antes de testar
+
+- Use **ambiente de homologação** (`tpAmb=2`) e os requisitos de teste em [Testes e homologação](/docs/operacao/testes-e-homologacao).
+- Em homologação, o `xNome` do destinatário deve ser exatamente `NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL` (regra `E04-20`).
+- Valide localmente **XSD → assinatura** antes de transmitir — ver o [teste em camadas](/docs/leiaute-e-rejeicoes/pipeline-de-validacao#teste-local-em-camadas).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Índice editorial: Exemplos e casos de teste |
+| Versão | ver páginas filhas |
+| Data | ver páginas filhas |
+| Páginas/capítulo | MOC 7.0 — Anexo I (leiaute) e Visão Geral §3/§5 (eventos e serviços) |
+| NT relacionada | ver páginas filhas |
+| Schema/tabela relacionada | leiauteNFe_v4.00 e schemas de evento/serviço (ver páginas filhas) |
+| Status | página índice; exemplos ilustrativos com valores fictícios nas páginas filhas |
+
+### Registro de origem
+
+Índice da seção Exemplos e casos de teste, criada no Estágio 6 do plano de expansão (`docs/PLANO-EXPANSAO-OPEN-FISCAL.md`). Os exemplos consolidam, em casos completos, o leiaute documentado em [Leiaute e rejeições](/docs/leiaute-e-rejeicoes), os eventos em [Eventos](/docs/eventos) e os serviços em [Emissão e comunicação](/docs/emissao-e-comunicacao), sem duplicar a especificação (Decisão 1). Substitui o esqueleto provisório de [Exemplos de XML da RTC](/docs/reforma-tributaria/exemplos-xml).

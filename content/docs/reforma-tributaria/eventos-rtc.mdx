@@ -1,0 +1,46 @@
+---
+title: Eventos da RTC
+description: Os eventos da apuração assistida do IBS/CBS na NF-e modelo 55 — crédito presumido, perdas, imobilização, antecipação e transferência de crédito em sucessão — autorizados pela SVRS.
+---
+
+A NT 2025.002 v1.50 cria eventos da **NF-e modelo 55** para a **apuração assistida** de IBS/CBS. São autorizados pela **SVRS** e devem ser enviados **individualmente** (a NT recomenda não agrupar os novos eventos em lote). Esta página resume as famílias; o catálogo completo, com autor e finalidade de cada `tpEvento`, está em [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-da-reforma-tributária).
+
+> 🔄 Os retornos aceitam `cStat` de **3–4 posições** e protocolo de **15 ou 17 posições**. Os eventos por item levam `nItem` e os valores/quantidades afetados; as regras impedem exceder o IBS, a CBS ou a quantidade da NF-e vinculada.
+
+## Famílias de eventos
+
+| Faixa | Autor típico | Finalidade |
+|---|---|---|
+| `112110`–`112150` | emitente | pagamento integral, importação ALC/ZFM, perda no transporte CIF, fornecimento não realizado, atualizar `dPrevEntrega` |
+| `211110`–`211150` | emitente/destinatário | apropriação de crédito presumido, perda FOB, débito de nota de crédito, imobilização, crédito de combustível e crédito por atividade |
+| `212110` / `212120` | empresa sucessora | aceitar transferência de crédito de IBS / CBS em sucessão |
+| `412120` / `412130` | Fisco | deferir ou não a transferência de crédito em sucessão |
+| `110001` | mesmo autor do evento original | cancela qualquer evento RTC; informa `tpEventoAut` e `nProtEvento` |
+
+## Crédito presumido por evento
+
+Parte dos créditos presumidos (`cCredPres`) é apropriada **por evento**, não pela NF-e — o indicador `ind_gIBSCredPres`/`ind_gCBSCredPres` da tabela decide o caminho. Ver [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc) e a tabela por artigo em [Tributos → Crédito presumido](/docs/leiaute-e-rejeicoes/tributos#crédito-presumido-ccredpres).
+
+## Evento histórico — `211120`
+
+> 🕒 **Histórico.** O evento `211120` (destinação para consumo pessoal) foi **removido** após a revogação do art. 57, §6º, da LC 214/2025 pela LC 227/2026 — ver [LC 214/2025](/docs/reforma-tributaria/lc-214-2025). ⚠️ O pacote `Eventos_RTC` **ainda inclui** o schema `e211120_v1.00`: trate o `tpEvento` pela **tabela legal vigente**, não pela presença do XSD.
+
+## Próximo na trilha
+
+[Cronograma](/docs/reforma-tributaria/cronograma) · [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-da-reforma-tributária)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 — eventos da apuração (NF-e modelo 55) |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | overlay sobre o MOC 7.0; catálogo em [Eventos](/docs/eventos/modelo-e-catalogo) |
+| NT relacionada | NT 2025.002-RTC v1.50 |
+| Schema/tabela relacionada | `Eventos_RTC` (`e110001`–`e412130`, versão 1.00) |
+| Status | revisão consolidada; evento `211120` histórico — tratar pela tabela legal vigente |
+
+### Registro de origem
+
+Nó de eventos da trilha Reforma Tributária (Estágio 5 do plano). Ponteiro para o catálogo dono, [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo#eventos-da-reforma-tributária), sem duplicar a tabela completa de eventos (Decisão 1). Schema `Eventos_RTC` conforme registrado no catálogo.

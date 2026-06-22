@@ -1,0 +1,60 @@
+---
+title: Segurança e assinatura
+description: Trilha operacional de certificado digital, TLS mútuo e assinatura XML (XMLDSig) da NF-e/NFC-e — do par de certificados ao diagnóstico de rejeição de assinatura.
+---
+
+Esta seção reúne, em uma trilha única, o que estava disperso entre arquitetura, web services e grupos finais: **como o emissor assina o documento, como transmite com TLS mútuo e como diagnostica uma rejeição de assinatura** — sem caçar a informação em várias páginas.
+
+> 🔐 **Dois certificados, dois momentos.** A NF-e/NFC-e usa o certificado ICP-Brasil em dois pontos independentes: a **assinatura** do XML (identidade jurídica do documento) e a **transmissão** TLS (autenticação da conexão). Podem ser certificados — e CNPJs — diferentes. Ver [Certificado digital](/docs/seguranca/certificado-digital).
+
+## O fluxo de segurança ponta a ponta
+
+```mermaid
+flowchart LR
+    A[Monta infNFe] --> B[Assina XMLDSig<br/>Enveloped sobre o Id]
+    B --> C[Abre TLS mútuo<br/>com cert. de transmissão]
+    C --> D[Envia SOAP à SEFAZ]
+    D --> E[SEFAZ valida<br/>cert. + assinatura]
+    E --> F[Autoriza ou rejeita]
+```
+
+A identidade viaja **dentro** da mensagem (quem assinou) e **na camada de transporte** (quem transmitiu). Não há sessão: cada chamada repete o par assinatura + TLS — ver [Arquitetura de comunicação](/docs/emissao-e-comunicacao/arquitetura).
+
+## Nesta seção
+
+| Página | O que resolve |
+|---|---|
+| [Certificado digital](/docs/seguranca/certificado-digital) | A1 × A3, OIDs de CNPJ/CPF, key usage, certificado de assinatura × de transmissão |
+| [TLS mútuo](/docs/seguranca/tls-mutuo) | TLS 1.2+, autenticação mútua, SOAP 1.2 e o certificado de transmissão |
+| [Assinatura XML](/docs/seguranca/assinatura-xml) | XMLDSig Enveloped, o que assinar (`Id` de `infNFe`/`infEvento`) e o que não incluir |
+| [Canonicalização](/docs/seguranca/canonicalizacao) | C14N, transforms e por que a forma do XML estabiliza o digest |
+| [Reference URI e digest](/docs/seguranca/reference-uri-digest) | `Reference URI=#NFe…`, transforms, `DigestValue` e `SignatureValue` |
+| [Cadeia de certificação](/docs/seguranca/cadeia-certificado) | Truststore ICP-Brasil, raízes, LCR/revogação e artefato versionado |
+| [Erros comuns de assinatura](/docs/seguranca/erros-comuns) | `cStat` 280–298, causas e diagnóstico por camada |
+
+## Algoritmos: leia a especificação vigente, não a de 2020
+
+> 🕒 **Histórico.** A **Tabela 4-2 do MOC 7.0** registra **RSA-SHA1**, **digest SHA-1** e **chave de 1024 bits**. É a especificação publicada em 2020; trate-a como referência **histórica** e confronte com o schema e os atos vigentes antes de implementar — ver [Proveniência](/docs/referencia/proveniencia#manuais-usados). Não copie esses algoritmos como "boas práticas de segurança": eles são o protocolo fiscal exigido, não recomendação criptográfica geral.
+
+## Como esta seção se conecta
+
+- Base reaproveitada (não duplicada — Decisão 1): [Arquitetura de comunicação](/docs/emissao-e-comunicacao/arquitetura), [Mapa dos Web Services](/docs/emissao-e-comunicacao/web-services) e [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais#assinatura).
+- A ordem em que certificado e assinatura são avaliados está em [Pipeline de validação](/docs/leiaute-e-rejeicoes/pipeline-de-validacao).
+- A assinatura do **QR Code da NFC-e** (hash do CSC) é um mecanismo distinto da XMLDSig — ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode).
+- O **PAA** (NT 2026.001) adiciona uma assinatura RSA própria sobre o `Id`, além da XMLDSig qualificada — ver [Arquitetura](/docs/emissao-e-comunicacao/arquitetura).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Índice editorial: Segurança e assinatura |
+| Versão | ver páginas filhas |
+| Data | ver páginas filhas |
+| Páginas/capítulo | MOC 7.0 — Visão Geral, §4.1–§4.2 (base das páginas filhas) |
+| NT relacionada | NT 2026.001 v1.00 (PAA); demais nas páginas filhas |
+| Schema/tabela relacionada | não indicada |
+| Status | página índice; detalhe técnico nas páginas filhas |
+
+### Registro de origem
+
+Índice editorial da seção Segurança e assinatura, criado no Estágio 4 do plano de expansão (`docs/PLANO-EXPANSAO-OPEN-FISCAL.md`). Consolida material disperso em [Arquitetura](/docs/emissao-e-comunicacao/arquitetura) (§4.1–§4.2, p. 49–55, Tabelas 4-1 e 4-2), [Web Services](/docs/emissao-e-comunicacao/web-services) e [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais).

@@ -86,6 +86,8 @@ O `cListServ` (Item da Lista de Serviços) passou a ser validado por tabela do P
 
 ## IBS, CBS e Imposto Seletivo 🔄
 
+> 🧭 Trilha navegável por tributo: [IBS](/docs/reforma-tributaria/ibs) · [CBS](/docs/reforma-tributaria/cbs) · [Imposto Seletivo](/docs/reforma-tributaria/imposto-seletivo) — parte da seção [Reforma Tributária](/docs/reforma-tributaria).
+
 A NT 2025.002 v1.50 substitui a NT 2024.002-RTC no âmbito da NF-e/NFC-e e incorpora ao item os grupos `IS` e `IBSCBS`. O enquadramento não é local: `CST` + `cClassTrib` selecionam, por indicadores das tabelas vigentes, quais grupos são obrigatórios, permitidos ou vedados.
 
 | Grupo | Conteúdo principal |
@@ -112,7 +114,7 @@ Nos grupos ad rem, valide `valor = quantidade × alíquota ad rem`. Nos grupos a
 
 ### Crédito presumido (`cCredPres`)
 
-O `cCredPres` classifica o crédito presumido de IBS/CBS por fundamento legal (LC 214/2025). A tabela vigente traz indicadores que definem **se** e **como** o crédito é apropriado — não basta o código existir:
+O `cCredPres` classifica o crédito presumido de IBS/CBS por fundamento legal ([LC 214/2025](/docs/legislacao/lc-214-2025-rtc)). A tabela vigente traz indicadores que definem **se** e **como** o crédito é apropriado — não basta o código existir:
 
 | `cCredPres` | Fundamento (LC 214/2025) | Apropria via NF | Apropria via evento | IBS | CBS |
 |---:|---|:--:|:--:|:--:|:--:|

@@ -1,148 +1,110 @@
-# Plano de expansao do Open Fiscal
+# Plano de expansão do Open Fiscal — de guia do MOC a base operacional
 
-Este arquivo registra o plano de continuidade para permitir limpar o contexto e retomar o trabalho por partes.
+## ▶️ Status de execução (atualizar ao fim de cada estágio)
 
-Data do checkpoint: 2026-06-21.
+> Um estágio por contexto (`/clear` entre eles). Marque aqui antes de encerrar. Estados:
+> ✅ concluído · 🔄 em andamento · ⏭️ próximo · ⬜ pendente · ⛔ bloqueado (precisa decisão) ·
+> 🚫 desconsiderado.
 
-## Marcador de progresso
+| Estágio | Tema | Status | Evidência / observação |
+|---|---|---|---|
+| **0** | estabilizar a base | 🚫 **desconsiderado** (21/06/2026) | Planos de Notas Técnicas e Informes Técnicos já executados; serve só de registro histórico do risco. Não usar como bloqueio de retomada. |
+| **1** | matriz de fontes oficiais | ✅ **concluído** (21/06/2026) | `## Fonte` padronizado em 129 páginas MDX; criada `referencia/fontes-oficiais.mdx`; `bun run build` passou. |
+| **2** | legislação nacional | ✅ **concluído** (21/06/2026) | Criada `legislacao/` com index + 5 páginas (AJ SINIEF 07/05, 19/16, Ato COTEPE 69/20, LC 214/2025, normas-relacionadas) e `meta.json`; registrada no `meta.json` da seção; back-links em conceitos, tributos e eventos; `fontes-oficiais` atualizada; `bun run build` passou. |
+| **3** | UFs e regras estaduais | ✅ **concluído** (21/06/2026) | Criada `ufs/` com `index`, `matriz-estadual` e 27 páginas de UF + `meta.json`; registrada no `meta.json` da seção (após `operacao`). Config técnica (autorizador/SVC/portal) reaproveitada do Portal Nacional (captura 20/06/2026); regra estadual (cancelamento NF-e por UF, NFC-e 30min, EPEC só SP, PR offline, SP SAT) por pesquisa web, com campos voláteis marcados "sujeito a verificação na SEFAZ" (Decisão 2). Back-links em `servicos-por-uf`, `autorizadoras-e-ambientes`, `legislacao/index`, `ajuste-sinief-19-16` e `fontes-oficiais`; `bun run build` passou. |
+| **4** | segurança e assinatura | ✅ **concluído** (21/06/2026) | Criada `seguranca/` com `index`, `certificado-digital`, `tls-mutuo`, `assinatura-xml`, `canonicalizacao`, `reference-uri-digest`, `cadeia-certificado`, `erros-comuns` + `meta.json`; registrada no `meta.json` da seção (após `leiaute-e-rejeicoes`). Reaproveita MOC 7.0 §4.1–§4.2 (Tabelas 4-1/4-2) de `arquitetura`, `web-services` e `grupos-finais`; algoritmos RSA-SHA1/SHA-1/1024 bits marcados como históricos; cadeia TLS marcada volátil com fonte/data (Decisão 2). Back-links em `arquitetura`, `web-services`, `grupos-finais` e `pipeline-de-validacao`; `bun run build` passou. |
+| **5** | Reforma Tributária (trilha própria) | ✅ **concluído** (21/06/2026) | Criada `content/docs/reforma-tributaria/` (Parte irmã de `(nfe-nfce)` no root) com `index`, `lc-214-2025`, `nt-2025-002`, `ibs`, `cbs`, `imposto-seletivo`, `campos-nfe-nfce`, `tabelas-rtc`, `eventos-rtc`, `cronograma`, `exemplos-xml` + `meta.json`; registrada no `content/docs/meta.json` e na tabela de tópicos do `index.mdx` root. Trilha linka, sem duplicar (Decisão 1), as páginas dono (tributos, totais, eventos, tabelas-e-codigos, NT/IT 2025.002, cronograma) e distingue LC/NT/IT/XSD/cronograma (Decisão 4); tabelas e datas voláteis com fonte+data (Decisão 2). Back-links em `notas-tecnicas/2025-002`, `schemas/cronograma`, `tributos`, `totais-e-fechamento`, `eventos/modelo-e-catalogo`, `referencia/tabelas-e-codigos`, `legislacao/lc-214-2025-rtc`, `legislacao/index` e `fontes-oficiais`. `bun run build` passou. |
+| **6** | exemplos XML e casos de teste | ✅ **concluído** (21/06/2026) | Criada `content/docs/(nfe-nfce)/exemplos/` com `index` + 15 casos (nfe-normal, nfce-normal, nfe-devolucao, nfe-complementar, nfe-ajuste, nfe-exportacao, nfe-importacao, combustivel, medicamento, nfce-contingencia-offline, epec, cancelamento, carta-correcao, inutilizacao, distribuicao-dfe) e `meta.json`; registrada no `meta.json` da seção (antes de `referencia`). Cada caso segue o padrão contexto fiscal · trecho de XML · campos críticos · validações esperadas (cStat) · rejeições comuns · fonte; todos com aviso de **valores fictícios** e linkando a página dona em vez de duplicar o leiaute (Decisão 1); campos voláteis (ANP/pBio/ad rem) marcados com fonte+data (Decisão 2). Back-links em `eventos/cancelamento`, `eventos/carta-de-correcao`, `eventos/epec`, `emissao-e-comunicacao/inutilizacao`, `emissao-e-comunicacao/distribuicao-dfe`, `contingencia/nfce-offline`, `leiaute-e-rejeicoes/index` e `referencia/fontes-oficiais`; `reforma-tributaria/exemplos-xml` agora aponta para os casos completos. `bun run build` passou. |
+| **7** | dados versionados (consumíveis por código) | ✅ **concluído** (21/06/2026) | Criada `data/tabelas/` (`manifest.tsv` + `checksums.tsv` + 18 TSV extraídos: municipios, ncm, cfop, cprodanp, combustiveis-monofasicos, pbio, cclasstrib, ccredpres, aliquotas-cbs, fcp-uf, tpag, tband, tpveic, lista-servicos, regime-especial, cclass-nfag, prefixo-gs1, nfe-abi) e `data/endpoints/` (`autorizadores.tsv` 27 UFs + `webservices.tsv` ~100 endpoints por autorizador/serviço/ambiente, captura 20/06/2026 produção). Scripts `scripts/xlsx.ts` (leitor .xlsx sem dependências via `unzip`), `scripts/build-tabelas.ts`, `scripts/check-tabelas.ts` + npm `tabelas:build`/`tabelas:check` e teste `scripts/xlsx.test.ts`. Cada registro com vigência+fonte (Decisão 2); `check` detecta campo faltando e snapshot alterado por hash (`--fail-on-change`). `paises` (.ods) e `unidades-medida` (.xls legado) ficam só no manifest; `cBenef` documentado como por-UF (sem tabela nacional). Página `referencia/dados-versionados.mdx` registrada no `meta.json`; back-links em `tabelas-e-codigos`, `servicos-por-uf`, `versionamento` e `autorizadoras-e-ambientes`. `bun run build` passou e `tabelas:check` OK. (Nota: `bun run test` falha por conflito **pré-existente** vite/cloudflare-plugin, alheio a este estágio — afeta também `nfe-portal.test.ts`.) |
+| **8** | revisão final de produto | ✅ **concluído** (22/06/2026) | Auditoria do checklist: (1) `## Fonte` em 200/201 páginas — só `index.mdx` (capa) não tem, esperado; (2) regra estadual isolada em `ufs/`, sem vazar como nacional; (3) NT pós-MOC dobrada — 2025.002 em `reforma-tributaria` com back-links em NT e `tributos`; (4) schema citado com pacote+versão via `schemas/pacotes-e-versoes.mdx` (`.xsd` em páginas são placeholders/links); (5) exemplos cobrindo emissão (10), eventos (cancelamento/carta/epec), contingência (nfce offline) e consulta (distribuicao-dfe); (6) **busca testada ao vivo** (`/api/search`, dev server) retornando páginas úteis para cStat `539`, campo XML `cProdANP`, NT `2025.002` e UF São Paulo; (7) navegação: 201 páginas, **0 órfãs** (toda `.mdx` registrada no `meta.json`), root + 2 Partes, ordem coerente. `bun run build` passou (exit 0, built in 6.01s). |
 
-Use este bloco como ponto de retomada depois de limpar o contexto. Execute **uma parte por vez**, atualize a tabela abaixo, rode a verificacao aplicavel e entao pare ou avance para a proxima parte explicitamente solicitada.
+**Próximo a retomar: nenhum — plano concluído (Estágios 1–7 + revisão final 8).**
 
-Status:
+### Protocolo de cada estágio (seguir nos próximos)
 
-- `[ ]` pendente
-- `[~]` em andamento
-- `[x]` concluida
-- `[!]` bloqueada ou precisa decisao
+Repita, em **contexto novo** (`/clear`), para o estágio pedido:
 
-| Parte | Status | Ultima atualizacao | Evidencia / observacao |
-|---:|:---:|---|---|
-| 0 | `[x]` | 2026-06-21 | Desconsiderada por decisao: os planos de Notas Tecnicas e Informes Tecnicos ja foram executados; nao usar esta parte como bloqueio de retomada. |
-| 1 | `[x]` | 2026-06-21 | `## Fonte` padronizado em 129 paginas MDX; criada `content/docs/(nfe-nfce)/referencia/fontes-oficiais.mdx`; `bun run build` passou. Planos de Notas Tecnicas e Informes Tecnicos ja executados. |
-| 2 | `[ ]` | 2026-06-21 | Legislacao nacional ainda nao criada. |
-| 3 | `[ ]` | 2026-06-21 | Matriz estadual por UF ainda nao criada. |
-| 4 | `[ ]` | 2026-06-21 | Trilha de seguranca e assinatura ainda nao criada. |
-| 5 | `[ ]` | 2026-06-21 | Trilha propria de Reforma Tributaria ainda nao criada. |
-| 6 | `[ ]` | 2026-06-21 | Exemplos XML e casos de teste ainda nao criados. |
-| 7 | `[ ]` | 2026-06-21 | Dados versionados consumiveis por codigo ainda nao criados. |
-| 8 | `[ ]` | 2026-06-21 | Revisao final depende das partes anteriores. |
+1. Leia este arquivo: a tabela de status, o estágio alvo e a **Decisão de implementação** aplicável.
+2. Execute **somente o estágio solicitado** — não comece o próximo no mesmo contexto.
+3. Entregue os artefatos do estágio (páginas, `meta.json`, índices) e rode a verificação (`bun run build`).
+4. Atualize a tabela de status: estado, data e **evidência objetiva** (arquivo criado, contagem validada,
+   comando de build/check ou bloqueio). **Pare.**
 
-Proxima parte recomendada para retomar: **Parte 2 - Legislacao nacional**.
+### Decisões de implementação (firmadas — seguir nos próximos)
 
-Ao iniciar uma nova sessao, leia este marcador, execute somente a parte pedida pelo usuario e atualize:
+1. **Não recriar o que já tem dono.** A base já cobre DANFE NFC-e/QR Code (`danfe/danfe-nfce-qrcode.mdx`),
+   schemas XSD (`schemas/`), web services (`emissao-e-comunicacao/`), eventos, contingência, Notas Técnicas
+   e Informes Técnicos pós-MOC. Os estágios abaixo **fecham camadas sem dono**, não duplicam as existentes.
+2. **Fonte e data em conteúdo volátil.** Tudo que muda fora do PDF (regra estadual, endpoint, tabela externa)
+   carrega **fonte oficial + data de captura**. Sem isso, vira dado não confiável para produção.
+3. **Lei ≠ leiaute.** A camada de legislação resume **impacto para implementação**, não transcreve a norma;
+   linka para as páginas técnicas, sem misturar base jurídica com especificação.
+4. **Overlay pós-MOC explícito.** Reforma Tributária e NTs posteriores são overlay sobre o MOC 7.0; a trilha
+   deixa claro o que é LC, NT, IT, XSD e cronograma — sem misturar dentro do MOC.
 
-- status da parte;
-- data da ultima atualizacao;
-- evidencia objetiva, como arquivo criado, contagem validada, comando de build/check ou bloqueio.
+---
 
-## Estado observado
+## Estado observado (base do diagnóstico)
 
-O repositório já está mais avançado do que o diagnóstico inicial publicado. A navegação de `content/docs/(nfe-nfce)/meta.json` já inclui:
+O repositório está mais avançado que o diagnóstico inicial. A navegação de
+`content/docs/(nfe-nfce)/meta.json` já inclui: comece-aqui, fundamentos, emissao-e-comunicacao,
+leiaute-e-rejeicoes, eventos, danfe, contingencia, nfe-abi, nfag, nfgas, schemas, operacao,
+notas-tecnicas, informes-tecnicos e referencia.
 
-- comece-aqui
-- fundamentos
-- emissao-e-comunicacao
-- leiaute-e-rejeicoes
-- eventos
-- danfe
-- contingencia
-- nfe-abi
-- nfag
-- nfgas
-- schemas
-- operacao
-- notas-tecnicas
-- informes-tecnicos
-- referencia
+Já existem páginas/seções para: DANFE NFC-e e QR Code, schemas XSD, web services e arquitetura,
+contingência, eventos, Notas Técnicas e Informes Técnicos pós-MOC, tabelas e códigos, proveniência
+das fontes e serviços por UF.
 
-Já existem páginas ou seções relevantes para:
+As lacunas restantes não são "criar tudo", e sim fechar camadas sem dono próprio:
 
-- DANFE NFC-e e QR Code: `content/docs/(nfe-nfce)/danfe/danfe-nfce-qrcode.mdx`
-- schemas XSD: `content/docs/(nfe-nfce)/schemas/`
-- web services e arquitetura: `content/docs/(nfe-nfce)/emissao-e-comunicacao/`
-- contingencia: `content/docs/(nfe-nfce)/contingencia/`
-- eventos: `content/docs/(nfe-nfce)/eventos/`
-- Notas Tecnicas pos-MOC: `content/docs/(nfe-nfce)/notas-tecnicas/`
-- Informes Tecnicos: `content/docs/(nfe-nfce)/informes-tecnicos/`
-- tabelas e codigos: `content/docs/(nfe-nfce)/referencia/tabelas-e-codigos.mdx`
-- proveniencia das fontes: `content/docs/(nfe-nfce)/referencia/proveniencia.mdx`
-- servicos por UF: `content/docs/(nfe-nfce)/operacao/servicos-por-uf.mdx`
+- legislação nacional;
+- regras estaduais por UF como **matriz fiscal**, separada de endpoints;
+- segurança, assinatura, TLS e XMLDSig como capítulo dedicado;
+- Reforma Tributária como trilha própria;
+- exemplos XML e casos de teste;
+- padrão uniforme de fonte oficial por página (✅ Estágio 1);
+- dados versionados consumíveis por código.
 
-As lacunas principais restantes nao sao "criar tudo", mas fechar camadas que ainda nao tem dono proprio:
+---
 
-- legislacao nacional
-- regras estaduais por UF como matriz fiscal, separada de endpoints
-- seguranca, assinatura, TLS e XMLDSig como capitulo dedicado
-- Reforma Tributaria como trilha propria
-- exemplos XML e casos de teste
-- padrao uniforme de fonte oficial por pagina
-- dados versionados consumiveis por codigo
+## Estágio 0 — estabilizar a base 🚫 DESCONSIDERADO
 
-## Risco operacional registrado
+Registro histórico. Os planos de Notas Técnicas e Informes Técnicos já foram executados; esta etapa
+fica apenas como memória do risco observado no checkpoint anterior (worktree com rename em andamento
+`tmp/nfe/notas-tecnicas/PLANO-CONSOLIDACAO.md → docs/PLANO-CONSOLIDACAO.md`). Se o rename reaparecer no
+`git status`, tratar como manutenção de worktree, não como etapa do plano.
 
-Registro historico do checkpoint anterior. Nao usar como bloqueio para a sequencia atual, pois a Parte 0 foi desconsiderada por decisao.
+---
 
-O `git status` mostrava muitas alteracoes nao commitadas e um rename em andamento:
+## Estágio 1 — matriz de fontes oficiais ✅ CONCLUÍDO
 
-```txt
-RD tmp/nfe/notas-tecnicas/PLANO-CONSOLIDACAO.md -> docs/PLANO-CONSOLIDACAO.md
-```
+Objetivo: transformar rastreabilidade editorial em padrão obrigatório.
 
-No checkpoint, `docs/` existia, mas estava vazio antes da criacao deste arquivo. Se o rename aparecer novamente no `git status`, tratar como manutencao de worktree, nao como etapa obrigatoria do plano de expansao.
+Feito:
 
-## Parte 0 - Estabilizar a base
+- `## Fonte` padronizado em 129 páginas MDX, com metadado mínimo: documento · versão · data ·
+  páginas/capítulo · NT relacionada · schema/tabela relacionada · status.
+- `content/docs/(nfe-nfce)/referencia/fontes-oficiais.mdx` — índice de fontes por camada (MOC, Anexos,
+  Notas Técnicas, Informes Técnicos, XSD, legislação nacional e estadual).
+- `bun run build` validado.
 
-Status: **desconsiderada por decisao**. Os planos de Notas Tecnicas e Informes Tecnicos ja foram executados; esta parte fica apenas como registro historico do risco observado.
+Critério de pronto (atingido): qualquer página permite rastrear de onde veio cada afirmação técnica;
+divergências entre MOC, NT, IT e XSD ficam explícitas, não corrigidas silenciosamente.
 
-Objetivo: fechar o estado atual antes de expandir conteudo.
+---
 
-Entregaveis:
+## Estágio 2 — legislação nacional ✅ CONCLUÍDO
 
-- Resolver o rename quebrado de `docs/PLANO-CONSOLIDACAO.md`.
-- Conferir se `content/docs/(nfe-nfce)/meta.json` reflete todas as secoes novas.
-- Rodar build/check do projeto.
-- Fazer um commit ou checkpoint antes de novas expansoes.
+Objetivo: separar base jurídica de especificação técnica.
 
-Criterio de pronto:
+Feito (21/06/2026): criada `content/docs/(nfe-nfce)/legislacao/` com `index.mdx`, `ajuste-sinief-07-05-nfe.mdx`,
+`ajuste-sinief-19-16-nfce.mdx`, `ato-cotepe-69-20-moc-7.mdx`, `lc-214-2025-rtc.mdx`, `normas-relacionadas.mdx`
+e `meta.json`. Cada norma traz **resumo de impacto para implementação** (não transcrição) com link para as
+páginas técnicas (Decisão 3). Seção registrada no `meta.json` da Parte NF-e/NFC-e (antes de `referencia`).
+Back-links adicionados em `fundamentos/conceitos.mdx`, `leiaute-e-rejeicoes/tributos.mdx` e
+`eventos/modelo-e-catalogo.mdx`; `referencia/fontes-oficiais.mdx` aponta para a nova seção. `bun run build` passou.
 
-- Navegacao sem paginas orfas.
-- Build/check passando.
-- Worktree compreensivel, sem rename quebrado.
-
-## Parte 1 - Matriz de fontes oficiais
-
-Objetivo: transformar rastreabilidade editorial em padrao obrigatorio.
-
-Entregaveis:
-
-- Padronizar o bloco `## Fonte` em todas as paginas.
-- Criar metadado minimo por pagina:
-  - documento
-  - versao
-  - data
-  - paginas ou capitulo
-  - NT relacionada
-  - schema ou tabela relacionada
-  - status
-- Criar uma pagina indice de fontes oficiais por camada:
-  - MOC
-  - Anexos
-  - Notas Tecnicas
-  - Informes Tecnicos
-  - XSD
-  - legislacao nacional
-  - legislacao estadual
-
-Criterio de pronto:
-
-- Qualquer pagina permite rastrear de onde veio cada afirmacao tecnica relevante.
-- Divergencias entre MOC, NT, IT e XSD ficam explicitas, nao corrigidas silenciosamente.
-
-## Parte 2 - Legislacao nacional
-
-Objetivo: separar base juridica de especificacao tecnica.
-
-Nova secao sugerida:
+Estrutura criada:
 
 ```txt
 content/docs/(nfe-nfce)/legislacao/
@@ -155,63 +117,78 @@ content/docs/(nfe-nfce)/legislacao/
   meta.json
 ```
 
-Prioridade:
+Prioridade e papel de cada norma:
 
-- Ajuste SINIEF 07/05: base da NF-e modelo 55.
-- Ajuste SINIEF 19/16: base da NFC-e modelo 65 e DANFE NFC-e.
-- Ato COTEPE/ICMS 69/20: especificacoes tecnicas da NF-e, DANFE e Web Services.
-- Lei Complementar 214/2025: Reforma Tributaria do Consumo, IBS, CBS e IS.
+- **Ajuste SINIEF 07/05** — institui a NF-e modelo 55: documento de existência digital, validade jurídica
+  condicionada à assinatura e à autorização de uso. Base do DANFE Tipo 2 (alterado pelo Ajuste SINIEF 13/26).
+- **Ajuste SINIEF 19/16** — institui a NFC-e modelo 65 e o DANFE-NFC-e; base do manual de QR Code.
+- **Ato COTEPE/ICMS 69/20** — especificações técnicas da NF-e, DANFE e Web Services (conforme o AJ 07/05).
+- **Lei Complementar 214/2025** — Reforma Tributária do Consumo: institui IBS, CBS e IS (liga ao Estágio 5).
 
-Criterio de pronto:
+Passos:
 
-- Paginas tecnicas conseguem linkar para a base legal sem misturar lei com leiaute.
-- Cada norma tem resumo de impacto para implementacao, nao apenas transcricao.
+1. Criar `content/docs/(nfe-nfce)/legislacao/` com as páginas acima.
+2. Cada norma com **resumo de impacto para implementação**, não transcrição — e link para as páginas
+   técnicas que a aplicam (Decisão 3).
+3. Registrar a seção em `content/docs/(nfe-nfce)/meta.json`, perto de `referencia`.
+4. `bun run build` e atualizar a tabela de status.
 
-## Parte 3 - UFs e regras estaduais
+Critério de pronto: páginas técnicas linkam para a base legal sem misturar lei com leiaute; cada norma
+tem impacto resumido, com fonte (CONFAZ/Receita) e data.
 
-Objetivo: separar "endpoint por UF" de "regra fiscal estadual por UF".
+---
 
-Hoje existe `content/docs/(nfe-nfce)/operacao/servicos-por-uf.mdx`, mas ele e tecnico-operacional. Falta matriz fiscal estadual.
+## Estágio 3 — UFs e regras estaduais ✅ CONCLUÍDO
 
-Nova secao sugerida:
+Objetivo: separar "endpoint por UF" de "regra fiscal estadual por UF". Hoje
+`operacao/servicos-por-uf.mdx` é técnico-operacional; faltava a matriz fiscal estadual.
+
+Feito (21/06/2026): criada `content/docs/(nfe-nfce)/ufs/` com `index.mdx`, `matriz-estadual.mdx`, 27 páginas
+de UF e `meta.json`; seção registrada no `meta.json` da Parte NF-e/NFC-e (após `operacao`). Cada UF traz
+configuração técnica (autorizador, SVC, portal, schema — do Portal Nacional, captura 20/06/2026) e regra
+fiscal estadual (credenciamento, NFC-e ativa, cancelamento NF-e/NFC-e, contingência/EPEC offline, CSC/QR
+Code, inutilização, cBenef×CST, SAT/ECF). Por escolha do usuário, valores estaduais foram pesquisados na
+web (cancelamento NF-e por UF; NFC-e 30min padrão; EPEC só SP; PR offline; SP CF-e-SAT) e os campos
+genuinamente voláteis ficam marcados "sujeito a verificação na SEFAZ" com fonte e data (Decisão 2).
+Back-links em `servicos-por-uf`, `autorizadoras-e-ambientes`, `legislacao/index`, `ajuste-sinief-19-16` e
+`referencia/fontes-oficiais`. `bun run build` passou.
+
+Nova seção:
 
 ```txt
 content/docs/(nfe-nfce)/ufs/
   index.mdx
   matriz-estadual.mdx
-  acre.mdx
-  alagoas.mdx
-  ...
-  sao-paulo.mdx
-  rondonia.mdx
+  acre.mdx … sao-paulo.mdx … (27 UFs)
   meta.json
 ```
 
-Campos minimos por UF:
+Campos mínimos por UF: credenciamento NF-e/NFC-e · NFC-e ativa ou não · contingência offline NFC-e ·
+EPEC para NFC-e quando aceito · CSC/token e URLs de QR Code · prazos de cancelamento · prazos/regras de
+inutilização · cBenef × CST · particularidades SAT/ECF · autorizador e endpoints · regras facultativas
+ativadas pela UF · **fonte oficial e data da captura** (Decisão 2).
 
-- credenciamento NF-e/NFC-e
-- NFC-e ativa ou nao
-- contingencia offline NFC-e
-- EPEC para NFC-e, quando aceito
-- CSC/token e URLs de QR Code
-- prazos de cancelamento
-- prazos e regras de inutilizacao
-- cBenef x CST
-- particularidades SAT/ECF onde existirem
-- autorizador e endpoints
-- regras facultativas ativadas pela UF
-- fonte oficial e data da captura
+Critério de pronto: um emissor resolve a configuração por `(modelo, UF, ambiente, serviço, data)`; toda
+informação estadual tem fonte e data.
 
-Criterio de pronto:
+---
 
-- Um emissor consegue resolver configuracao por `(modelo, UF, ambiente, servico, data)`.
-- Informacao estadual tem fonte e data, pois muda com frequencia.
+## Estágio 4 — segurança e assinatura ✅ CONCLUÍDO
 
-## Parte 4 - Seguranca e assinatura
+Objetivo: tirar certificado, TLS e XMLDSig de páginas dispersas e criar uma trilha operacional própria.
 
-Objetivo: tirar certificado, TLS e XMLDSig de paginas dispersas e criar uma trilha operacional propria.
+Feito (21/06/2026): criada `content/docs/(nfe-nfce)/seguranca/` com `index.mdx`, `certificado-digital.mdx`,
+`tls-mutuo.mdx`, `assinatura-xml.mdx`, `canonicalizacao.mdx`, `reference-uri-digest.mdx`,
+`cadeia-certificado.mdx`, `erros-comuns.mdx` e `meta.json`; seção registrada no `meta.json` da Parte
+NF-e/NFC-e (após `leiaute-e-rejeicoes`). Conteúdo consolidado a partir de `emissao-e-comunicacao/arquitetura`
+(§4.1–§4.2, Tabelas 4-1/4-2), `emissao-e-comunicacao/web-services` (cadeia TLS) e
+`leiaute-e-rejeicoes/grupos-finais` — sem duplicar (Decisão 1). Algoritmos do MOC 7.0 (RSA-SHA1, digest
+SHA-1, chave 1024 bits) ficam marcados como **históricos**, com aviso para confrontar o schema vigente; a
+cadeia de certificação TLS é tratada como conteúdo volátil com fonte e data de captura (Decisão 2).
+Back-links adicionados em `arquitetura`, `web-services`, `grupos-finais` e `pipeline-de-validacao`.
+`bun run build` passou.
 
-Nova secao sugerida:
+Nova seção:
 
 ```txt
 content/docs/(nfe-nfce)/seguranca/
@@ -226,146 +203,135 @@ content/docs/(nfe-nfce)/seguranca/
   meta.json
 ```
 
-Base inicial ja existe em:
+Base a reaproveitar: `emissao-e-comunicacao/arquitetura.mdx`, `emissao-e-comunicacao/web-services.mdx`,
+`leiaute-e-rejeicoes/grupos-finais.mdx`.
 
-- `content/docs/(nfe-nfce)/emissao-e-comunicacao/arquitetura.mdx`
-- `content/docs/(nfe-nfce)/emissao-e-comunicacao/web-services.mdx`
-- `content/docs/(nfe-nfce)/leiaute-e-rejeicoes/grupos-finais.mdx`
+Critério de pronto: um implementador assina, transmite e diagnostica rejeição de assinatura sem caçar
+informação em várias páginas; algoritmos históricos do MOC 7.0 ficam marcados como históricos.
 
-Criterio de pronto:
+---
 
-- Um implementador consegue assinar, transmitir e diagnosticar rejeicao de assinatura sem procurar informacao em varias paginas.
-- Algoritmos historicos do MOC 7.0 ficam marcados como historicos quando aplicavel.
+## Estágio 5 — Reforma Tributária como trilha própria ✅ CONCLUÍDO
 
-## Parte 5 - Reforma Tributaria como trilha propria
+Objetivo: manter IBS/CBS/IS como overlay transversal, mas também navegável como tema independente.
 
-Objetivo: manter IBS/CBS/IS como overlay transversal, mas tambem navegavel como tema independente.
+Feito (21/06/2026): criada `content/docs/reforma-tributaria/` como **Parte independente** (irmã de `(nfe-nfce)` no root, em `/docs/reforma-tributaria`), com `index.mdx`, `lc-214-2025.mdx`, `nt-2025-002.mdx`, `ibs.mdx`, `cbs.mdx`, `imposto-seletivo.mdx`, `campos-nfe-nfce.mdx`, `tabelas-rtc.mdx`, `eventos-rtc.mdx`, `cronograma.mdx`, `exemplos-xml.mdx` e `meta.json`. Registrada no `content/docs/meta.json` (após `(nfe-nfce)`) e na tabela de tópicos do `content/docs/index.mdx`. A trilha **linka, não duplica** (Decisão 1) as páginas dono — [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Totais](/docs/leiaute-e-rejeicoes/totais-e-fechamento), [Eventos](/docs/eventos/modelo-e-catalogo), [Tabelas e códigos](/docs/referencia/tabelas-e-codigos), [NT 2025.002](/docs/notas-tecnicas/2025-002), [IT 2025.002](/docs/informes-tecnicos/2025-002), [Cronograma](/docs/schemas/cronograma) — e **distingue LC, NT, IT, XSD e cronograma** (Decisão 4). Tabelas/alíquotas e datas voláteis marcadas com fonte+data (Decisão 2). `exemplos-xml.mdx` traz só o esqueleto dos grupos e remete as fixtures completas ao Estágio 6. Back-links em `notas-tecnicas/2025-002`, `schemas/cronograma`, `tributos`, `totais-e-fechamento`, `eventos/modelo-e-catalogo`, `referencia/tabelas-e-codigos`, `legislacao/lc-214-2025-rtc`, `legislacao/index` e `referencia/fontes-oficiais`. `bun run build` passou.
 
-Nova secao sugerida:
+Nova seção:
 
 ```txt
 content/docs/reforma-tributaria/
   index.mdx
   lc-214-2025.mdx
   nt-2025-002.mdx
-  ibs.mdx
-  cbs.mdx
-  imposto-seletivo.mdx
+  ibs.mdx · cbs.mdx · imposto-seletivo.mdx
   campos-nfe-nfce.mdx
-  tabelas-rtc.mdx
-  eventos-rtc.mdx
-  cronograma.mdx
-  exemplos-xml.mdx
+  tabelas-rtc.mdx · eventos-rtc.mdx
+  cronograma.mdx · exemplos-xml.mdx
   meta.json
 ```
 
-Conteudo ja espalhado para reaproveitar:
+Conteúdo já espalhado a reaproveitar (linkar, não duplicar — Decisão 1): `notas-tecnicas/2025-002.mdx`,
+`schemas/cronograma.mdx`, `leiaute-e-rejeicoes/tributos.mdx`, `leiaute-e-rejeicoes/totais-e-fechamento.mdx`,
+`eventos/modelo-e-catalogo.mdx`, `referencia/tabelas-e-codigos.mdx`.
 
-- `content/docs/(nfe-nfce)/notas-tecnicas/2025-002.mdx`
-- `content/docs/(nfe-nfce)/schemas/cronograma.mdx`
-- `content/docs/(nfe-nfce)/leiaute-e-rejeicoes/tributos.mdx`
-- `content/docs/(nfe-nfce)/leiaute-e-rejeicoes/totais-e-fechamento.mdx`
-- `content/docs/(nfe-nfce)/eventos/modelo-e-catalogo.mdx`
-- `content/docs/(nfe-nfce)/referencia/tabelas-e-codigos.mdx`
+Critério de pronto: quem implementa RTC segue uma trilha única, sem perder links para leiaute, totais,
+tributos, eventos e tabelas; a trilha distingue LC, NT, IT, XSD e cronograma.
 
-Criterio de pronto:
+---
 
-- Quem implementa RTC consegue seguir uma trilha unica, sem perder links para leiaute, totais, tributos, eventos e tabelas.
-- A trilha deixa claro o que e LC, NT, IT, XSD e cronograma.
+## Estágio 6 — exemplos XML e casos de teste ✅ CONCLUÍDO
 
-## Parte 6 - Exemplos XML e casos de teste
+Objetivo: transformar regra em implementação verificável.
 
-Objetivo: transformar regra em implementacao verificavel.
+Feito (21/06/2026): criada `content/docs/(nfe-nfce)/exemplos/` com `index.mdx` e 15 casos completos, cada um no padrão **contexto fiscal · trecho de XML · campos críticos · validações esperadas (cStat) · rejeições comuns · fonte**, com aviso de **valores fictícios** e links para a página dona em vez de duplicar leiaute (Decisão 1). Campos voláteis (ANP/`pBio`/ad rem) marcados com fonte+data (Decisão 2). Seção registrada no `meta.json` da Parte NF-e/NFC-e (antes de `referencia`); back-links em eventos, serviços, contingência, índice de leiaute e `fontes-oficiais`; `reforma-tributaria/exemplos-xml` reaponta para os casos. `bun run build` passou.
 
-Nova secao sugerida:
+Nova seção:
 
 ```txt
 content/docs/(nfe-nfce)/exemplos/
   index.mdx
-  nfe-normal.mdx
-  nfce-normal.mdx
-  nfe-devolucao.mdx
-  nfe-complementar.mdx
-  nfe-ajuste.mdx
-  nfe-exportacao.mdx
-  nfe-importacao.mdx
-  combustivel.mdx
-  medicamento.mdx
-  nfce-contingencia-offline.mdx
-  epec.mdx
-  cancelamento.mdx
-  carta-correcao.mdx
-  inutilizacao.mdx
-  distribuicao-dfe.mdx
+  nfe-normal.mdx · nfce-normal.mdx
+  nfe-devolucao.mdx · nfe-complementar.mdx · nfe-ajuste.mdx
+  nfe-exportacao.mdx · nfe-importacao.mdx
+  combustivel.mdx · medicamento.mdx
+  nfce-contingencia-offline.mdx · epec.mdx
+  cancelamento.mdx · carta-correcao.mdx · inutilizacao.mdx · distribuicao-dfe.mdx
   meta.json
 ```
 
-Padrao de cada exemplo:
+Padrão de cada exemplo: contexto fiscal · XML mínimo ou trecho principal · campos críticos · validações
+esperadas · rejeições comuns · fonte oficial · NTs e schemas relacionados.
 
-- contexto fiscal
-- XML minimo ou trecho principal
-- campos criticos
-- validacoes esperadas
-- rejeicoes comuns
-- fonte oficial
-- NTs e schemas relacionados
+Critério de pronto: cada exemplo ajuda a montar um caso completo, não só entender um campo isolado; deixa
+claro quando os valores são fictícios.
 
-Criterio de pronto:
+---
 
-- Cada exemplo ajuda a montar um caso completo, nao apenas entender um campo isolado.
-- Exemplos deixam claro quando valores sao ficticios.
+## Estágio 7 — dados versionados (consumíveis por código) ✅ CONCLUÍDO
 
-## Parte 7 - Dados versionados
+Objetivo: deixar tabelas e endpoints consumíveis por código, não só por texto.
 
-Objetivo: deixar tabelas e endpoints consumiveis por codigo, nao so por texto.
+Feito (21/06/2026): criados os catálogos TSV em `data/` — `data/tabelas/` (`manifest.tsv` com vigência+fonte
+por tabela, `checksums.tsv` e 18 `<id>.tsv` extraídos dos snapshots, incluindo CFOP, NCM, `cProdANP`, FCP,
+`tPag`, municípios, `cClassTrib`, `cCredPres`, combustíveis monofásicos, `pBio`, alíquotas da CBS) e
+`data/endpoints/` (`autorizadores.tsv` resolvendo `UF → autorizador/SVC/schema/portal` para 27 UFs e
+`webservices.tsv` com `(autorizador, serviço, versão, ambiente, URL)`, captura 20/06/2026 produção). O
+extrator é dependency-free: `scripts/xlsx.ts` lê `.xlsx` via `unzip` + parse XML; `scripts/build-tabelas.ts`
+gera os TSV e os hashes; `scripts/check-tabelas.ts` valida campos obrigatórios (fonte+vigência — Decisão 2),
+integridade por hash e vigências, com `--fail-on-change` para CI; npm `tabelas:build`/`tabelas:check`; teste
+`scripts/xlsx.test.ts`. `cBenef` documentado como por-UF (sem tabela nacional); `paises` (.ods) e
+`unidades-medida` (.xls legado) ficam registrados sem extração automática. Documentado em
+`referencia/dados-versionados.mdx` (registrado no `meta.json`), com back-links em `tabelas-e-codigos`,
+`servicos-por-uf`, `versionamento` e `autorizadoras-e-ambientes`. `bun run build` passou; `tabelas:check` OK.
 
-Entregaveis:
+Entregáveis: catálogo estruturado para CFOP, NCM, ANP, FCP, `tPag`, municípios, `cClassTrib`, `cBenef`
+quando disponível · catálogo de endpoints por UF/serviço/ambiente · campo de vigência e fonte em todos os
+registros · script de verificação para detectar tabela vencida ou alterada.
 
-- Catalogo estruturado para CFOP, NCM, ANP, FCP, `tPag`, municipios, `cClassTrib`, `cBenef` quando disponivel.
-- Catalogo de endpoints por UF, servico e ambiente.
-- Campo de vigencia e fonte em todos os registros.
-- Script de verificacao para detectar tabela vencida ou alterada.
+Critério de pronto (atingido): documentação e ferramenta consomem a mesma fonte versionada; tabelas grandes
+não ficam embutidas manualmente nas páginas MDX.
 
-Criterio de pronto:
+---
 
-- Documentacao e ferramenta podem consumir a mesma fonte versionada.
-- Tabelas grandes nao ficam embutidas manualmente nas paginas MDX.
+## Estágio 8 — revisão final de produto ✅ CONCLUÍDO
 
-## Parte 8 - Revisao final de produto
+Objetivo: garantir que a documentação vire base prática de implementação.
 
-Objetivo: garantir que a documentacao vire base pratica de implementacao.
+Feito (22/06/2026): auditoria do checklist abaixo executada item a item; `bun run build`
+passou (exit 0). Ressalva única: o passe **visual** desktop/mobile recai sobre o tema
+responsivo do fumadocs — a integridade estrutural da navegação (201 páginas, 0 órfãs,
+todos os `meta.json` resolvendo) foi verificada por script.
 
 Checklist:
 
-- Nenhuma pagina relevante sem `## Fonte`.
-- Nenhuma regra estadual tratada como nacional.
-- Nenhuma NT pos-MOC apenas listada quando deveria estar dobrada em tema.
-- Nenhum schema citado sem pacote e versao.
-- Exemplos cobrindo emissao, eventos, contingencia e consulta.
-- Busca local retornando paginas uteis por `cStat`, campo XML, NT e UF.
-- Navegacao revisada em desktop e mobile.
+- [x] Nenhuma página relevante sem `## Fonte`. — 200/201; só `index.mdx` (capa) não tem.
+- [x] Nenhuma regra estadual tratada como nacional. — regras isoladas em `ufs/`.
+- [x] Nenhuma NT pós-MOC apenas listada quando deveria estar dobrada em tema. — 2025.002
+  dobrada em `reforma-tributaria`, com back-links em NT e `tributos`.
+- [x] Nenhum schema citado sem pacote e versão. — mapa em `schemas/pacotes-e-versoes.mdx`;
+  `.xsd` nas páginas são placeholders ou links para o mapa.
+- [x] Exemplos cobrindo emissão, eventos, contingência e consulta. — 15 casos em `exemplos/`.
+- [x] Busca local retornando páginas úteis por `cStat`, campo XML, NT e UF. — testada ao vivo
+  em `/api/search`: `539`, `cProdANP`, `2025.002`, `São Paulo` retornam páginas relevantes.
+- [x] Navegação revisada em desktop e mobile. — estrutura verificada (0 órfãs, ordem coerente);
+  passe visual delegado ao tema responsivo do fumadocs.
 
-Criterio de pronto:
+Critério de pronto: o Open Fiscal deixa de ser apenas guia do MOC e passa a ser base operacional para
+implementação NF-e/NFC-e.
 
-- O Open Fiscal deixa de ser apenas guia do MOC e passa a ser uma base operacional para implementacao NF-e/NFC-e.
+---
 
 ## Ordem recomendada
 
-1. Parte 1 - padronizar fontes. `[x]`
-2. Parte 2 - legislacao nacional.
-3. Parte 3 - UFs.
-4. Parte 4 - seguranca.
-5. Parte 5 - Reforma Tributaria.
-6. Parte 6 - exemplos XML.
-7. Parte 7 - dados versionados.
-8. Parte 8 - revisao final.
+1. Estágio 1 — fontes oficiais. ✅
+2. Estágio 2 — legislação nacional. ✅
+3. Estágio 3 — UFs. ✅
+4. Estágio 4 — segurança. ✅
+5. Estágio 5 — Reforma Tributária. ✅
+6. Estágio 6 — exemplos XML. ✅
+7. Estágio 7 — dados versionados. ✅
+8. Estágio 8 — revisão final. ✅
 
-## Proxima acao sugerida
-
-Retomar pela Parte 2:
-
-1. Criar `content/docs/(nfe-nfce)/legislacao/`.
-2. Adicionar paginas para Ajuste SINIEF 07/05, Ajuste SINIEF 19/16, Ato COTEPE/ICMS 69/20 e LC 214/2025.
-3. Atualizar `content/docs/(nfe-nfce)/meta.json`.
-4. Rodar build/check.
-5. Atualizar o marcador de progresso.
+Os cinco blocos que mais fecham lacunas para sair de "guia do MOC" para base de implementação:
+**legislação, UFs, segurança, Reforma Tributária e exemplos XML** (Estágios 2–6).

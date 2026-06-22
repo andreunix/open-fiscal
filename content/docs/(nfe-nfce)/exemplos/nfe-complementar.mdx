@@ -1,0 +1,79 @@
+---
+title: NF-e complementar
+description: Caso de NF-e finNFe=2 — complemento de valor, quantidade ou imposto da nota original, referenciando-a. Valores fictícios.
+---
+
+## Contexto fiscal
+
+A NF-e **complementar** (`finNFe=2`) acrescenta o que faltou na nota original: **complemento de valor/preço**, de **quantidade** ou de **imposto** (ex.: ICMS destacado a menor, diferença de alíquota). Ela referencia a nota original em `refNFe` e lança **apenas a diferença**, não a operação inteira.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** A complementar lança a **diferença**; não repita os valores cheios da nota original.
+
+## Trecho principal do XML
+
+```xml
+<ide>
+  <mod>55</mod><natOp>Complemento de imposto</natOp>
+  <tpNF>1</tpNF><finNFe>2</finNFe>      <!-- complementar -->
+  <!-- ... -->
+  <NFref>
+    <refNFe>35260500999988000100550010000001231000001234</refNFe>
+  </NFref>
+</ide>
+<det nItem="1">
+  <prod>
+    <cProd>SKU-001</cProd><xProd>Complemento de ICMS - ref. NF 123</xProd>
+    <NCM>84713012</NCM><CFOP>5101</CFOP>
+    <uCom>UN</uCom><qCom>0.0000</qCom><vUnCom>0.0000000000</vUnCom>
+    <vProd>0.00</vProd><indTot>0</indTot>   <!-- só complementa imposto -->
+  </prod>
+  <imposto>
+    <ICMS><ICMS00>
+      <orig>0</orig><CST>00</CST><modBC>3</modBC>
+      <vBC>1000.00</vBC><pICMS>2.00</pICMS><vICMS>20.00</vICMS>  <!-- diferença -->
+    </ICMS00></ICMS>
+  </imposto>
+</det>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `finNFe` | `2` | finalidade complementar — ver [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| `refNFe` | chave da nota original | liga o complemento à operação original |
+| `indTot` | `0` quando só complementa imposto | evita dobrar `vProd` no total |
+| `vICMS` | **diferença** | lança o que faltou, não o valor cheio |
+
+## Validações esperadas
+
+- Estrutura do leiaute válida e referência consistente. Sucesso: **`cStat 100`**.
+- Quando o complemento é só de imposto, o `vProd` pode ser `0,00` com `indTot=0`; quando é de valor/quantidade, o item carrega a diferença e entra no total.
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 215/225 | grupo/valor incompatível com a finalidade | [Como ler o leiaute](/docs/leiaute-e-rejeicoes/como-ler-o-leiaute) |
+| 528/531 | total não fecha com o `indTot` adotado | [Totais](/docs/leiaute-e-rejeicoes/totais-e-fechamento) |
+| falta de `refNFe` | complementar sem documento referenciado | [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+
+## Quando não usar
+
+Complementar **não** corrige dado cadastral nem erro que muda as partes — para isso, [cancele e reemita](/docs/eventos/cancelamento) ou use [carta de correção](/docs/exemplos/carta-correcao) dentro dos limites legais. Acerto sem circulação é [ajuste](/docs/exemplos/nfe-ajuste).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I (grupos B/BA, finNFe=2). |
+| Versão | v1.00 |
+| Data | 22/04/2026 |
+| Páginas/capítulo | Anexo I, grupos B e BA |
+| NT relacionada | base do leiaute |
+| Schema/tabela relacionada | leiauteNFe_v4.00 |
+| Status | exemplo ilustrativo, valores fictícios — lançar apenas a diferença |
+
+### Registro de origem
+
+Montado a partir de [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) (`finNFe`, `NFref`) e [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) (`indTot`). Schema: leiauteNFe_v4.00.

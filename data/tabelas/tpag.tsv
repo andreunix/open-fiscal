@@ -1,0 +1,25 @@
+Tabela dos meios de pagamento				
+tPag	Descrição	dIniVig	dFimVig	Observações
+01	Dinheiro	43831		
+02	Cheque	43831		
+03	Cartão de Crédito	43831		
+04	Cartão de Débito	43831		
+05	Cartão da Loja (Private Label), Crediário Digital, Outros Crediários	45474	50	
+10	Vale Alimentação	43831		
+11	Vale Refeição	43831		
+12	Vale Presente	43831		
+13	Vale Combustível	43831		
+14	Duplicata Mercantil	43831	45	
+15	Boleto Bancário	43831		
+16	Depósito Bancário	43831		
+17	Pagamento Instantâneo (PIX) - Dinâmico	45474	40	
+18	TED (Transferência Eletrônica Disponível)	43831	59	
+19	Programa de fidelidade, Cashback, Crédito Virtual	43831		
+20	Pagamento Instantâneo (PIX) - Estático	45474	56	
+21	Crédito em Loja	45474	43	
+22	Pagamento Eletrônico não Informado - falha de hardware do sistema emissor	45474	46	
+23	Pagamento Instantâneo (PIX) - Automático	46146	55	
+24	TEF - "Book Transfer"	46146	57	
+90	Sem Pagamento	43831		
+91	Pagamento Posterior	45964	53	
+99	Outros	43831	47	

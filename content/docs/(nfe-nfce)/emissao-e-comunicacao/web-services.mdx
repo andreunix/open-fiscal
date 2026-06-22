@@ -48,7 +48,7 @@ A conexão aos Web Services é HTTPS com autenticação mútua por certificado I
 | `www1.nfe.fazenda.gov.br` (Web Services) | **ICP-Brasil** | AC Raiz Brasileira v10 (ITI) → AC do SERPRO SSLv1 → certificado do servidor |
 | `www.nfe.fazenda.gov.br` (portal público) | Let's Encrypt | DST Root CA X3 → Let's Encrypt R3 → certificado do servidor |
 
-> **Implementação:** instale a cadeia ICP-Brasil (Raiz Brasileira v10 + AC SERPRO) na truststore do cliente dos Web Services — não dependa só das âncoras públicas do sistema operacional, que podem não incluir a raiz ICP-Brasil. As cadeias mudam quando os certificados são renovados; trate-as como artefato versionado e revalide periodicamente. Arquivos de referência: `cadeia_www1.nfe.fazenda.gov.br.p7b` (Web Services) e `cadeia_www.nfe.fazenda.gov.br.p7b` (portal).
+> **Implementação:** instale a cadeia ICP-Brasil (Raiz Brasileira v10 + AC SERPRO) na truststore do cliente dos Web Services — não dependa só das âncoras públicas do sistema operacional, que podem não incluir a raiz ICP-Brasil. As cadeias mudam quando os certificados são renovados; trate-as como artefato versionado e revalide periodicamente. Arquivos de referência: `cadeia_www1.nfe.fazenda.gov.br.p7b` (Web Services) e `cadeia_www.nfe.fazenda.gov.br.p7b` (portal). Detalhe de truststore, revogação e TLS mútuo em [Segurança e assinatura](/docs/seguranca/cadeia-certificado).
 
 ## Overlay de NTs
 

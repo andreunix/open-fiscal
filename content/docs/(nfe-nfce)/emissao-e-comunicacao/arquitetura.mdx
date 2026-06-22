@@ -54,6 +54,8 @@ O emitente vincula-se ao PAA no portal da SVRS com autenticação `gov.br`. A Pl
 
 > **Segurança:** a NT especifica PEM RSA de 1024 bits e SHA-1 para a assinatura avançada do PAA. Implemente exatamente o protocolo fiscal exigido, mas isole esse mecanismo de qualquer uso criptográfico geral e proteja a chave privada emitida para o vínculo.
 
+> 📎 Esta página é a visão de arquitetura. A trilha operacional dedicada de certificado, TLS e XMLDSig — com diagnóstico de rejeição de assinatura — está em [Segurança e assinatura](/docs/seguranca).
+
 ## Como interpretar
 
 O fluxo é stateless por chamada: você abre conexão TLS mútua, envia um XML SOAP e recebe outro. Toda a identidade (quem assina, quem transmite, qual ambiente, qual versão) viaja **dentro** da mensagem e do certificado — não há sessão.

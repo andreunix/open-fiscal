@@ -1,0 +1,74 @@
+---
+title: NFC-e em contingência offline
+description: Caso de NFC-e tpEmis=9 — emissão offline no varejo, dhCont/xJust, mesma chave na transmissão posterior. Valores fictícios.
+---
+
+## Contexto fiscal
+
+Quando a autorização não responde a tempo na frente de caixa, a NFC-e é **gerada, assinada e impressa sem autorização prévia** (`tpEmis=9`) e transmitida depois, **até o fim do 1º dia útil subsequente**. A chave (com `tpEmis=9`) e o **`cNF` original** são **mantidos** na transmissão posterior — não se gera chave nova.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** O `cNF` e a chave do exemplo são inventados; na retransmissão use exatamente os mesmos bytes da emissão offline.
+
+## Trecho principal do XML
+
+```xml
+<ide>
+  <cUF>35</cUF><cNF>00000789</cNF>     <!-- preservar este cNF na retransmissão -->
+  <natOp>Venda ao consumidor</natOp>
+  <mod>65</mod><serie>1</serie><nNF>790</nNF>   <!-- número avançado p/ evitar duplicidade -->
+  <dhEmi>2026-06-21T20:05:00-03:00</dhEmi>
+  <tpNF>1</tpNF><idDest>1</idDest><cMunFG>3550308</cMunFG>
+  <tpImp>4</tpImp>
+  <tpEmis>9</tpEmis>           <!-- offline NFC-e -->
+  <cDV>5</cDV><tpAmb>2</tpAmb><finNFe>1</finNFe>
+  <indFinal>1</indFinal><indPres>1</indPres>
+  <dhCont>2026-06-21T20:00:00-03:00</dhCont>   <!-- entrada em contingência -->
+  <xJust>Indisponibilidade de comunicacao com a SEFAZ na frente de caixa</xJust>
+</ide>
+<!-- demais grupos como na NFC-e normal: emit, det, total, pag, infNFeSupl/qrCode -->
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `tpEmis` | `9` | contingência offline da NFC-e — ver [Contingência da NFC-e](/docs/contingencia/nfce-offline) |
+| `dhCont` (B28) | data/hora da entrada | obrigatório nas contingências 4 e 9; não impresso no DANFE |
+| `xJust` (B29) | ≥ 15 caracteres | justificativa obrigatória |
+| `cNF` (B03) | preservado | a chave (incl. `tpEmis=9`) e o `cNF` são mantidos na retransmissão |
+| QR Code | com data/hora | sinaliza contingência e prazo na consulta |
+
+## Validações esperadas
+
+- Na transmissão posterior, a SEFAZ autoriza a mesma chave. Sucesso: **`cStat 100`**.
+- Recomenda-se **avançar um número** ao entrar em contingência para evitar duplicidade.
+
+> O uso da offline é **decisão exclusiva da UF** e deve ser **exceção**: o contribuinte assume o risco de perda da NFC-e (e da venda) se a nota for rejeitada na transmissão posterior. Ver [Contingência da NFC-e](/docs/contingencia/nfce-offline).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 539 | duplicidade — chave/`cNF` não preservados | retransmitir com a mesma chave |
+| falta de `dhCont`/`xJust` | campos obrigatórios da contingência ausentes | [Contingência da NFC-e](/docs/contingencia/nfce-offline) |
+| prazo expirado | transmissão após o 1º dia útil seguinte | tratar como perda potencial; alertar operação |
+
+## Montando o caso completo
+
+Conciliação de offline → autorizada em [Recuperação e conciliação](/docs/contingencia/recuperacao-e-conciliacao). A outra modalidade da NFC-e é o [EPEC](/docs/exemplos/epec).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Especificações Técnicas da Contingência Off-line v2.0, §1–§3; MOC 7.0 — Anexo IV. |
+| Versão | v2.0 |
+| Data | ver fonte original |
+| Páginas/capítulo | §1–§3 |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | leiauteNFe_v4.00 (`tpEmis`, `dhCont`, `xJust`) |
+| Status | exemplo ilustrativo, valores fictícios — uso da offline é decisão da UF |
+
+### Registro de origem
+
+Montado a partir de [Contingência da NFC-e](/docs/contingencia/nfce-offline) (offline `tpEmis=9`) e [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) (`tpEmis`, `dhCont`, `xJust`). Conciliação em [Recuperação e conciliação](/docs/contingencia/recuperacao-e-conciliacao).

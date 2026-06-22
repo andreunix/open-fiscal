@@ -5,6 +5,8 @@ description: Portais estaduais, autorizadores, SVC, endpoints de Web Services e 
 
 Esta página cruza três coisas que precisam ficar separadas no emissor: **UF do emitente**, **autorizador técnico** e **pacote de schema**.
 
+> 🧭 Esta página é **técnico-operacional** (endpoints, autorizador, SVC, schema). Para a **regra fiscal estadual** por UF — credenciamento, cancelamento, contingência da NFC-e, CSC e particularidades — ver [UFs e regras estaduais](/docs/ufs) e a [matriz estadual](/docs/ufs/matriz-estadual).
+
 > 🔄 Fonte consultada em **20/06/2026**: Portal Nacional da NF-e, página principal e [Relação de Serviços Web](https://www.nfe.fazenda.gov.br/portal/webServices.aspx?tipoConteudo=OUC/YVNWZfo=). A página oficial usa cookie ASP.NET; os HTMLs capturados para esta revisão estão em `tmp/nfe/portal-principal.html` e `tmp/nfe/webServices.html`.
 
 ## Como ler
@@ -60,7 +62,7 @@ Esta página cruza três coisas que precisam ficar separadas no emissor: **UF do
 | CCC | cadastro centralizado | situação cadastral consultada pelas autorizadoras |
 | SVC | contingência nacional ou SVRS | ativação por indisponibilidade ou agendamento |
 
-> **Implementação:** a chave de roteamento mínima é `(modelo, UF, serviço, ambiente, tipo de emissão)`. O schema deve ser resolvido por `(modelo, versão do leiaute, pacote XSD, data de emissão)`. Não crie um diretório de XSD diferente por UF: crie um catálogo de endpoints por UF e um catálogo de schemas nacional versionado.
+> **Implementação:** a chave de roteamento mínima é `(modelo, UF, serviço, ambiente, tipo de emissão)`. O schema deve ser resolvido por `(modelo, versão do leiaute, pacote XSD, data de emissão)`. Não crie um diretório de XSD diferente por UF: crie um catálogo de endpoints por UF e um catálogo de schemas nacional versionado. O catálogo estruturado destes endpoints (TSV em `data/endpoints/`, consumível por código) está em [Dados versionados](/docs/referencia/dados-versionados).
 
 ## Schemas vigentes no repositório
 

@@ -1,0 +1,87 @@
+---
+title: NF-e de importação
+description: Caso de NF-e de entrada por importação — grupo DI e adições, II, origem estrangeira e CFOP 3.xxx. Valores fictícios.
+---
+
+## Contexto fiscal
+
+Entrada de mercadoria **importada** após o desembaraço aduaneiro: NF-e de **entrada** (`tpNF=0`) com CFOP `3.xxx`, item de **origem estrangeira** (`orig=1`), o grupo **`DI`** (Declaração de Importação) com suas **adições** e o **Imposto de Importação** (`II`). É o espelho da exportação, do lado de quem nacionaliza.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** Os dados de DI/adição (número, data, local de desembaraço, AFRMM) vêm do despacho real; confirme os campos no [schema vigente](/docs/schemas).
+
+## Trecho principal do XML
+
+```xml
+<ide>
+  <mod>55</mod><natOp>Importacao</natOp>
+  <tpNF>0</tpNF><idDest>1</idDest>      <!-- entrada -->
+  <finNFe>1</finNFe>
+  <!-- ... -->
+</ide>
+<det nItem="1">
+  <prod>
+    <cProd>IMP-001</cProd><xProd>Produto importado</xProd>
+    <NCM>85176291</NCM><CFOP>3102</CFOP>
+    <uCom>UN</uCom><qCom>50.0000</qCom><vUnCom>200.0000000000</vUnCom>
+    <vProd>10000.00</vProd><indTot>1</indTot>
+    <DI>
+      <nDI>26/0000001-0</nDI>
+      <dDI>2026-06-10</dDI>
+      <xLocDesemb>Porto de Santos</xLocDesemb>
+      <UFDesemb>SP</UFDesemb><dDesemb>2026-06-12</dDesemb>
+      <tpViaTransp>1</tpViaTransp><tpIntermedio>1</tpIntermedio>
+      <CNPJ>11112200019 9</CNPJ>
+      <adi>
+        <nAdicao>1</nAdicao><nSeqAdic>1</nSeqAdic>
+        <cFabricante>FAB123</cFabricante>
+      </adi>
+    </DI>
+  </prod>
+  <imposto>
+    <II><vBC>10000.00</vBC><vDespAdu>300.00</vDespAdu><vII>2000.00</vII><vIOF>0.00</vIOF></II>
+    <ICMS><ICMS00>
+      <orig>1</orig><CST>00</CST><modBC>3</modBC>
+      <vBC>12300.00</vBC><pICMS>18.00</pICMS><vICMS>2214.00</vICMS>
+    </ICMS00></ICMS>
+  </imposto>
+</det>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `tpNF` / `CFOP` | `0` / `3102` | entrada de importação — ver [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| `orig` | `1` (estrangeira, importação direta) | origem da mercadoria — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos#domínios-do-item) |
+| grupo `DI` / `adi` | dados do despacho | obrigatório na importação — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos#grupos-condicionais) |
+| `tpViaTransp` | `1`=marítima | enumeração do modal de transporte |
+| `II` | base + despesas + imposto | compõe a base do ICMS de importação |
+
+## Validações esperadas
+
+- `DI`/`adi` presentes e coerentes; base do ICMS inclui II e despesas aduaneiras. Sucesso: **`cStat 100`**.
+- Importação por conta e ordem/encomenda usa `I23d` (CNPJ) ou `I23d1` (CPF) do adquirente/encomendante — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 215/225 | grupo `DI`/`adi` incompleto ou fora do schema | [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos) |
+| 331/332 | CNPJ/CPF do adquirente inválido (`I23d`/`I23d1`) | corrigir adquirente |
+| base do ICMS | base não inclui II + despesas | [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I (grupos I/DI/adi, P/II); NT 2020.005 v1.21 (DUImp); NT 2023.004 v1.20 (CPF do adquirente). |
+| Versão | v1.21; v1.20 |
+| Data | 15/10/2021; 07/10/2024 |
+| Páginas/capítulo | Anexo I, grupos I e P |
+| NT relacionada | NT 2020.005 v1.21; NT 2023.004 v1.20 |
+| Schema/tabela relacionada | leiauteNFe_v4.00 |
+| Status | exemplo ilustrativo, valores fictícios — dados de DI/adição vêm do despacho real |
+
+### Registro de origem
+
+Montado a partir de [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos) (grupo `DI`/`adi`, `orig`, `tpViaTransp`) e [Tributos](/docs/leiaute-e-rejeicoes/tributos) (II e base do ICMS). Schema: leiauteNFe_v4.00.

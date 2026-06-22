@@ -1,0 +1,81 @@
+---
+title: EPEC (evento 110140)
+description: Caso de EPEC — Evento Prévio de Emissão em Contingência com leiaute mínimo, transmitido ao Ambiente Nacional antes da NF-e definitiva. Valores fictícios.
+---
+
+## Contexto fiscal
+
+Com o autorizador normal indisponível, o emissor registra o **EPEC** (`110140`) no **Web Service de Eventos do Ambiente Nacional (AN)**, com um **leiaute mínimo** da NF-e. Depois, quando o serviço volta, transmite a NF-e completa com a **mesma chave** (incluindo `tpEmis=4`). É evento **e** modalidade de contingência.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** A chave e os totais mínimos são inventados; a NF-e definitiva deve reusar exatamente a mesma chave do EPEC.
+
+## Trecho principal do XML
+
+```xml
+<evento versao="1.00">
+  <infEvento Id="ID110140352606001111220001995500100000012310000012341">
+    <cOrgao>91</cOrgao>            <!-- Ambiente Nacional -->
+    <tpAmb>2</tpAmb>
+    <CNPJ>11112200019 9</CNPJ>
+    <chNFe>35260600111122000199550010000001231000001234</chNFe>
+    <dhEvento>2026-06-21T10:05:00-03:00</dhEvento>
+    <tpEvento>110140</tpEvento><nSeqEvento>1</nSeqEvento>
+    <verEvento>1.00</verEvento>
+    <detEvento versao="1.00">
+      <descEvento>EPEC</descEvento>
+      <cOrgaoAutor>35</cOrgaoAutor><tpAutor>1</tpAutor><verAplic>1.0</verAplic>
+      <dhEmi>2026-06-21T10:00:00-03:00</dhEmi>
+      <tpNF>1</tpNF><IE>111111111111</IE>
+      <dest>
+        <UF>SP</UF>
+        <CNPJ>99998800010 0</CNPJ>
+        <vNF>1000.00</vNF><vICMS>180.00</vICMS><vST>0.00</vST>
+      </dest>
+    </detEvento>
+  </infEvento>
+  <!-- Signature XMLDSig sobre o Id do infEvento -->
+</evento>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `tpEvento` | `110140` | EPEC; `descEvento` fixo = `EPEC` — ver [EPEC](/docs/eventos/epec) |
+| `cOrgao` | `91` (AN) | transmitido ao Ambiente Nacional, não à UF |
+| `chNFe` | chave da NF-e | **a mesma** reusada na NF-e definitiva (com `tpEmis=4`) |
+| `dest` (escolha) | `CNPJ`/`CPF`/`idEstrangeiro` | exatamente um — ver [EPEC](/docs/eventos/epec#estrutura-do-evento-schema) |
+| totais mínimos | `vNF`/`vICMS`/`vST` | leiaute mínimo da operação |
+
+## Validações esperadas
+
+- EPEC recebido no AN → imprime-se o DANFE em papel comum com a expressão de contingência → transmite-se a NF-e completa depois. Sucesso do evento: **`cStat 136`** (Evento registrado e vinculado) ou equivalente da tabela vigente.
+- A validação do destinatário do EPEC **rejeita, mas não denega** (regras `6P31-*`, NT 2019.001).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 232/233/234 | destinatário inválido no Cadastro Centralizado | [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| 297/298 | assinatura do evento fora do padrão | [Erros de assinatura](/docs/seguranca/erros-comuns) |
+| chave divergente | NF-e definitiva com chave ≠ EPEC | reusar a mesma chave |
+
+## Montando o caso completo
+
+A operação completa de contingência da NF-e está em [Contingência da NF-e](/docs/contingencia/nfe); a versão da NFC-e em [NFC-e offline](/docs/exemplos/nfce-contingencia-offline). Conciliação EPEC → autorizada em [Recuperação e conciliação](/docs/contingencia/recuperacao-e-conciliacao).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral §3.3; NT 2014.001 v1.30; NT 2019.001 v1.70. |
+| Versão | v1.30; v1.70 |
+| Data | 21/06/2022; 18/08/2025 |
+| Páginas/capítulo | §3, p. 35–44 |
+| NT relacionada | NT 2014.001 v1.30; NT 2019.001 v1.70 |
+| Schema/tabela relacionada | e110140_v1.00 (Evento_EPEC_PL_v1.01); Evento_EPEC_NFCe_PL1.00 |
+| Status | exemplo ilustrativo, valores fictícios — reusar a mesma chave na NF-e definitiva |
+
+### Registro de origem
+
+Montado a partir de [EPEC](/docs/eventos/epec) (estrutura do evento) e [Contingência da NF-e](/docs/contingencia/nfe). Overlay: NT 2014.001 v1.30 (21/06/2022), NT 2019.001 v1.70 (18/08/2025). Schema: e110140_v1.00.

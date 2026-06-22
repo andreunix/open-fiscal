@@ -1,0 +1,50 @@
+---
+title: Cronograma da RTC
+description: Datas de homologação e produção do faseamento da Reforma Tributária na NF-e/NFC-e — leiaute-base, obrigatoriedade por CRT, devolução por item e monofasia da v1.50.
+---
+
+A RTC entra **em fases**, com pares próprios de **homologação** (teste) e **produção** (entrada em vigor). Esta página recorta o cronograma da Reforma; o cronograma consolidado de todas as mudanças de schema está em [Cronograma de implantação](/docs/schemas/cronograma#reforma-tributária-ibscbs--o-eixo-central).
+
+> 🔄 **Datas voláteis.** Refletem a NT 2025.002 v1.50 (03/06/2026) e podem ser revisadas pela SEFAZ. Datas com "até" são prazos-limite. Confronte sempre com a NT/IT vigente antes de planejar uma release.
+
+## Marcos da NT 2025.002
+
+| Marco | Data |
+|---|---|
+| Leiaute-base e regras em produção, preenchimento facultativo | 06/10/2025 |
+| Valor jurídico dos novos tributos; regras aplicadas quando informados | 01/01/2026 |
+| Obrigatoriedade de IBS/CBS para `CRT=3` — homologação | 01/07/2026 |
+| Campos e regras (v1.40) — produção | 03/08/2026 |
+| Referência de devolução exclusivamente em `DFeReferenciado` (`VC`) | 01/09/2026 |
+| Leiaute monofásico (v1.50) — homologação | até 01/09/2026 |
+| Leiaute monofásico (v1.50) — produção | 03/11/2026 |
+| Simples Nacional / MEI — obrigatoriedade em produção | 04/01/2027 |
+
+## Tabelas que acompanham o cronograma
+
+- **IT 2025.002 v1.50** (`cClassTrib`/CST): homologação e produção até **04/05/2026** — ver [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc).
+- **Alíquotas da CBS** (IT 2026.002): 0,9% em 2026; 2027+ aguarda legislação — ver [CBS](/docs/reforma-tributaria/cbs).
+
+## Como planejar a release
+
+> **Implementação:** cruze três datas por fase — **publicação** da NT/IT, **homologação** (quando você testa contra o ambiente da SEFAZ) e **produção** (quando a regra passa a rejeitar). Atualize primeiro o schema, depois as Regras de Validação e por fim os valores de tabela. Mudanças faseadas — como a monofasia da v1.50 e a obrigatoriedade por `CRT` — exigem **feature flags por data**.
+
+## Próximo na trilha
+
+[Exemplos de XML](/docs/reforma-tributaria/exemplos-xml) · [Cronograma de implantação](/docs/schemas/cronograma)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 — Histórico de Alterações / Cronograma |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | cronograma faseado; consolidado em [Cronograma de implantação](/docs/schemas/cronograma) |
+| NT relacionada | NT 2025.002-RTC v1.50; tabelas IT 2025.002 v1.50 / IT 2026.002 v1.00 |
+| Schema/tabela relacionada | pacotes XSD da RTC |
+| Status | datas voláteis — confrontar com a NT/IT vigente no Portal Nacional |
+
+### Registro de origem
+
+Nó de cronograma da trilha Reforma Tributária (Estágio 5 do plano). Conteúdo volátil com fonte e data (Decisão 2). Recorte do [Cronograma de implantação](/docs/schemas/cronograma#reforma-tributária-ibscbs--o-eixo-central), página dona do consolidado; datas conforme [NT 2025.002](/docs/notas-tecnicas/2025-002).

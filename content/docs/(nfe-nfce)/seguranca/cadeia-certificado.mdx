@@ -1,0 +1,48 @@
+---
+title: Cadeia de certificação
+description: Truststore ICP-Brasil para o TLS dos Web Services, validação de revogação (LCR/CRL) e por que tratar a cadeia como artefato versionado.
+---
+
+Validar uma assinatura ou fechar um TLS não é só conferir um certificado: é verificar toda a **cadeia** até uma raiz confiável e checar **revogação**. Quem implementa precisa de duas truststores corretas — e mantê-las atualizadas.
+
+## Cadeias publicadas no Portal Nacional
+
+A conexão aos Web Services é HTTPS com autenticação mútua; o cliente precisa **confiar na cadeia do servidor** da SEFAZ. As cadeias publicadas usam duas árvores distintas:
+
+| Host | Âncora de confiança | Cadeia |
+|---|---|---|
+| `www1.nfe.fazenda.gov.br` (Web Services) | **ICP-Brasil** | AC Raiz Brasileira v10 (ITI) → AC do SERPRO SSLv1 → certificado do servidor |
+| `www.nfe.fazenda.gov.br` (portal público) | Let's Encrypt | DST Root CA X3 → Let's Encrypt R3 → certificado do servidor |
+
+> **Implementação:** instale a cadeia **ICP-Brasil** (Raiz Brasileira v10 + AC SERPRO) na truststore do cliente dos Web Services. **Não dependa só das âncoras públicas do SO** — elas podem não incluir a raiz ICP-Brasil, e o handshake falha antes de qualquer `cStat`. Arquivos de referência: `cadeia_www1.nfe.fazenda.gov.br.p7b` (Web Services) e `cadeia_www.nfe.fazenda.gov.br.p7b` (portal). Mesma tabela em [Mapa dos Web Services](/docs/emissao-e-comunicacao/web-services#cadeia-de-certificacao-tls). 🔄
+
+## Validação de revogação (LCR/CRL)
+
+A SEFAZ valida o certificado de **assinatura** e o de **transmissão** contra a **Lista de Certificados Revogados (LCR/CRL)** da respectiva AC, além de validade e cadeia até a raiz ICP-Brasil — ver grupos A e E do [pipeline](/docs/leiaute-e-rejeicoes/pipeline-de-validacao).
+
+- O emissor **não envia** a lista de revogados no XML: cada SEFAZ monta e valida a sua — ver [Certificado digital](/docs/seguranca/certificado-digital).
+- Do lado do cliente, ao validar a cadeia **do servidor** no TLS, considere a disponibilidade da LCR/OCSP: rede que bloqueia o ponto de distribuição da CRL pode derrubar a validação.
+
+## A cadeia muda — trate como artefato versionado
+
+> 🕒 As cadeias mudam quando os certificados são **renovados** (servidor, AC intermediária ou raiz). Trate cada cadeia como **artefato versionado**: registre data de captura, revalide periodicamente e tenha processo para atualizar a truststore antes do vencimento. Uma renovação da AC SERPRO ou da Raiz Brasileira sem atualização da truststore derruba toda a emissão de uma vez.
+
+## Implicação de implementação
+
+> **Implementação:** mantenha **duas truststores conceituais** — a do TLS (cadeia do servidor SEFAZ, ICP-Brasil) e a base de validação dos seus próprios certificados de assinatura/transmissão. Versione os `.p7b` capturados, com data e fonte (Portal Nacional). Monitore vencimento dos certificados **e** das âncoras. Em homologação, valide o caminho de certificação completo antes de produção — ver [Testes e homologação](/docs/operacao/testes-e-homologacao).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Portal Nacional da NF-e — cadeias de certificação TLS dos Web Services. |
+| Versão | captura do Portal Nacional |
+| Data | 2026-06-20 (captura); revalidar antes de produção |
+| Páginas/capítulo | cadeias `www1`/`www` (Web Services e portal) |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | arquivos `.p7b` (cadeias de certificado) |
+| Status | volátil: cadeia muda na renovação de certificados — sujeito a verificação no Portal |
+
+### Registro de origem
+
+Cadeias publicadas no Portal Nacional da NF-e, capturadas em 20/06/2026: `cadeia_www1.nfe.fazenda.gov.br.p7b` e `cadeia_www.nfe.fazenda.gov.br.p7b` (`tmp/nfe/diversos/*.p7b`). Mesma matriz de [Mapa dos Web Services](/docs/emissao-e-comunicacao/web-services#cadeia-de-certificacao-tls). Conteúdo volátil com fonte e data (Decisão 2 do plano de expansão).

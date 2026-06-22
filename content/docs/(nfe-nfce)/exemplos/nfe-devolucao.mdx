@@ -1,0 +1,80 @@
+---
+title: NF-e de devolução
+description: Caso de NF-e finNFe=4 — devolução de mercadoria referenciando a nota de origem, com teto de valores e CFOP de devolução. Valores fictícios.
+---
+
+## Contexto fiscal
+
+Devolução de mercadoria recebida: o destinatário original emite uma NF-e de **devolução** (`finNFe=4`), referenciando a NF-e de origem em `refNFe` e usando CFOP de devolução (ex.: `5202`/`6202` ou `1202`/`2202` conforme o fluxo). Os tributos espelham a nota original e **não podem superá-la**.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** Chaves e valores são inventados. A devolução **deve** referenciar a chave real da nota de origem e respeitar os tetos de valor.
+
+## Trecho principal do XML
+
+```xml
+<ide>
+  <mod>55</mod><serie>1</serie><nNF>789</nNF>
+  <natOp>Devolucao de venda</natOp>
+  <tpNF>1</tpNF><idDest>1</idDest>
+  <finNFe>4</finNFe>          <!-- devolução -->
+  <indFinal>0</indFinal><indPres>0</indPres>
+  <!-- ... -->
+  <NFref>
+    <refNFe>35260500999988000100550010000001231000001234</refNFe>
+  </NFref>
+</ide>
+<det nItem="1">
+  <prod>
+    <cProd>SKU-001</cProd><xProd>Produto de exemplo (devolução)</xProd>
+    <NCM>84713012</NCM><CFOP>5202</CFOP>
+    <uCom>UN</uCom><qCom>10.0000</qCom><vUnCom>100.0000000000</vUnCom>
+    <vProd>1000.00</vProd><indTot>1</indTot>
+  </prod>
+  <imposto>
+    <ICMS><ICMS00>
+      <orig>0</orig><CST>00</CST><modBC>3</modBC>
+      <vBC>1000.00</vBC><pICMS>18.00</pICMS><vICMS>180.00</vICMS>
+    </ICMS00></ICMS>
+  </imposto>
+</det>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `finNFe` | `4` | identifica a finalidade devolução — ver [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| `refNFe` | chave da nota de origem | obrigatória na devolução; ver `NFref` em [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores#documentos-referenciados) |
+| `CFOP` | `5202`/`6202`/`1202`… | CFOP de devolução compatível com o fluxo e a UF |
+| `vICMS` e demais | ≤ da nota original | espelha a origem; tetos abaixo |
+
+## Validações esperadas
+
+- Os totais e tributos da devolução **não podem superar** o somatório das NF-e referenciadas, com **tolerância de R$ 1,00** (regras `3BA02-50`/`3BA02-54`/`3BA02-58`/`3BA02-64`/`3BA02-68`). Só se aplica quando todas as referenciadas (modelo 55) existem no BD da SEFAZ. Ver [Totais](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts).
+- Sucesso: **`cStat 100`**.
+
+> 🔄 **RTC.** Em produção a partir de **01/09/2026**, o referenciamento da devolução migra para o grupo `DFeReferenciado` por item (NT 2025.002) — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos) e [Reforma Tributária](/docs/reforma-tributaria/campos-nfe-nfce).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 545 | `vNF` da devolução > soma das referenciadas | [Totais](/docs/leiaute-e-rejeicoes/totais-e-fechamento) |
+| 546 / 566 | `vICMS`/`vFCP` superiores ao referenciado | ajustar tributos |
+| falta de `refNFe` | devolução sem documento referenciado | [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I; NT 2022.005 (tetos da devolução); NT 2025.002 (DFeReferenciado). |
+| Versão | v1.11; v1.50 |
+| Data | 11/10/2024; 03/06/2026 |
+| Páginas/capítulo | Anexo I, grupos BA e W |
+| NT relacionada | NT 2022.005 v1.11; NT 2025.002 v1.50 |
+| Schema/tabela relacionada | leiauteNFe_v4.00 |
+| Status | exemplo ilustrativo, valores fictícios — referenciar a chave real da origem |
+
+### Registro de origem
+
+Montado a partir de [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) (grupo `NFref`) e [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento) (tetos da NT 2022.005). Migração para `DFeReferenciado`: NT 2025.002 v1.50.

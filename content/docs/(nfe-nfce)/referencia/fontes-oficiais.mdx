@@ -14,8 +14,8 @@ Esta página define a matriz editorial das fontes oficiais usadas nas páginas d
 | Notas Técnicas | NTs publicadas no Portal Nacional da NF-e | Overlay de regra, campo, validação, cronograma, evento ou comportamento posterior ao MOC | [Notas Técnicas](/docs/notas-tecnicas) e [Notas Técnicas no MOC](/docs/referencia/notas-tecnicas) |
 | Informes Técnicos | ITs e arquivos de tabelas publicados no Portal Nacional | Valores de tabelas externas e domínios operacionais voláteis, sem alterar regra de negócio por si só | [Informes Técnicos](/docs/informes-tecnicos) e [Tabelas e códigos](/docs/referencia/tabelas-e-codigos) |
 | XSD | Pacotes de schemas XML oficiais | Forma do dado: tipo, tamanho, regex, enumeração e ocorrência antes das regras de validação | [Schemas](/docs/schemas) |
-| Legislação nacional | Ajustes SINIEF, Atos COTEPE/ICMS, Leis Complementares e normas federais correlatas | Base jurídica de existência, obrigatoriedade, eventos, responsabilidade e Reforma Tributária | Pendente de seção própria em `legislacao/`; registrar provisoriamente no bloco `## Fonte` da página afetada |
-| Legislação estadual | Portais e atos das SEFAZ, regras de credenciamento, CSC, QR Code, contingência, prazos e particularidades por UF | Regra fiscal e operacional específica por UF, data e ambiente | Pendente de seção própria em `ufs/`; endpoints atuais ficam em [Serviços por UF](/docs/operacao/servicos-por-uf) |
+| Legislação nacional | Ajustes SINIEF, Atos COTEPE/ICMS, Leis Complementares e normas federais correlatas | Base jurídica de existência, obrigatoriedade, eventos, responsabilidade e Reforma Tributária | [Legislação nacional](/docs/legislacao) |
+| Legislação estadual | Portais e atos das SEFAZ, regras de credenciamento, CSC, QR Code, contingência, prazos e particularidades por UF | Regra fiscal e operacional específica por UF, data e ambiente | [UFs e regras estaduais](/docs/ufs) (regra fiscal) e [Serviços por UF](/docs/operacao/servicos-por-uf) (endpoints) |
 
 ## Prioridade ao divergir
 
@@ -56,8 +56,10 @@ O texto antigo da fonte deve ficar abaixo da tabela em `### Registro de origem`.
 
 ## Pendências explícitas
 
-- Separar a legislação nacional em páginas próprias: Ajuste SINIEF 07/05, Ajuste SINIEF 19/16, Ato COTEPE/ICMS 69/20, LC 214/2025 e normas correlatas.
-- Criar matriz estadual por UF com fonte, data de captura e validade operacional.
+- ✅ Legislação nacional separada em páginas próprias: ver [Legislação nacional](/docs/legislacao) (Ajuste SINIEF 07/05, Ajuste SINIEF 19/16, Ato COTEPE/ICMS 69/20, LC 214/2025 e normas correlatas).
+- ✅ Matriz estadual por UF criada com fonte e data de captura: ver [UFs e regras estaduais](/docs/ufs/matriz-estadual); valores estaduais marcados como sujeitos a verificação na SEFAZ.
+- ✅ Reforma Tributária com trilha própria, distinguindo lei, NT, IT, schema e cronograma: ver [Reforma Tributária](/docs/reforma-tributaria).
+- ✅ Exemplos e casos de teste por cenário, com fonte e marcação de valores fictícios: ver [Exemplos e casos de teste](/docs/exemplos).
 - Transformar as tabelas baixadas em dados versionados consumíveis por código, mantendo a data de vigência e a fonte do arquivo.
 
 ## Fonte

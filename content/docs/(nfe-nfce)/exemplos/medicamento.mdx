@@ -1,0 +1,78 @@
+---
+title: Medicamento (grupo med e rastreabilidade)
+description: Caso de item de medicamento — grupo med com cProdANVISA, vPMC e o grupo rastro (lote, validade). Valores fictícios.
+---
+
+## Contexto fiscal
+
+Venda de **medicamento**: o item carrega o grupo **`med`** com o código de registro na **ANVISA** (`cProdANVISA`) e o preço máximo ao consumidor (`vPMC`), e — em saídas — o grupo **`rastro`** de rastreabilidade (lote, quantidade, fabricação, validade). A presença de `med` ativa validações específicas.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** `cProdANVISA`, lote e validade vêm do produto real; confirme a exigência de `rastro` conforme a operação.
+
+## Trecho principal do XML
+
+```xml
+<det nItem="1">
+  <prod>
+    <cProd>MED-001</cProd><cEAN>7891111111111</cEAN>
+    <xProd>Medicamento exemplo 500mg 20cp</xProd>
+    <NCM>30049069</NCM><CFOP>5102</CFOP>
+    <uCom>CX</uCom><qCom>5.0000</qCom><vUnCom>30.0000000000</vUnCom>
+    <vProd>150.00</vProd><indTot>1</indTot>
+    <med>
+      <cProdANVISA>1234567890123</cProdANVISA>
+      <xMotivoIsencao></xMotivoIsencao>
+      <vPMC>40.00</vPMC>
+    </med>
+    <rastro>
+      <nLote>L2026A</nLote><qLote>5.000</qLote>
+      <dFab>2026-01-10</dFab><dVal>2028-01-10</dVal>
+    </rastro>
+  </prod>
+  <imposto>
+    <ICMS><ICMS00>
+      <orig>0</orig><CST>00</CST><modBC>3</modBC>
+      <vBC>150.00</vBC><pICMS>18.00</pICMS><vICMS>27.00</vICMS>
+    </ICMS00></ICMS>
+  </imposto>
+</det>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| grupo `med` | presente | ativa validações de medicamento — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos#grupos-condicionais) |
+| `cProdANVISA` | 11–13 caracteres | registro ANVISA; texto de isenção quando aplicável |
+| `vPMC` | preço máximo ao consumidor | controle de preço do medicamento |
+| grupo `rastro` | lote/validade | exigido por `K01-20` em saídas, com exceções — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| datas `dFab`/`dVal` | coerentes | validade posterior à fabricação e à emissão |
+
+## Validações esperadas
+
+- `med` presente com `cProdANVISA`; `rastro` exigido em saídas pela regra `K01-20` (exceções: venda à ordem 5118/6118/5119/6119/5120/6120, ajuste/complementar/entrada, devolução, venda pela internet/entrega futura). Sucesso: **`cStat 100`**.
+- A regra antiga `K01-10` (exigia `med` por NCM 3001–3006) está **suspensa** (NT 2021.004).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 215/225 | `med`/`rastro` fora do schema | [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos) |
+| falta de `rastro` | saída de medicamento sem rastreabilidade exigida | adicionar `rastro` |
+| datas incoerentes | `dVal` anterior a `dFab`/emissão | corrigir datas |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I (grupos K/med, I80/rastro); NT 2021.004 v1.35. |
+| Versão | v1.35 |
+| Data | 01/11/2022 |
+| Páginas/capítulo | Anexo I, grupos K e I80 |
+| NT relacionada | NT 2021.004 v1.35 |
+| Schema/tabela relacionada | leiauteNFe_v4.00; registro ANVISA |
+| Status | exemplo ilustrativo, valores fictícios — `cProdANVISA`/lote/validade do produto real |
+
+### Registro de origem
+
+Montado a partir de [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos) (grupos `med` e `rastro`, regra `K01-20`). Overlay: NT 2021.004 v1.35 (01/11/2022). Schema: leiauteNFe_v4.00.

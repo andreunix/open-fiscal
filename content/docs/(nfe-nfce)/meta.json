@@ -8,6 +8,7 @@
     "fundamentos",
     "emissao-e-comunicacao",
     "leiaute-e-rejeicoes",
+    "seguranca",
     "eventos",
     "danfe",
     "contingencia",
@@ -16,8 +17,11 @@
     "nfgas",
     "schemas",
     "operacao",
+    "ufs",
     "notas-tecnicas",
     "informes-tecnicos",
+    "legislacao",
+    "exemplos",
     "referencia"
   ]
 }

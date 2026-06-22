@@ -1,0 +1,48 @@
+---
+title: Tabelas da RTC
+description: As tabelas externas e versionadas do IBS/CBS/IS — cClassTrib, CST, cClassTribIS, cCredPres, alíquotas e índice de biocombustível — publicadas pelos Informes Técnicos, não pela Nota Técnica.
+---
+
+As Regras de Validação da RTC não decidem sozinhas: elas **consultam tabelas externas e versionadas**, publicadas pelos **Informes Técnicos** (não pela Nota Técnica). Esta página lista quais tabelas existem, quem as publica e por que os **indicadores** delas valem mais que o código.
+
+> ⚠️ **Indicador, não existência.** Os indicadores `ind_gTribRegular`, `ind_gCredPresOper`, `ind_gMonoPadrao`, `ind_DeduzCredPres`, `ind_gIBSCredPres`, `ind_gCBSCredPres`… **ativam ou vedam grupos XML e regras de validação**. Validar só a existência do código não basta. Carregue sempre a revisão vigente do Portal Nacional.
+
+## As tabelas e quem as publica
+
+| Tabela | Publicada por | Data / versão | O que parametriza |
+|---|---|---|---|
+| `CST` + `cClassTrib` (IBS/CBS) | IT 2025.002 v1.50 | 15/04/2026 | grupos obrigatórios/vedados, `pRedIBS`/`pRedCBS`, indicadores |
+| `CSTIS` + `cClassTribIS` (IS) | IT 2025.002 v1.50 | parte "a publicar" | classificação do Imposto Seletivo |
+| `cCredPres` | IT 2025.002 (snapshot 12/12/2025) | ~13 linhas | apropriação por NF/evento, por imposto |
+| Alíquotas da CBS | IT 2026.002 v1.00 | 12/05/2026 | alíquota ad valorem por ano (0,9% em 2026) |
+| Índice de biocombustível (`pBio`) | IT 2025.004 v1.10 | 06/04/2026 | índice obrigatório de mistura na monofasia |
+
+> 🔄 **NT ≠ IT.** A semântica dos grupos e as Regras de Validação vêm da [NT 2025.002](/docs/reforma-tributaria/nt-2025-002); os **valores** consultados por essas regras vêm destes **Informes Técnicos**. São documentos distintos, de mesmo número no caso do 2025.002.
+
+## Crédito presumido — a tabela decide o caminho
+
+O `cCredPres` classifica o crédito presumido de IBS/CBS por fundamento da [LC 214/2025](/docs/reforma-tributaria/lc-214-2025). Os indicadores `ind_DeduzCredPres`, `ind_gIBSCredPres` e `ind_gCBSCredPres` decidem **se** o crédito existe, **por qual imposto** e **se a apropriação é por NF-e ou por evento**. A tabela completa por artigo está em [Tributos → Crédito presumido](/docs/leiaute-e-rejeicoes/tributos#crédito-presumido-ccredpres).
+
+## Onde está o detalhe versionado
+
+A página dona dos snapshots, com contagem de linhas, colunas e data de captura de cada tabela, é [Tabelas e códigos](/docs/referencia/tabelas-e-codigos#snapshots-das-tabelas-baixadas). O Informe Técnico que publica as tabelas de classificação é o [IT 2025.002](/docs/informes-tecnicos/2025-002).
+
+## Próximo na trilha
+
+[Eventos da RTC](/docs/reforma-tributaria/eventos-rtc) · [Cronograma](/docs/reforma-tributaria/cronograma) · [Tabelas e códigos](/docs/referencia/tabelas-e-codigos)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | IT 2025.002 v1.50; IT 2026.002 v1.00; IT 2025.004 v1.10 |
+| Versão | IT 2025.002 v1.50; IT 2026.002 v1.00; IT 2025.004 v1.10 |
+| Data | 15/04/2026 (IT 2025.002); 12/05/2026 (IT 2026.002); 06/04/2026 (IT 2025.004) |
+| Páginas/capítulo | tabelas externas dos Informes Técnicos |
+| NT relacionada | NT 2025.002-RTC v1.50 (consome as tabelas) |
+| Schema/tabela relacionada | `cClassTrib`/`CST`/`cClassTribIS`/`cCredPres`; alíquotas CBS; `pBio` |
+| Status | tabela externa versionada e volátil — recapturar a revisão vigente antes de validar produção |
+
+### Registro de origem
+
+Nó de tabelas da trilha Reforma Tributária (Estágio 5 do plano). Conteúdo volátil com fonte e data (Decisão 2). Ponteiro para a página dona dos snapshots, [Tabelas e códigos](/docs/referencia/tabelas-e-codigos), e para o [IT 2025.002](/docs/informes-tecnicos/2025-002), sem duplicar as tabelas (Decisão 1).

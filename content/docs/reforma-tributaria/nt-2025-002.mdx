@@ -1,0 +1,47 @@
+---
+title: NT 2025.002 — a Nota Técnica da RTC
+description: Como a NT 2025.002-RTC v1.50 estrutura o IBS, a CBS e o Imposto Seletivo no leiaute da NF-e/NFC-e — grupos, finalidades, totais, eventos e regras de validação, com ponteiro para o detalhe completo.
+---
+
+A **NT 2025.002-RTC** é a Nota Técnica que adapta os modelos 55 e 65 à [LC 214/2025](/docs/reforma-tributaria/lc-214-2025). Substitui a RT NT 2024.002 v1.10 no âmbito da NF-e/NFC-e e é o documento que transforma a obrigação legal em **grupos, finalidades, totais, eventos e Regras de Validação**. A revisão vigente é a **v1.50** (03/06/2026), que reformula a tributação monofásica de combustíveis.
+
+> 🔄 Esta página é o **nó da trilha**: orienta pelo que a NT cria. O detalhe campo a campo, com a tabela completa de deltas e as faixas de rejeição, está em [NT 2025.002 (catálogo)](/docs/notas-tecnicas/2025-002). Os *valores* das tabelas consultadas pelas regras vêm do [IT 2025.002](/docs/reforma-tributaria/tabelas-rtc), documento distinto de mesmo número.
+
+## O que a NT cria, por camada do documento
+
+| Camada | O que a NT 2025.002 introduz | Trilha |
+|---|---|---|
+| Identificação | `finNFe=5/6` (crédito/débito), `tpNFCredito`, `tpNFDebito`, `dPrevEntrega`, `cMunFGIBS`, compras governamentais | [Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce) |
+| Item | grupos `UB` (`IS`/`IBSCBS`), `VB` (`vItem`) e `VC` (`DFeReferenciado`) | [Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce) |
+| Tributos | base, diferimento, devolução, redução, tributação regular, compra governamental, transferência/estorno/ajuste e crédito presumido | [IBS](/docs/reforma-tributaria/ibs) · [CBS](/docs/reforma-tributaria/cbs) · [IS](/docs/reforma-tributaria/imposto-seletivo) |
+| Totais | `ISTot`, `IBSCBSTot`, `gMono`, `gEstornoCred`, `vItem`, `vNFTot` | [Tributos no fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| Eventos | apuração assistida, crédito presumido, perdas, imobilização e transferência de crédito | [Eventos da RTC](/docs/reforma-tributaria/eventos-rtc) |
+| Numeração | `cStat` de 3–4 posições e `nProt` de 15/17 posições nas respostas | [NT 2025.002 (catálogo)](/docs/notas-tecnicas/2025-002) |
+
+## Monofasia de combustíveis — a reforma da v1.50
+
+A v1.50 **reformula** o leiaute monofásico: dentro de `gIBSCBSMono`, IBS e CBS têm ramos separados de **ad rem** e **ad valorem**, com tributação própria, retenção, retido anteriormente e diferença de biocombustível. A escolha do ramo muda conforme o ano da emissão — ver [IBS](/docs/reforma-tributaria/ibs#monofasia-de-combustíveis) e o detalhe em [Tributos → Monofasia](/docs/leiaute-e-rejeicoes/tributos#monofasia-de-combustíveis-na-v150).
+
+## Regras de validação — não decida pelo número
+
+A NT abre a faixa de **quatro dígitos** de `cStat` para as rejeições de IBS/CBS/IS (famílias `B`, `BB`, `C`, `E`, `I`, `UB`, `VB`, `VC`, `W` e eventos). A mesma faixa contém códigos de contextos distintos: processe também `xMotivo` e a identificação da regra. O detalhe das faixas está em [NT 2025.002 (catálogo)](/docs/notas-tecnicas/2025-002#regras-de-validação--rejeições) e em [Códigos de retorno](/docs/leiaute-e-rejeicoes/codigos-de-retorno).
+
+## Próximo na trilha
+
+[IBS](/docs/reforma-tributaria/ibs) · [CBS](/docs/reforma-tributaria/cbs) · [Imposto Seletivo](/docs/reforma-tributaria/imposto-seletivo) · [Cronograma](/docs/reforma-tributaria/cronograma)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 |
+| Versão | v1.50 (consolida v1.36 e v1.40) |
+| Data | 03/06/2026 |
+| Páginas/capítulo | overlay sobre o MOC 7.0; detalhe na página do catálogo |
+| NT relacionada | NT 2025.002-RTC v1.50 |
+| Schema/tabela relacionada | pacotes XSD da RTC; [IT 2025.002 v1.50](/docs/reforma-tributaria/tabelas-rtc) |
+| Status | revisão consolidada; verificar revisão posterior no Portal Nacional antes de implementar |
+
+### Registro de origem
+
+Nó da trilha Reforma Tributária (Estágio 5 do plano). Ponteiro para o catálogo dono do detalhe técnico, [NT 2025.002](/docs/notas-tecnicas/2025-002), sem duplicar a tabela completa de deltas (Decisão 1). NT 2025.002-RTC v1.50 publicada no Portal Nacional em 03/06/2026.

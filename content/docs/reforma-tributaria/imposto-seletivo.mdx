@@ -1,0 +1,41 @@
+---
+title: Imposto Seletivo (IS)
+description: O Imposto Seletivo na NF-e/NFC-e — grupo IS no item, CSTIS, cClassTribIS, base com alíquota percentual e/ou específica, e o total ISTot. Tributo "do pecado" lançado por fora.
+---
+
+O **Imposto Seletivo (IS)** incide sobre bens e serviços **prejudiciais à saúde ou ao meio ambiente**, instituído pela [LC 214/2025](/docs/reforma-tributaria/lc-214-2025). No XML é um grupo próprio (`IS`), separado do `IBSCBS`, com classificação e códigos de situação tributária **independentes** dos do IBS/CBS.
+
+> 🧩 O IS é um grupo à parte. O que é específico dele: `CSTIS` e `cClassTribIS` próprios e base que pode ter alíquota **percentual e/ou específica** (por unidade). O detalhe campo a campo está em [Tributos → IBS, CBS e IS](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo).
+
+## Onde o IS aparece
+
+| Camada | Conteúdo do IS |
+|---|---|
+| Item — grupo `IS` | `CSTIS`, `cClassTribIS`, base, alíquota percentual e/ou específica, unidade/quantidade e `vIS` |
+| Totais — `ISTot` | total do Imposto Seletivo (`vIS`) — ver [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+O IS é lançado **"por fora"** — não compõe `vNF` e não substitui IBS/CBS, que podem coexistir no mesmo item.
+
+## Classificação ainda em construção
+
+> ⚠️ **Tabelas "a publicar".** Na revisão vigente, a **NCM** e o **`cClassTribIS`** do Imposto Seletivo ainda constam como **"a publicar"** em parte das tabelas externas — ver [Tabelas e códigos](/docs/referencia/tabelas-e-codigos#vigência). Não assuma a lista fechada antes de carregar a versão vigente do Portal. O par `CSTIS` + `cClassTribIS` segue a mesma lógica de indicadores do IBS/CBS: a tabela decide se o grupo é obrigatório, permitido ou vedado.
+
+## Próximo na trilha
+
+[Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce) · [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc) · [Cronograma](/docs/reforma-tributaria/cronograma)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 — grupo `IS` (família UB) |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | overlay sobre o MOC 7.0; detalhe em [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| NT relacionada | NT 2025.002-RTC v1.50 |
+| Schema/tabela relacionada | `CSTIS`/`cClassTribIS` — [IT 2025.002 v1.50](/docs/reforma-tributaria/tabelas-rtc) (parte "a publicar") |
+| Status | revisão consolidada; NCM e `cClassTribIS` do IS ainda "a publicar" — confrontar com o Portal |
+
+### Registro de origem
+
+Página de síntese do Imposto Seletivo na trilha Reforma Tributária (Estágio 5 do plano). Visão centrada no tributo; detalhe dobrado em [Tributos do item](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo) e [Tabelas e códigos](/docs/referencia/tabelas-e-codigos), sem duplicação (Decisão 1). Base legal em [LC 214/2025](/docs/reforma-tributaria/lc-214-2025).

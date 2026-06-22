@@ -1,0 +1,85 @@
+---
+title: Combustível (grupo comb e ICMS monofásico)
+description: Caso de item de combustível — grupo comb, cProdANP, pBio, origComb e ICMS monofásico ad rem (CST 02). Valores fictícios.
+---
+
+## Contexto fiscal
+
+Venda de combustível sujeito à **tributação monofásica** do ICMS (Convênio ICMS 199/2022): o imposto é **ad rem** (R$ por unidade), não percentual. O item carrega o grupo **`comb`** com `cProdANP`/`descANP`, o índice de mistura **`pBio`** e a origem **`origComb`**; o ICMS usa **CST 02** (`ICMS02`, monofásico próprio).
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** `cProdANP`, `pBio` e a alíquota ad rem vêm de **tabelas externas voláteis** (ANP / Tabela de Combustíveis Monofásicos). Confirme os valores vigentes antes de usar.
+
+## Trecho principal do XML
+
+```xml
+<det nItem="1">
+  <prod>
+    <cProd>GASOLINA-C</cProd><xProd>Gasolina C comum</xProd>
+    <NCM>27101259</NCM><CFOP>5656</CFOP>
+    <uCom>LITRO</uCom><qCom>1000.0000</qCom><vUnCom>6.0000000000</vUnCom>
+    <vProd>6000.00</vProd><indTot>1</indTot>
+    <comb>
+      <cProdANP>320102001</cProdANP>
+      <descANP>Gasolina C comum</descANP>
+      <pBio>0.30</pBio>
+      <UFCons>SP</UFCons>
+      <origComb><indImport>0</indImport><cUFOrig>35</cUFOrig><pOrig>100.0000</pOrig></origComb>
+    </comb>
+  </prod>
+  <imposto>
+    <ICMS><ICMS02>
+      <orig>0</orig><CST>02</CST>
+      <qBCMono>1000.0000</qBCMono>      <!-- base em quantidade -->
+      <adRemICMS>1.2200</adRemICMS>      <!-- alíquota ad rem (R$/litro) -->
+      <vICMSMono>1220.00</vICMSMono>     <!-- qBCMono × adRemICMS -->
+    </ICMS02></ICMS>
+  </imposto>
+</det>
+<total>
+  <ICMSTot>
+    <vProd>6000.00</vProd><vICMSMono>1220.00</vICMSMono><vNF>6000.00</vNF>
+    <qBCMono>1000.0000</qBCMono>
+  </ICMSTot>
+</total>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `cProdANP` | `320102001` | seleciona o produto na **Tabela ANP**; exige o grupo `comb` (`N12-100`) |
+| `pBio` | `0.30` | índice de mistura obrigatório por `cProdANP` (`LA17-10`) — ver [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos#índice-de-mistura-de-biocombustível-pbio) |
+| `origComb`/`pOrig` | soma `100` | regras `LA21-10`/`LA21-20` (rej. 958) |
+| CST `02` | monofásico próprio | ICMS **ad rem**: `vICMSMono = qBCMono × adRemICMS` — ver [Tributos](/docs/leiaute-e-rejeicoes/tributos#famílias-do-icms) |
+| `vICMSMono` no total | somatório | regra `W06c-10` (tolerância R$ 0,01) — ver [Totais](/docs/leiaute-e-rejeicoes/totais-e-fechamento) |
+
+## Validações esperadas
+
+- `uTrib` validada pela Tabela de Combustíveis Monofásicos (`I13-20`, rej. 854); `qBCMono × adRemICMS = vICMSMono` (`N39-10`). Sucesso: **`cStat 100`**.
+
+> 🔄 **RTC.** A NT 2025.002 v1.50 separa a monofasia de IBS/CBS em **ad rem × ad valorem** (grupo `gIBSCBSMono`), com transição por ano — ver [Tributos](/docs/leiaute-e-rejeicoes/tributos#monofasia-de-combustíveis-na-v150) e [Reforma Tributária](/docs/reforma-tributaria/imposto-seletivo).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 959 / 960 | `cProdANP` exige/proíbe o grupo monofásico | [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| 854 | `uTrib` incompatível com a tabela de combustíveis | [Itens](/docs/leiaute-e-rejeicoes/itens-e-produtos) |
+| 907/908 / 958 | `pBio`/`pOrig` ausente ou soma ≠ 100 | corrigir `comb`/`origComb` |
+| 962/964/966 | valor monofásico do item não confere | recalcular ad rem |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I (grupos LA/comb, N/ICMS); NT 2023.001 v1.60; NT 2025.002 v1.50. |
+| Versão | v1.60; v1.50 |
+| Data | 09/06/2025; 03/06/2026 |
+| Páginas/capítulo | Anexo I, grupos LA e N |
+| NT relacionada | NT 2023.001 v1.60 (ICMS monofásico); NT 2025.002 v1.50 (IBS/CBS monofásico) |
+| Schema/tabela relacionada | leiauteNFe_v4.00; Tabela ANP; Tabela de Combustíveis Sujeitos à Tributação Monofásica |
+| Status | exemplo ilustrativo, valores fictícios — `cProdANP`/`pBio`/ad rem em tabelas externas voláteis |
+
+### Registro de origem
+
+Montado a partir de [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos) (grupo `comb`, `pBio`, `origComb`) e [Tributos](/docs/leiaute-e-rejeicoes/tributos) (ICMS monofásico CST 02). Overlay: NT 2023.001 v1.60 (09/06/2025), NT 2025.002 v1.50 (03/06/2026). Schema: leiauteNFe_v4.00.

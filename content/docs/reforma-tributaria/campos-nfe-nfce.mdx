@@ -1,0 +1,59 @@
+---
+title: Campos da RTC na NF-e/NFC-e
+description: Mapa transversal dos campos e grupos que a Reforma Tributária acrescenta ao XML — identificação, item (UB/VB/VC), tributos e totais — com ponteiro para o capítulo dono de cada grupo.
+---
+
+A Reforma Tributária acrescenta campos em **várias camadas** do XML, não só nos tributos. Esta página é o mapa transversal: lista o que muda em cada camada e aponta para o capítulo que detalha o grupo. Os novos grupos do item são `UB` (`IS`/`IBSCBS`), `VB` (`vItem`) e `VC` (`DFeReferenciado`).
+
+> 🗺️ Use este mapa para descobrir **onde** mexer; vá ao capítulo linkado para descobrir **como** preencher. Tudo aqui é overlay posterior ao MOC 7.0 (NT 2025.002 v1.50).
+
+## Identificação e atores
+
+| Campo | Para que serve | Detalhe |
+|---|---|---|
+| `finNFe=5/6` | finalidade de nota de **crédito** / **débito** | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| `tpNFCredito`, `tpNFDebito` | tipo da nota de crédito/débito | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| `dPrevEntrega` | previsão de entrega (afeta crédito) | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+| `cMunFGIBS` | município de fato gerador do IBS | [IBS](/docs/reforma-tributaria/ibs) |
+| `cIndOp`, `ISUFEmit` | indicador de operação e IS na UF do emitente | [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores#overlay-de-nts) |
+
+## Item — novos grupos `UB`, `VB`, `VC`
+
+| Grupo | Conteúdo | Detalhe |
+|---|---|---|
+| `UB` → `IS` | Imposto Seletivo do item | [Imposto Seletivo](/docs/reforma-tributaria/imposto-seletivo) |
+| `UB` → `IBSCBS` | IBS e CBS do item (base comum) | [IBS](/docs/reforma-tributaria/ibs) · [CBS](/docs/reforma-tributaria/cbs) |
+| `VB` → `vItem` | valor do item para os totalizadores RTC | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| `VC` → `DFeReferenciado` | referência por item (devolução migra para cá em 01/09/2026) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+| — | `tpCredPresIBSZFM`, `indBemMovelUsado` | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos#overlay-de-nts) |
+
+## Totais
+
+| Grupo | Conteúdo | Detalhe |
+|---|---|---|
+| `ISTot` | total do Imposto Seletivo | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| `IBSCBSTot` | bases e totais de IBS UF/Município, CBS, monofasia, créditos e estornos | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| `gMono`, `gEstornoCred` | totais monofásicos e estornos de crédito | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+| `vItem`, `vNFTot` | valor do item e total da nota RTC (não somados em 2025/2026) | [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+> 💡 IBS, CBS e IS são **"por fora"**: `vNFTot` é a soma de `vItem`, mas **não substitui `vNF`**. Não some os tributos da RTC dentro do total da nota nos anos de transição.
+
+## Próximo na trilha
+
+[Exemplos de XML](/docs/reforma-tributaria/exemplos-xml) · [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc) · [Eventos da RTC](/docs/reforma-tributaria/eventos-rtc)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 — grupos B/C, UB, VB, VC e W |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | overlay sobre o MOC 7.0; detalhe nos capítulos linkados |
+| NT relacionada | NT 2025.002-RTC v1.50 |
+| Schema/tabela relacionada | pacotes XSD da RTC (famílias UB/VB/VC) |
+| Status | revisão consolidada; confirmar a forma do dado no schema vigente |
+
+### Registro de origem
+
+Mapa transversal de campos da trilha Reforma Tributária (Estágio 5 do plano). Consolida ponteiros para os capítulos dono ([Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores), [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos), [Tributos](/docs/leiaute-e-rejeicoes/tributos), [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento)), sem duplicar o detalhe (Decisão 1). Deltas conforme [NT 2025.002](/docs/notas-tecnicas/2025-002).

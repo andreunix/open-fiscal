@@ -1,0 +1,72 @@
+---
+title: Distribuição de DF-e (consulta por NSU)
+description: Caso de nfeDistDFeInteresse — puxar documentos de interesse do ator por NSU sequencial no Ambiente Nacional. Valores fictícios.
+---
+
+## Contexto fiscal
+
+A **Distribuição de DF-e** entrega ao **ator** (emitente, destinatário, transportador ou terceiro autorizado) os documentos e resumos de seu interesse no **Ambiente Nacional**, consultados por **NSU** sequencial. O ator guarda o **último NSU** recebido e pede o próximo; nunca re-puxa NSUs já obtidos em laço.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** O `ultNSU` é por ator; avance sequencialmente para não cair no erro **656 (consumo indevido)**.
+
+## Trecho principal do XML
+
+```xml
+<!-- Modo 1: por NSU sequencial (o mais comum) -->
+<distDFeInt versao="1.01">
+  <tpAmb>2</tpAmb>
+  <cUFAutor>35</cUFAutor>
+  <CNPJ>11112200019 9</CNPJ>
+  <distNSU><ultNSU>000000000000120</ultNSU></distNSU>   <!-- 15 dígitos -->
+</distDFeInt>
+
+<!-- Modo 2: rebuscar um NSU pontual -->
+<!-- <consNSU><NSU>000000000000118</NSU></consNSU> -->
+
+<!-- Modo 3: obter documento completo por chave -->
+<!-- <consChNFe><chNFe>3526...</chNFe></consChNFe> -->
+```
+
+Retorno (`retDistDFeInt`): `cStat`/`xMotivo`, `ultNSU`, `maxNSU` e o `loteDistDFeInt` com **até 50 `docZip`** (Base64/GZip), cada um com `@NSU` e `@schema` (ex.: `resNFe_v1.00.xsd`, `procNFe_v3.10.xsd`, `resEvento_v1.00.xsd`).
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| modo de consulta | `distNSU`/`consNSU`/`consChNFe` | **escolha** — exatamente um — ver [NFeDistribuicaoDFe](/docs/emissao-e-comunicacao/distribuicao-dfe) |
+| `ultNSU` | 15 dígitos | persistido por ator; avança sequencialmente |
+| `@schema` do `docZip` | identifica o conteúdo | distingue DF-e completo de resumo |
+| certificado | CNPJ base do ator | PJ autenticada pelo CNPJ base |
+
+## Validações esperadas
+
+- NSU válido e consumo dentro do ritmo. Sucesso: **`cStat 138`** (Documento(s) localizado(s)) ou **`137`** (nenhum documento localizado). Documentos ficam disponíveis por **até 3 meses**.
+- O **destinatário** só recebe a NF-e completa **após manifestar** ("Ciência", "Confirmação" ou "Operação não Realizada"); antes, só o **Resumo de NF-e** e o cancelamento — ver [Manifestação](/docs/eventos/manifestacao-do-destinatario).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 656 | **consumo indevido** — re-puxar NSUs em laço | persistir e avançar `ultNSU` |
+| 137 | nenhum documento novo (não é erro) | aguardar e repetir depois |
+| certificado | CNPJ base ≠ certificado | usar certificado do ator |
+
+## Montando o caso completo
+
+Para o destinatário obter a nota completa, encadeie com a [Manifestação do destinatário](/docs/eventos/manifestacao-do-destinatario). O `procNFe` distribuído é o XML autorizado + protocolo — ver [Autorização](/docs/emissao-e-comunicacao/autorizacao).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral §5.7 (e §6 sobre `procNFe`); NT 2014.002 v1.30. |
+| Versão | v1.30 |
+| Data | 09/02/2026 |
+| Páginas/capítulo | §5, p. 90–98 |
+| NT relacionada | NT 2014.002 v1.30 |
+| Schema/tabela relacionada | distDFeInt_v1.01 / retDistDFeInt_v1.01 (PL_NFeDistDFe_103) |
+| Status | exemplo ilustrativo, valores fictícios — `ultNSU` é por ator |
+
+### Registro de origem
+
+Montado a partir de [NFeDistribuicaoDFe](/docs/emissao-e-comunicacao/distribuicao-dfe) (modos de consulta, NSU, `docZip`). Manifestação em [Manifestação do destinatário](/docs/eventos/manifestacao-do-destinatario). Overlay: NT 2014.002 v1.30 (09/02/2026). Schema: distDFeInt_v1.01.

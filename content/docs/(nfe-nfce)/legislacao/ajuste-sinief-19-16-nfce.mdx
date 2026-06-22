@@ -1,0 +1,42 @@
+---
+title: Ajuste SINIEF 19/16 — NFC-e modelo 65
+description: Norma que institui a NFC-e modelo 65 e o DANFE-NFC-e; impacto para implementação — venda a consumidor final, QR Code, eventos restritos e contingência offline.
+---
+
+O **Ajuste SINIEF 19/16** (CONFAZ) institui a **Nota Fiscal de Consumidor Eletrônica (NFC-e), modelo 65**, e o **DANFE-NFC-e**. É a base legal da venda a consumidor final em meio eletrônico e do manual de QR Code.
+
+## Impacto para implementação
+
+| O que a norma fixa | Consequência técnica |
+|---|---|
+| NFC-e para **venda a consumidor final** presencial ou para entrega em domicílio | escopo de uso distinto da NF-e modelo 55 — ver [Conceitos](/docs/fundamentos/conceitos) |
+| Substitui a Nota de Venda a Consumidor modelo 2, o **Cupom Fiscal (ECF)** e o **CF-e-SAT** | migração de equipamento fiscal para emissão eletrônica |
+| **DANFE-NFC-e** com **QR Code** obrigatório | representação gráfica própria — ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode) |
+| Conjunto de **eventos restrito**: apenas **Cancelamento** e **EPEC** | a NFC-e não usa todo o catálogo da NF-e — ver [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) |
+| Contingência **offline** específica da NFC-e | regra operacional própria — ver [Contingência](/docs/contingencia/nfce) |
+
+> ⚠️ Boa parte da operação da NFC-e é **delegada à legislação estadual**: CSC/token, ativação do modelo na UF, prazos de cancelamento e regras de contingência offline variam por Estado. Essas regras **não** entram nesta página de base nacional; ficam em [UFs e regras estaduais](/docs/ufs/matriz-estadual) e em [Serviços por UF](/docs/operacao/servicos-por-uf), com fonte e data por UF.
+
+## O que fica nas páginas técnicas
+
+A geração e a validação do QR Code, o cálculo do `cHashQRCode` e os campos do grupo de pagamento são especificação técnica — ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode). Esta página registra apenas que o **QR Code é obrigatório por norma** e que os **eventos são restritos**.
+
+## Onde se aplica
+
+[Conceitos](/docs/fundamentos/conceitos) · [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode) · [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) · [Contingência NFC-e](/docs/contingencia/nfce) · [Serviços por UF](/docs/operacao/servicos-por-uf)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Ajuste SINIEF 19/16 — CONFAZ (texto consolidado) |
+| Versão | redação vigente consolidada; alterações por Ajustes SINIEF posteriores |
+| Data | 2016; consolidação — ver fonte oficial |
+| Páginas/capítulo | cláusulas da NFC-e e do DANFE-NFC-e |
+| NT relacionada | aplicada por NTs de NFC-e e QR Code; não vinculada a uma única |
+| Schema/tabela relacionada | leiaute da NFC-e modelo 65 — ver [Schemas](/docs/schemas) |
+| Status | vigente; base jurídica da NFC-e, com operação parcialmente delegada às UFs |
+
+### Registro de origem
+
+Texto consolidado do Ajuste SINIEF 19/16 no portal do CONFAZ (`https://www.confaz.fazenda.gov.br/legislacao/ajustes`). Resumo de impacto, não transcrição (Decisão 3). A operação real da NFC-e depende de regra estadual — confirmar por UF na matriz estadual antes de produção.

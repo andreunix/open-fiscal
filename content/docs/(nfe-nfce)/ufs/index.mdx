@@ -1,0 +1,53 @@
+---
+title: UFs e regras estaduais
+description: Matriz fiscal estadual da NF-e e NFC-e — credenciamento, NFC-e, contingência, cancelamento, CSC e particularidades por UF, separada dos endpoints técnicos.
+---
+
+Esta seção separa duas coisas que costumam se misturar no emissor: **endpoint por UF** (técnico-operacional) e **regra fiscal estadual por UF**. O endpoint está em [Serviços por UF](/docs/operacao/servicos-por-uf); aqui ficam credenciamento, NFC-e, contingência, prazos, CSC e particularidades de cada Estado.
+
+> 🔄 **Conteúdo volátil.** Regra estadual muda por decreto e nota da SEFAZ. Toda informação desta seção carrega **fonte e data** e é tratada como **referência inicial sujeita a verificação** na fonte oficial da UF (Decisão 2 do plano). Não use como dado de produção sem confirmar no portal estadual.
+
+## O que é nacional e o que é estadual
+
+| Camada | Dono | Onde está |
+|---|---|---|
+| XSD, leiaute, eventos, rejeições | nacional (MOC/NT/XSD) | [Schemas](/docs/schemas), [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| URL de Web Service, autorizador, SVC | UF / autorizador virtual | [Serviços por UF](/docs/operacao/servicos-por-uf) |
+| credenciamento, CSC, prazos, contingência NFC-e, cBenef | **SEFAZ da UF** | **esta seção** |
+| base jurídica (institui o documento) | nacional (Ajustes/Atos/LC) | [Legislação nacional](/docs/legislacao) |
+
+## Como usar
+
+1. Comece pela [matriz estadual](/docs/ufs/matriz-estadual) para comparar UFs lado a lado.
+2. Abra a página da UF do emitente para a configuração completa e particularidades.
+3. Resolva a emissão pela chave `(modelo, UF, ambiente, serviço, data)`; cruze com [Serviços por UF](/docs/operacao/servicos-por-uf) para o endpoint.
+
+## Campos mapeados por UF
+
+Credenciamento NF-e/NFC-e · NFC-e ativa · contingência offline da NFC-e · EPEC para NFC-e quando aceito · CSC/token e QR Code · prazo de cancelamento (NF-e e NFC-e) · inutilização · `cBenef` × CST · particularidades SAT/ECF · autorizador e SVC · **fonte oficial e data da captura**.
+
+## UFs
+
+| Região | UFs |
+|---|---|
+| Norte | [AC](/docs/ufs/acre) · [AP](/docs/ufs/amapa) · [AM](/docs/ufs/amazonas) · [PA](/docs/ufs/para) · [RO](/docs/ufs/rondonia) · [RR](/docs/ufs/roraima) · [TO](/docs/ufs/tocantins) |
+| Nordeste | [AL](/docs/ufs/alagoas) · [BA](/docs/ufs/bahia) · [CE](/docs/ufs/ceara) · [MA](/docs/ufs/maranhao) · [PB](/docs/ufs/paraiba) · [PE](/docs/ufs/pernambuco) · [PI](/docs/ufs/piaui) · [RN](/docs/ufs/rio-grande-do-norte) · [SE](/docs/ufs/sergipe) |
+| Centro-Oeste | [DF](/docs/ufs/distrito-federal) · [GO](/docs/ufs/goias) · [MT](/docs/ufs/mato-grosso) · [MS](/docs/ufs/mato-grosso-do-sul) |
+| Sudeste | [ES](/docs/ufs/espirito-santo) · [MG](/docs/ufs/minas-gerais) · [RJ](/docs/ufs/rio-de-janeiro) · [SP](/docs/ufs/sao-paulo) |
+| Sul | [PR](/docs/ufs/parana) · [RS](/docs/ufs/rio-grande-do-sul) · [SC](/docs/ufs/santa-catarina) |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Índice editorial: UFs e regras estaduais |
+| Versão | ver fonte original |
+| Data | ver fonte original |
+| Páginas/capítulo | ver fonte original |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | não indicada |
+| Status | página índice; dados estaduais nas páginas filhas, sujeitos a verificação por UF |
+
+### Registro de origem
+
+Índice editorial da seção UFs e regras estaduais, criado no Estágio 3 do plano de expansão (`docs/PLANO-EXPANSAO-OPEN-FISCAL.md`). Fonte técnica: Portal Nacional da NF-e (captura 20/06/2026, ver [Serviços por UF](/docs/operacao/servicos-por-uf)). Fonte estadual: portais das SEFAZ por UF.

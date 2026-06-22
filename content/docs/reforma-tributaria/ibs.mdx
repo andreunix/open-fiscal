@@ -1,0 +1,54 @@
+---
+title: IBS — Imposto sobre Bens e Serviços
+description: O IBS na NF-e/NFC-e — competência estadual e municipal, split UF + Município dentro do grupo IBSCBS, base comum com a CBS, monofasia de combustíveis e classificação por cClassTrib.
+---
+
+O **IBS** (Imposto sobre Bens e Serviços) é o tributo de competência **estadual e municipal** da Reforma Tributária, instituído pela [LC 214/2025](/docs/reforma-tributaria/lc-214-2025). No XML ele vive no grupo `IBSCBS`, ao lado da CBS, com a **base comum** às duas mas o valor **separado em parcela estadual (UF) e municipal (Município)**.
+
+> 🧩 IBS e CBS compartilham o grupo `gIBSCBS` e a base de cálculo, mas têm valores próprios. O que é específico do IBS: o **split UF + Município** e o município de fato gerador (`cMunFGIBS`). O detalhe campo a campo está em [Tributos → IBS, CBS e IS](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo).
+
+## Onde o IBS aparece
+
+| Camada | Conteúdo do IBS |
+|---|---|
+| Item — `gIBSCBS` | base comum; **IBS UF** e **IBS Município**; diferimento, devolução e redução de alíquota |
+| Item — grupos especiais | `gTribRegular`, `gTribCompraGov`, `gTransfCred`, `gAjusteCompet`, `gEstornoCred`, `gCredPresOper`, `gCredPresIBSZFM` |
+| Totais — `IBSCBSTot` | somatórios de IBS UF/Município, monofasia, créditos presumidos e estornos — ver [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts) |
+
+A fórmula de fechamento do item: `vIBS = vIBSUF + vIBSMun - vCredPres` quando `indDeduzCredPres=1`. O IBS é lançado **"por fora"** — não entra em `vNF`.
+
+## Monofasia de combustíveis
+
+Na v1.50, dentro de `gIBSCBSMono`, o IBS tem ramos **ad rem** e **ad valorem**; a escolha do ramo depende do ano da emissão:
+
+| Ano da emissão | IBS monofásico |
+|---:|---|
+| 2026 | ad valorem |
+| 2027–2028 | ad valorem |
+| 2029 em diante | ad rem |
+
+Nos ramos ad rem, `valor = quantidade × alíquota ad rem`; nos ad valorem, `valor = base × alíquota percentual`, separando as parcelas estadual e municipal. Os totais do item ficam em `vTotIBSMonoItem`. Detalhe e regras da família `UB85a`–`UB104b` em [Tributos → Monofasia](/docs/leiaute-e-rejeicoes/tributos#monofasia-de-combustíveis-na-v150).
+
+## Classificação e crédito presumido
+
+O par **`CST` + `cClassTrib`** seleciona, por indicadores das tabelas vigentes, quais grupos do IBS são obrigatórios, permitidos ou vedados — não basta o código existir. O crédito presumido do IBS é classificado por `cCredPres` (fundamento na LC 214/2025) e pode ser apropriado **por NF-e** ou **por evento**, conforme os indicadores. Ver [Tabelas da RTC](/docs/reforma-tributaria/tabelas-rtc) e [Eventos da RTC](/docs/reforma-tributaria/eventos-rtc).
+
+## Próximo na trilha
+
+[CBS](/docs/reforma-tributaria/cbs) · [Imposto Seletivo](/docs/reforma-tributaria/imposto-seletivo) · [Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 — grupo `IBSCBS` (família UB) |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | overlay sobre o MOC 7.0; detalhe em [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| NT relacionada | NT 2025.002-RTC v1.50 |
+| Schema/tabela relacionada | `cClassTrib`/`CST` do IBS — [IT 2025.002 v1.50](/docs/reforma-tributaria/tabelas-rtc) |
+| Status | revisão consolidada; tabelas e alíquotas voláteis — confrontar com o Portal |
+
+### Registro de origem
+
+Página de síntese do IBS na trilha Reforma Tributária (Estágio 5 do plano). Visão centrada no tributo; o detalhe campo a campo é dobrado em [Tributos do item](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo) e [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento), sem duplicação (Decisão 1). Base legal em [LC 214/2025](/docs/reforma-tributaria/lc-214-2025).

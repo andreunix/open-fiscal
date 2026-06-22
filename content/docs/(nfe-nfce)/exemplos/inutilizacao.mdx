@@ -1,0 +1,75 @@
+---
+title: Inutilização de numeração
+description: Caso de inutNFe — inutilizar uma faixa de numeração de NF-e não usada (quebra de sequência), com infInut assinada. Valores fictícios.
+---
+
+## Contexto fiscal
+
+A **inutilização** registra oficialmente que uma **faixa de numeração não usada** nunca virou nota (quebra de sequência). É um serviço síncrono (`nfeInutilizacaoNF`), com a tag **`infInut` assinada**. **Não** anula nota autorizada — para isso existe o [cancelamento](/docs/exemplos/cancelamento).
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** Antes de inutilizar, confirme por [ConsultaProtocolo](/docs/emissao-e-comunicacao/consulta-protocolo) que **nenhum** número da faixa foi autorizado.
+
+## Trecho principal do XML
+
+```xml
+<inutNFe versao="4.00">
+  <infInut Id="ID3526111122000199550010000001000000020">
+    <tpAmb>2</tpAmb>
+    <xServ>INUTILIZAR</xServ>
+    <cUF>35</cUF>
+    <ano>26</ano>
+    <CNPJ>11112200019 9</CNPJ>
+    <mod>55</mod>
+    <serie>1</serie>
+    <nNFIni>100</nNFIni>      <!-- faixa inicial -->
+    <nNFFin>120</nNFFin>      <!-- faixa final -->
+    <xJust>Quebra de sequencia por falha antes do envio</xJust>
+  </infInut>
+  <!-- Signature XMLDSig sobre o Id de infInut -->
+</inutNFe>
+```
+
+Retorno (`retInutNFe`): `cStat`/`xMotivo` e, se deferido, `nProt` e data/hora.
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `Id` de `infInut` | UF+ano+CNPJ+mod+série+faixa | a tag é **assinada** — ver [Assinatura XML](/docs/seguranca/assinatura-xml) |
+| `nNFIni`/`nNFFin` | faixa não usada | nenhum número pode ter sido autorizado |
+| `serie` | série da faixa | inutilização é por série |
+| `xJust` | justificativa | obrigatória |
+
+## Validações esperadas
+
+- Faixa válida, não usada e não inutilizada antes; assinatura válida. Sucesso: **`cStat 102`** (Inutilização homologada). Guarde o `nProt` junto ao controle de numeração.
+
+> 🔄 No `retInutNFe`, a NT 2025.002 v1.50 admite `cStat` de **3–4 posições** e `nProt` de **15 ou 17 posições** — ver [Inutilização](/docs/emissao-e-comunicacao/inutilizacao).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 242 | faixa contém número **já autorizado** | usar [cancelamento](/docs/exemplos/cancelamento) |
+| 563 | faixa já inutilizada | não reenviar |
+| 297/298 | assinatura de `infInut` fora do padrão | [Erros de assinatura](/docs/seguranca/erros-comuns) |
+
+## Não confundir
+
+Inutilização trata número **não emitido**; nota **autorizada** que não deve valer se resolve por [cancelamento](/docs/exemplos/cancelamento).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral §5.3 (Tabelas 5-9 a 5-12); NT 2025.002 v1.50. |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | §5, p. 78–80 |
+| NT relacionada | NT 2025.002 v1.50 |
+| Schema/tabela relacionada | inutNFe_v4.00 / retInutNFe_v4.00 |
+| Status | exemplo ilustrativo, valores fictícios — confirmar que a faixa não tem número autorizado |
+
+### Registro de origem
+
+Montado a partir de [NfeInutilizacao](/docs/emissao-e-comunicacao/inutilizacao) (estrutura `infInut`, processo síncrono). Overlay: NT 2025.002 v1.50 (03/06/2026). Schema: inutNFe_v4.00.

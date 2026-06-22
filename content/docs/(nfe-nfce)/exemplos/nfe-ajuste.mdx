@@ -1,0 +1,84 @@
+---
+title: NF-e de ajuste
+description: Caso de NF-e finNFe=3 — acerto fiscal sem circulação de mercadoria, com CFOP de ajuste e referência sigilosa opcional. Valores fictícios.
+---
+
+## Contexto fiscal
+
+A NF-e de **ajuste** (`finNFe=3`) registra um **acerto fiscal sem circulação física** de mercadoria — por exemplo, regularização de crédito/débito de ICMS exigida pela legislação estadual, transferência de saldo ou acerto determinado por regime especial. Não há saída de produto; o item pode existir só para suportar o valor/imposto do acerto.
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** O uso e o CFOP do ajuste dependem da **legislação estadual**; confirme na SEFAZ da UF.
+
+## Trecho principal do XML
+
+```xml
+<ide>
+  <mod>55</mod><natOp>Ajuste de ICMS - regime especial</natOp>
+  <tpNF>1</tpNF><finNFe>3</finNFe>      <!-- ajuste -->
+  <indFinal>0</indFinal><indPres>0</indPres>
+  <!-- referência opcional; refNFeSig permite chave com cNF zerado -->
+  <NFref>
+    <refNFeSig>35260500999988000100550010000000001000000000</refNFeSig>
+  </NFref>
+</ide>
+<det nItem="1">
+  <prod>
+    <cProd>AJUSTE</cProd><xProd>Ajuste fiscal conforme processo</xProd>
+    <NCM>00000000</NCM><CFOP>5949</CFOP>
+    <uCom>UN</uCom><qCom>1.0000</qCom><vUnCom>500.0000000000</vUnCom>
+    <vProd>500.00</vProd><indTot>1</indTot>
+  </prod>
+  <imposto>
+    <ICMS><ICMS90>
+      <orig>0</orig><CST>90</CST><modBC>3</modBC>
+      <vBC>500.00</vBC><pICMS>18.00</pICMS><vICMS>90.00</vICMS>
+    </ICMS90></ICMS>
+  </imposto>
+</det>
+<infAdic>
+  <infAdFisco>Ajuste conforme processo administrativo nnn/aaaa</infAdFisco>
+  <procRef><nProc>0001/2026</nProc><indProc>0</indProc><tpAto>10</tpAto></procRef>
+</infAdic>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `finNFe` | `3` | finalidade ajuste — ver [Identificação](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| `CFOP` | de ajuste (ex.: `5949`) | natureza de acerto, conforme a UF |
+| `refNFeSig` | chave com `cNF` zerado | referência **sigilosa** (NT 2022.003), também admitida no ajuste |
+| `procRef`/`tpAto` | `indProc=0`, `tpAto=10` | vincula o ato concessório — ver [Grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) |
+
+## Validações esperadas
+
+- Estrutura válida e CFOP compatível com a finalidade. Sucesso: **`cStat 100`**.
+- `refNFeSig` (BA02a) é permitida em NF-e normal e de ajuste, com código numérico zerado, preservando o sigilo da nota referenciada (NT 2022.003; ampliada pela NT 2022.002 v1.30a).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 374 / 508 | CFOP incompatível com o grupo de tributação | [Tributos](/docs/leiaute-e-rejeicoes/tributos) |
+| 215/225 | grupo de imposto inadequado ao ajuste | [Como ler o leiaute](/docs/leiaute-e-rejeicoes/como-ler-o-leiaute) |
+| regra estadual | UF não aceita o CFOP/uso de ajuste | confirmar na [SEFAZ da UF](/docs/ufs) |
+
+## Diferença para complementar e devolução
+
+Ajuste não complementa valor de uma venda ([complementar](/docs/exemplos/nfe-complementar)) nem devolve mercadoria ([devolução](/docs/exemplos/nfe-devolucao)): é acerto fiscal **sem circulação**, em geral exigido pela UF.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Anexo I (finNFe=3); NT 2022.003 (refNFeSig); NT 2022.002 v1.30a. |
+| Versão | v1.11; v1.30a |
+| Data | 25/01/2023; 26/03/2026 |
+| Páginas/capítulo | Anexo I, grupos B, BA e Z |
+| NT relacionada | NT 2022.003 v1.11; NT 2022.002 v1.30a |
+| Schema/tabela relacionada | leiauteNFe_v4.00 |
+| Status | exemplo ilustrativo, valores fictícios — uso/CFOP conforme a legislação estadual |
+
+### Registro de origem
+
+Montado a partir de [Identificação e atores](/docs/leiaute-e-rejeicoes/identificacao-e-atores) (`finNFe`, `refNFeSig`) e [Pagamento e grupos finais](/docs/leiaute-e-rejeicoes/grupos-finais) (`procRef`/`tpAto`). Regra estadual em [UFs e regras estaduais](/docs/ufs). Schema: leiauteNFe_v4.00.

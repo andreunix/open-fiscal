@@ -1,0 +1,43 @@
+---
+title: Ajuste SINIEF 07/05 — NF-e modelo 55
+description: Norma que institui a NF-e modelo 55; impacto para implementação — existência digital, validade jurídica condicionada à assinatura e à autorização, DANFE e eventos.
+---
+
+O **Ajuste SINIEF 07/05** (CONFAZ) institui a **Nota Fiscal Eletrônica (NF-e), modelo 55**, e fixa seu regime jurídico nacional. É a base legal de todo o restante: o que o MOC, o XSD e as Notas Técnicas detalham tecnicamente nasce da obrigação criada aqui.
+
+## Impacto para implementação
+
+| O que a norma fixa | Consequência técnica |
+|---|---|
+| NF-e é documento de **existência apenas digital** | não há original em papel; o DANFE é representação, não o documento — ver [DANFE](/docs/danfe) |
+| Validade jurídica condicionada à **assinatura digital** do emitente e à **autorização de uso** pela SEFAZ | sem `cStat` de autorização e protocolo, não há documento fiscal válido — ver [Recibo e protocolo](/docs/emissao-e-comunicacao/recibo-e-uso-indevido) |
+| Substitui notas modelo 1/1-A e a Nota de Produtor modelo 4 | escopo de uso da NF-e — ver [Conceitos](/docs/fundamentos/conceitos) |
+| Chave de acesso e numeração por série | identificação única do documento — ver [Séries e numeração](/docs/fundamentos/series-e-numeracao) |
+| Eventos da NF-e regrados na **Cláusula 15ª-A** | catálogo de eventos (cancelamento, CC-e, manifestação etc.) — ver [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) |
+| DANFE como representação gráfica; tipos e regras de impressão | leiaute do DANFE, inclusive o **DANFE Tipo 2** — ver [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia) |
+
+> 🕒 O leiaute do **DANFE Tipo 2** foi alterado pelo **Ajuste SINIEF 13/26**; trate a regra de impressão por essa revisão, não pela redação original. Confronte sempre com a versão consolidada no portal do CONFAZ.
+
+## O que fica nas páginas técnicas
+
+A cláusula é a **fonte da obrigação**; o **como preencher** está no leiaute e no schema. Não reproduza aqui regra de validação (`RV`) nem campo XML: linke. O DANFE Simplificado — Etiqueta, por exemplo, nasce de alterações de cláusula (cláusula nona, §5º-A), mas suas regras de impressão ficam em [DANFE Simplificado e contingência](/docs/danfe/simplificado-e-contingencia).
+
+## Onde se aplica
+
+[Conceitos](/docs/fundamentos/conceitos) · [Séries e numeração](/docs/fundamentos/series-e-numeracao) · [Modelo e catálogo de eventos](/docs/eventos/modelo-e-catalogo) · [DANFE](/docs/danfe) · [Ato COTEPE/ICMS 69/20](/docs/legislacao/ato-cotepe-69-20-moc-7)
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | Ajuste SINIEF 07/05 — CONFAZ (texto consolidado) |
+| Versão | redação vigente consolidada; alterações por Ajustes SINIEF posteriores (inclui 13/26 no DANFE Tipo 2) |
+| Data | 2005; consolidação — ver fonte oficial |
+| Páginas/capítulo | cláusulas gerais; Cláusula 15ª-A (eventos); cláusula nona, §5º-A (DANFE Etiqueta) |
+| NT relacionada | aplicada por diversas NTs; não vinculada a uma única |
+| Schema/tabela relacionada | leiaute da NF-e modelo 55 — ver [Schemas](/docs/schemas) |
+| Status | vigente; base jurídica da NF-e, com alterações por Ajustes posteriores |
+
+### Registro de origem
+
+Texto consolidado do Ajuste SINIEF 07/05 no portal do CONFAZ (`https://www.confaz.fazenda.gov.br/legislacao/ajustes`). Resumo de impacto, não transcrição (Decisão 3 do plano). Confirmar a redação vigente das cláusulas citadas antes de decisões de produção, pois o Ajuste recebe alterações frequentes.

@@ -1,0 +1,75 @@
+---
+title: Cancelamento (evento 110111)
+description: Caso de evento de cancelamento de NF-e/NFC-e — nProt da autorização, xJust e assinatura sobre o Id do evento. Valores fictícios.
+---
+
+## Contexto fiscal
+
+Evento do **emitente** que cancela uma NF-e/NFC-e **autorizada**, dentro do prazo legal e sem circulação da mercadoria (`110111`). Exige o **protocolo de autorização** (`nProt`) e justificativa (`xJust`, mínimo 15 caracteres). A NFC-e em duplicidade tem o evento próprio `110112` (cancelamento por substituição).
+
+> ⚠️ **Valores fictícios, trecho ilustrativo.** Chave, protocolo e justificativa são inventados; antes de cancelar, confirme a situação da chave por [ConsultaProtocolo](/docs/emissao-e-comunicacao/consulta-protocolo).
+
+## Trecho principal do XML
+
+```xml
+<evento versao="1.00">
+  <infEvento Id="ID110111352606001111220001995500100000012310000012341">
+    <cOrgao>35</cOrgao><tpAmb>2</tpAmb>
+    <CNPJ>11112200019 9</CNPJ>
+    <chNFe>35260600111122000199550010000001231000001234</chNFe>
+    <dhEvento>2026-06-21T11:00:00-03:00</dhEvento>
+    <tpEvento>110111</tpEvento><nSeqEvento>1</nSeqEvento>
+    <verEvento>1.00</verEvento>
+    <detEvento versao="1.00">
+      <descEvento>Cancelamento</descEvento>
+      <nProt>135260000000123</nProt>     <!-- protocolo de autorização da NF-e -->
+      <xJust>Cancelamento por erro de digitacao no valor</xJust>
+    </detEvento>
+  </infEvento>
+  <!-- Signature XMLDSig sobre o Id do infEvento -->
+</evento>
+```
+
+## Campos críticos
+
+| Campo | Valor | Por quê |
+|---|---|---|
+| `tpEvento` | `110111` | cancelamento; `descEvento` fixo = `Cancelamento` — ver [Cancelamento](/docs/eventos/cancelamento) |
+| `nProt` | protocolo da autorização | identifica a NF-e autorizada a cancelar |
+| `xJust` | ≥ 15 caracteres | exigido já no schema (`TJust`) |
+| `CNPJ`/`CPF` do autor | = da chave | regra `G08` (rej. 574) |
+| `chNFe` | chave autorizada | regras `G04e`/`G06` (chave válida/existente) |
+
+## Validações esperadas
+
+- Prazo legal respeitado, chave autorizada, autor = emitente. Sucesso: **`cStat 135`** (Evento registrado e vinculado à NF-e). Guarde o protocolo do cancelamento junto ao XML.
+- NFC-e em **duplicidade** usa `110112` (cancelamento por substituição, prazo ≤ 168 h, com `chNFeRef`).
+
+## Rejeições comuns
+
+| `cStat` | Causa | Onde corrigir |
+|---|---|---|
+| 573 | evento já registrado (duplicidade) | não reenviar |
+| 574 | CNPJ/CPF do autor ≠ chave | corrigir autor |
+| prazo excedido | cancelamento fora do prazo legal/UF | tratar conforme a [UF](/docs/ufs) |
+| 494 | chave inexistente | conferir a chave |
+
+## Não confundir
+
+Cancelar trata nota **autorizada**; numeração **não usada** se resolve por [inutilização](/docs/exemplos/inutilizacao). Correção de texto sem cancelar é [carta de correção](/docs/exemplos/carta-correcao).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | MOC 7.0 — Visão Geral §3.1.1 e §3.5; NT 2023.002 v1.01; NT 2026.001 v1.00 (PAA). |
+| Versão | v1.01; v1.00 |
+| Data | 18/11/2025; 22/04/2026 |
+| Páginas/capítulo | §3, p. 28 e 46–47 |
+| NT relacionada | NT 2023.002 v1.01; NT 2026.001 v1.00 |
+| Schema/tabela relacionada | e110111_v1.00 (Evento_Canc_PL_v1.01) |
+| Status | exemplo ilustrativo, valores fictícios — confirmar situação da chave antes de cancelar |
+
+### Registro de origem
+
+Montado a partir de [Cancelamento](/docs/eventos/cancelamento) (estrutura do evento, regras G04e/G06/G08). Overlay: NT 2023.002 v1.01 (18/11/2025), NT 2026.001 v1.00 (22/04/2026). Schema: e110111_v1.00.

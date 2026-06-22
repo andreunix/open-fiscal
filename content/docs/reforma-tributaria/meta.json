@@ -1,0 +1,17 @@
+{
+  "title": "Reforma Tributária",
+  "description": "Trilha própria do IBS, da CBS e do Imposto Seletivo na NF-e/NFC-e — da base legal ao XML, sem misturar LC, NT, IT, XSD e cronograma.",
+  "pages": [
+    "index",
+    "lc-214-2025",
+    "nt-2025-002",
+    "ibs",
+    "cbs",
+    "imposto-seletivo",
+    "campos-nfe-nfce",
+    "tabelas-rtc",
+    "eventos-rtc",
+    "cronograma",
+    "exemplos-xml"
+  ]
+}

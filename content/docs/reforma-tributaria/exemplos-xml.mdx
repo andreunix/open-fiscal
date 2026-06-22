@@ -1,0 +1,79 @@
+---
+title: Exemplos de XML da RTC
+description: Esqueleto dos grupos da Reforma Tributária no XML da NF-e/NFC-e — onde IS, IBSCBS, vItem e os totais ISTot/IBSCBSTot se encaixam. Estrutura ilustrativa; fixtures completas vêm na seção de exemplos.
+---
+
+Esta página mostra **onde** os grupos da RTC se encaixam no XML — a estrutura de aninhamento — para orientar o mapeamento. É um **esqueleto ilustrativo**, não um exemplo completo e validável.
+
+> ⚠️ **Valores fictícios, estrutura simplificada.** O aninhamento abaixo usa os nomes de grupo documentados; confirme os **nomes exatos dos campos-folha**, a ordem e a cardinalidade no **schema vigente** antes de serializar. Exemplos completos por cenário estão em [Exemplos e casos de teste](/docs/exemplos).
+
+## Onde os grupos entram no item
+
+```xml
+<det nItem="1">
+  <prod> ... </prod>
+  <imposto>
+    <!-- grupos clássicos do MOC, quando aplicáveis -->
+    <ICMS> ... </ICMS>
+    <!-- Imposto Seletivo (grupo IS, família UB) -->
+    <IS>
+      <CSTIS>...</CSTIS>
+      <cClassTribIS>...</cClassTribIS>
+      <!-- base, alíquota %/específica, vIS -->
+    </IS>
+    <!-- IBS + CBS (grupo IBSCBS, família UB) -->
+    <IBSCBS>
+      <gIBSCBS>
+        <!-- base comum a IBS e CBS -->
+        <!-- gIBSUF: parcela estadual do IBS -->
+        <!-- gIBSMun: parcela municipal do IBS -->
+        <!-- gCBS: CBS -->
+      </gIBSCBS>
+    </IBSCBS>
+  </imposto>
+  <!-- valor do item para os totalizadores RTC (família VB) -->
+  <vItem>...</vItem>
+</det>
+```
+
+## Onde os totais entram
+
+```xml
+<total>
+  <ICMSTot> ... </ICMSTot>
+  <!-- total do Imposto Seletivo -->
+  <ISTot><vIS>...</vIS></ISTot>
+  <!-- totais de IBS UF/Município, CBS, monofasia, créditos e estornos -->
+  <IBSCBSTot> ... </IBSCBSTot>
+  <!-- soma de vItem; não substitui vNF -->
+  <vNFTot>...</vNFTot>
+</total>
+```
+
+> 💡 IBS, CBS e IS são **"por fora"**: não entram em `vNF`. Em 2025/2026, `vNFTot` é a soma de `vItem`, mas os tributos da RTC **não** são somados nele. Ver [Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce#totais).
+
+## Para o detalhe de cada campo
+
+- Item: [Tributos → IBS, CBS e IS](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo)
+- Totais: [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento#overlay-de-nts)
+- Mapa transversal de campos: [Campos na NF-e/NFC-e](/docs/reforma-tributaria/campos-nfe-nfce)
+
+## Fixtures completas
+
+Exemplos completos por cenário estão na seção [Exemplos e casos de teste](/docs/exemplos) — cada caso traz contexto fiscal, trecho de XML, campos críticos, validações esperadas e rejeições comuns (valores fictícios). Diretamente relacionados à RTC: [NF-e normal](/docs/exemplos/nfe-normal) (base do item), [Combustível](/docs/exemplos/combustivel) (monofasia) e [NF-e de devolução](/docs/exemplos/nfe-devolucao) (migração para `DFeReferenciado`).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2025.002 v1.50 — grupos IS, IBSCBS (família UB) e totais |
+| Versão | v1.50 |
+| Data | 03/06/2026 |
+| Páginas/capítulo | esqueleto ilustrativo; nomes-folha no schema vigente |
+| NT relacionada | NT 2025.002-RTC v1.50 |
+| Schema/tabela relacionada | pacotes XSD da RTC (famílias UB/VB) |
+| Status | estrutura ilustrativa, valores fictícios — confirmar nomes/ordem/cardinalidade no schema vigente |
+
+### Registro de origem
+
+Esqueleto de XML da trilha Reforma Tributária (Estágio 5 do plano). Estrutura de aninhamento baseada nos grupos documentados em [Tributos](/docs/leiaute-e-rejeicoes/tributos#ibs-cbs-e-imposto-seletivo) e [Totais e fechamento](/docs/leiaute-e-rejeicoes/totais-e-fechamento); nomes-folha a confirmar no schema. Fixtures completas e validáveis ficam para o Estágio 6 (seção de exemplos), ainda pendente.

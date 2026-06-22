@@ -5,7 +5,7 @@ description: O Sistema de Registro de Eventos e o catálogo completo de eventos 
 
 ## O que o manual diz
 
-Os eventos da NF-e modelo 55 são regrados na **Cláusula 15ª-A do Ajuste SINIEF 07/05**. Para a **NFC-e modelo 65**, o Ajuste SINIEF 19/16 prevê apenas **Cancelamento** e **EPEC**.
+Os eventos da NF-e modelo 55 são regrados na **Cláusula 15ª-A do [Ajuste SINIEF 07/05](/docs/legislacao/ajuste-sinief-07-05-nfe)**. Para a **NFC-e modelo 65**, o [Ajuste SINIEF 19/16](/docs/legislacao/ajuste-sinief-19-16-nfce) prevê apenas **Cancelamento** e **EPEC**.
 
 Todo evento é registrado pelo Web Service `nfeRecepcaoEvento` (ver [Mapa dos Web Services](/docs/emissao-e-comunicacao/web-services)), com uma parte geral comum e uma área específica por tipo:
 
@@ -57,6 +57,8 @@ Todo evento é registrado pelo Web Service `nfeRecepcaoEvento` (ver [Mapa dos We
 | `610500/610501` | Registro de Passagem / cancelamento |
 
 ### Eventos da Reforma Tributária 🔄
+
+> 🧭 Visão navegável destes eventos na trilha da Reforma: [Eventos da RTC](/docs/reforma-tributaria/eventos-rtc), parte da seção [Reforma Tributária](/docs/reforma-tributaria).
 
 A NT 2025.002 v1.50 cria eventos da NF-e modelo 55 para a apuração de IBS/CBS. Eles são autorizados pela **SVRS** e devem ser enviados individualmente; embora o Web Service ainda aceite lote com até 20 eventos, a NT recomenda não agrupar os novos eventos.
 
