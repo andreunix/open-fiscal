@@ -7,14 +7,14 @@ import { PROJECT_DIR } from "./nfe-portal";
 // Catalogos versionados (consumiveis por codigo) do Estagio 7.
 // - manifest.tsv: registro de cada tabela auxiliar com vigencia + fonte.
 // - checksums.tsv: hash do snapshot extraido, para detectar tabela alterada.
-// - <id>.tsv: extracao fiel do snapshot .xlsx em tmp/nfe/diversos/.
+// - <id>.tsv: extracao fiel do snapshot .xlsx em tmp/nfe-oficial/diversos/.
 
 export const DATA_DIR = join(PROJECT_DIR, "data");
 export const TABELAS_DIR = join(DATA_DIR, "tabelas");
 export const ENDPOINTS_DIR = join(DATA_DIR, "endpoints");
 export const MANIFEST = join(TABELAS_DIR, "manifest.tsv");
 export const CHECKSUMS = join(TABELAS_DIR, "checksums.tsv");
-export const SNAPSHOT_DIR = join(PROJECT_DIR, "tmp", "nfe", "diversos");
+export const SNAPSHOT_DIR = join(PROJECT_DIR, "tmp", "nfe-oficial", "diversos");
 
 export type ManifestRow = {
   id: string;

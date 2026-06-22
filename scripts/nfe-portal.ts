@@ -40,7 +40,7 @@ export type LocalFile = {
 };
 
 export const PROJECT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const OUT_DIR = join(PROJECT_DIR, "tmp", "nfe");
+export const OUT_DIR = join(PROJECT_DIR, "tmp", "nfe-oficial");
 export const VERSIONED_INDEX = join(PROJECT_DIR, "data", "nfe", "index.tsv");
 export const LEGACY_INDEX = join(OUT_DIR, "index.tsv");
 export const BASE_URL = "https://www.nfe.fazenda.gov.br/portal";

@@ -41,18 +41,18 @@ Toda página deve usar esta estrutura mínima:
 | Schema/tabela relacionada | Pacote XSD, tabela externa, IT ou `não indicada` |
 | Status | Vigente, histórico, depende de UF, overlay posterior ao MOC, índice editorial ou pendente de captura |
 
-O texto antigo da fonte deve ficar abaixo da tabela em `### Registro de origem`. Esse registro preserva detalhes finos que não cabem no resumo estruturado, como lista de overlays, caminhos locais em `tmp/nfe/` e observações editoriais.
+O texto antigo da fonte deve ficar abaixo da tabela em `### Registro de origem`. Esse registro preserva detalhes finos que não cabem no resumo estruturado, como lista de overlays, caminhos locais em `tmp/nfe-oficial/` e observações editoriais.
 
 ## Captura e arquivos locais
 
 | Tipo | Local versionado no workspace | Observação |
 |---|---|---|
-| PDFs de manuais | `tmp/nfe/manuais/` | Usados como fonte primária de MOC, anexos e modelos novos |
-| PDFs de NT | `tmp/nfe/notas-tecnicas/` | Cada página de NT aponta o arquivo consolidado usado |
-| PDFs de IT | `tmp/nfe/informes-tecnicos/` | Tabelas externas devem ser recarregadas antes de produção |
-| Schemas XSD | `tmp/nfe/esquemas-xml/` | Pacote baixado é a verdade de forma analisada pela documentação |
-| Tabelas auxiliares | `tmp/nfe/diversos/` | Snapshots para estudo, não cadastro permanente de emissão |
-| HTML do Portal | `tmp/nfe/portal-principal.html`, `tmp/nfe/webServices.html` | Capturas usadas em [Serviços por UF](/docs/operacao/servicos-por-uf) |
+| PDFs de manuais | `tmp/nfe-oficial/manuais/` | Usados como fonte primária de MOC, anexos e modelos novos |
+| PDFs de NT | `tmp/nfe-oficial/notas-tecnicas/` | Cada página de NT aponta o arquivo consolidado usado |
+| PDFs de IT | `tmp/nfe-oficial/informes-tecnicos/` | Tabelas externas devem ser recarregadas antes de produção |
+| Schemas XSD | `tmp/nfe-oficial/esquemas-xml/` | Pacote baixado é a verdade de forma analisada pela documentação |
+| Tabelas auxiliares | `tmp/nfe-oficial/diversos/` | Snapshots para estudo, não cadastro permanente de emissão |
+| HTML do Portal | `tmp/nfe-oficial/portal-principal.html`, `tmp/nfe-oficial/webServices.html` | Capturas usadas em [Serviços por UF](/docs/operacao/servicos-por-uf) |
 
 ## Pendências explícitas
 

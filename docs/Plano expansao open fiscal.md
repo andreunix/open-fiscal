@@ -18,7 +18,7 @@ Mapa de trabalho para crescer a cobertura documental do projeto. Cada estágio �
 
 **Status: ✅ Concluído**
 
-NTs que existem em `tmp/nfe/notas-tecnicas/` mas não têm página em `content/docs/(nfe-nfce)/notas-tecnicas/`. São as que mais impactam quem lê a seção de NTs porque criam lacunas visíveis na linha do tempo.
+NTs que existem em `tmp/nfe-oficial/notas-tecnicas/` mas não têm página em `content/docs/(nfe-nfce)/notas-tecnicas/`. São as que mais impactam quem lê a seção de NTs porque criam lacunas visíveis na linha do tempo.
 
 | NT | Arquivo PDF | Página doc | Status |
 |---|---|---|---|
@@ -45,7 +45,7 @@ NTs que existem em `tmp/nfe/notas-tecnicas/` mas não têm página em `content/d
 
 51 NTs de 2007 a 2013, em sua maioria pacotes de liberação de schemas (`PL_xxx`) e versões antigas do Manual de Integração, todas incorporadas ao MOC 7.0. Têm valor de rastreabilidade histórica, não de referência de implementação. Documentadas como **registros somente-leitura** (Resumo · Vigência · Fonte) com marcação `🕒 histórico`.
 
-Arquivos de origem em `tmp/nfe/notas-tecnicas/`: `2007.001` a `2013.008`.
+Arquivos de origem em `tmp/nfe-oficial/notas-tecnicas/`: `2007.001` a `2013.008`.
 
 | Bloco | Páginas | Status |
 |---|---|---|
@@ -94,7 +94,7 @@ Páginas de DANFGas e DANFAG existem como esqueletos. Completar com especificaç
 
 **Status: ⬜ Pendente**
 
-Conforme o diagnóstico em `tmp/nfe/revisao-moc-7.0-visao-geral.md`, o conteúdo atual tem ~5,9 mil palavras contra 60,3 mil do PDF. Lacunas identificadas:
+Conforme o diagnóstico em `tmp/nfe-oficial/revisao-moc-7.0-visao-geral.md`, o conteúdo atual tem ~5,9 mil palavras contra 60,3 mil do PDF. Lacunas identificadas:
 
 | Capítulo | Lacuna principal | Arquivo(s) alvo |
 |---|---|---|

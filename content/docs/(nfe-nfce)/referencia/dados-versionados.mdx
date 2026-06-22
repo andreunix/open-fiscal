@@ -46,7 +46,7 @@ A chave de roteamento mínima é `(modelo, UF, serviço, ambiente, tipo de emiss
 ## Como gerar e verificar
 
 ```bash
-bun run tabelas:build   # extrai os snapshots .xlsx de tmp/nfe/diversos/ -> data/tabelas/<id>.tsv + checksums
+bun run tabelas:build   # extrai os snapshots .xlsx de tmp/nfe-oficial/diversos/ -> data/tabelas/<id>.tsv + checksums
 bun run tabelas:check   # valida campos obrigatórios, integridade (hash) e vigências
 ```
 
@@ -67,5 +67,5 @@ O `tabelas:check` falha (`exit 1`) quando falta `fonte`/`vigencia` em algum regi
 ### Registro de origem
 
 - Portal Nacional da NF-e — tabelas auxiliares (Documentos diversos) e [Relação de Serviços Web](https://www.nfe.fazenda.gov.br/portal/webServices.aspx?tipoConteudo=OUC/YVNWZfo=).
-- Snapshots em `tmp/nfe/diversos/`; manifesto de documentos em `data/nfe/index.tsv`.
+- Snapshots em `tmp/nfe-oficial/diversos/`; manifesto de documentos em `data/nfe/index.tsv`.
 - Scripts `scripts/build-tabelas.ts`, `scripts/check-tabelas.ts` e `scripts/xlsx.ts`.

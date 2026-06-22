@@ -13,7 +13,7 @@ import {
   type ChecksumRow,
 } from "./tabelas";
 
-// Extrai os snapshots .xlsx de tmp/nfe/diversos/ para data/tabelas/<id>.tsv
+// Extrai os snapshots .xlsx de tmp/nfe-oficial/diversos/ para data/tabelas/<id>.tsv
 // (consumiveis por codigo) e registra hash + contagem em checksums.tsv.
 
 const manifest = await readManifest();

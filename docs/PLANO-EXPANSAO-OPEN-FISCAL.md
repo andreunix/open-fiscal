@@ -71,7 +71,7 @@ As lacunas restantes não são "criar tudo", e sim fechar camadas sem dono próp
 
 Registro histórico. Os planos de Notas Técnicas e Informes Técnicos já foram executados; esta etapa
 fica apenas como memória do risco observado no checkpoint anterior (worktree com rename em andamento
-`tmp/nfe/notas-tecnicas/PLANO-CONSOLIDACAO.md → docs/PLANO-CONSOLIDACAO.md`). Se o rename reaparecer no
+`tmp/nfe-oficial/notas-tecnicas/PLANO-CONSOLIDACAO.md → docs/PLANO-CONSOLIDACAO.md`). Se o rename reaparecer no
 `git status`, tratar como manutenção de worktree, não como etapa do plano.
 
 ---
