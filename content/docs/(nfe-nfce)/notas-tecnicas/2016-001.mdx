@@ -1,0 +1,50 @@
+---
+title: NT 2016.001 v1.40 — Tabela de Unidades de Medidas Tributáveis no Comércio Exterior (Utrib)
+description: Padroniza o campo uTrib (Unidade Tributável) da NF-e com a Tabela de Unidades de Medidas Tributáveis no Comércio Exterior, alinhada às recomendações da OMA, e introduz a regra de validação I14-10 para operações de exportação.
+---
+
+A **NT 2016.001** adequa a NF-e ao Portal Único do Comércio Exterior: o campo `uTrib` (Unidade Tributável, I14) passa a ser validado contra a **Tabela NCM × Utrib** publicada no Portal da NF-e, que associa cada código NCM à unidade de medida tributável recomendada pela Organização Mundial das Aduanas (OMA). A NT aplica-se **exclusivamente** a contribuintes que operam em comércio exterior (exportação); não afeta a NFC-e nem quem não opera com o exterior.
+
+> 🕒 Histórico: v1.40 (julho de 2018). Em produção desde 03/07/2017.
+
+## O que muda
+
+| Tema | Detalhe |
+|---|---|
+| Regra I14-10 | Campo `uTrib` (I14) deve conter uma das abreviações da Tabela Utrib publicada no Portal, quando a NF-e documentar operação de exportação (CFOP iniciado em 7) |
+| Tabela Utrib | Disponibilizada em Portal da NF-e → Documentos → Diversos. v1.30 reverteu 585 unidades que haviam sido alteradas; v1.40 corrige as NCMs 4409.2200 e 4409.2900 de Kg para M³ |
+| Letras maiúsculas e minúsculas | v1.10 esclareceu que o campo não diferencia maiúsculas de minúsculas no controle de conteúdo |
+
+## Regras de validação
+
+| Campo-Seq | Regra | Descrição |
+|---|---|---|
+| I14-10 | `uTrib` deve ser abreviação válida da Tabela Utrib | Aplica-se a NF-e com CFOP de exportação; não afeta NFC-e |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação | 28/04/2017 |
+| Produção | 03/07/2017 |
+| v1.40 (NCMs 4409.x) | 16/07/2018 |
+
+## Implicação de implementação
+
+> **Implementação:** mantenha a Tabela Utrib atualizada localmente (ou consulte o Portal); valide `uTrib` somente em itens com CFOP de exportação (começa em `7`). A NT não altera `uCom` e não afeta NFC-e.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2016.001 v1.40 |
+| Versão | v1.40 |
+| Data | julho de 2018 |
+| Páginas/capítulo | 4 páginas |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | Tabela NCM × Utrib (Portal da NF-e → Documentos → Diversos) |
+| Status | 🕒 histórico — regra I14-10 incorporada ao leiaute vigente |
+
+### Registro de origem
+
+NT 2016.001 v1.40 (julho de 2018), `tmp/nfe/notas-tecnicas/Nota Técnica 2016.001 - v.1.40 - Publicada em 16-07-2018.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).

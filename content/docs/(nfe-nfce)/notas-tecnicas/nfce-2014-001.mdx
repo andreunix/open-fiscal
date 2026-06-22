@@ -1,0 +1,46 @@
+---
+title: NT NFC-e 2014.001 v1.00 — Web Service de Administração do CSC
+description: Define o Web Service de manutenção do Código de Segurança do Contribuinte (CSC) da NFC-e, com operações de consulta, revogação e geração de novo CSC, limite de dois CSC ativos por CNPJ Raiz e schemas XML admCscNFCe_v1.00 e retAdmCscNFCe_v1.00.
+---
+
+A **NT NFC-e 2014.001** especifica o **Web Service de Administração do CSC** (Código de Segurança do Contribuinte) da NFC-e. O CSC é um token secreto, compartilhado entre a empresa emissora e a SEFAZ, que entra no cálculo do hash de segurança impresso no QR Code do DANFE NFC-e. Este Web Service é a alternativa programática à administração do CSC via portal web da SEFAZ.
+
+> 🕒 Histórico: v1.00 (agosto de 2014). Pacote de schemas PL_001a. Incorporado ao conjunto de Web Services da NFC-e vigente.
+
+## O que define
+
+| Funcionalidade | Descrição |
+|---|---|
+| Consulta de CSC ativos | Lista os CSC ativos do CNPJ Raiz, sem restrição de frequência |
+| Revogação de CSC | Invalida um CSC ativo; necessária antes de gerar novo CSC quando o limite de 2 já foi atingido |
+| Geração de novo CSC | Solicita um novo número de CSC; rejeitado se já houver 2 CSC ativos sem revogação |
+
+**Limite:** cada CNPJ Raiz pode ter até **2 CSC ativos** simultaneamente.  
+**Método:** síncrono — o retorno é devolvido na mesma conexão da solicitação.
+
+## Schemas XML
+
+| Leiaute | Versão | Schema XML | Uso |
+|---|---|---|---|
+| `admCscNFCe` | 1.00 | `admCscNFCe_v1.00.xsd` | Mensagem de solicitação (consulta / geração / revogação) |
+| `retAdmCscNFCe` | 1.00 | `retAdmCscNFCe_v1.00.xsd` | Mensagem de retorno |
+
+## Como interpretar
+
+O CSC é um segredo compartilhado — **não deve ser transmitido na NF-e** e não aparece no QR Code. Apenas o hash resultante de `URL + CSC` entra no QR Code. Empresas que administram múltiplos PDVs com o mesmo CNPJ Raiz devem garantir que todos os PDVs usem o CSC ativo mais recente após uma revogação. Ver [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT NFC-e 2014.001 v1.00 |
+| Versão | v1.00 |
+| Data | agosto de 2014 |
+| Páginas/capítulo | 9 páginas |
+| NT relacionada | NT NFC-e 2014.003 (EPEC); NT 2015.002 (QR Code) |
+| Schema/tabela relacionada | `admCscNFCe_v1.00.xsd`; `retAdmCscNFCe_v1.00.xsd` (PL_001a) |
+| Status | 🔄 vigente — Web Service de CSC é obrigatório para todo emissor NFC-e |
+
+### Registro de origem
+
+NT NFC-e 2014.001 v1.00 (agosto de 2014), `tmp/nfe/notas-tecnicas/Nota Técnica NFC-e 2014.001 - Publicada em 20-08-2014.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [DANFE NFC-e e QR Code](/docs/danfe/danfe-nfce-qrcode).

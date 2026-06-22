@@ -1,0 +1,43 @@
+---
+title: NT 2015.003 v1.94 — ICMS interestadual (EC 87/2015) e CEST
+description: Implementa o diferencial de alíquota e a partilha do ICMS em operações interestaduais de venda a consumidor final (EC 87/2015 e Convênio ICMS 93/2015), incluindo o Fundo de Combate à Pobreza (FCP) e o Código Especificador da Substituição Tributária (CEST).
+---
+
+A **NT 2015.003** adapta a NF-e e a NFC-e à Emenda Constitucional 87/2015, que redistribuiu a receita de ICMS nas operações interestaduais para consumidor final não contribuinte: a UF de destino passa a receber parte do imposto. A NT define novos campos no leiaute, regras de validação, exemplos de cálculo e CFOP específicos para remessa, retorno e anulação de valor.
+
+> 🕒 Histórico: versão final 1.94 (junho de 2017). Vigência da EC 87 a partir de 01/01/2016 (Convênio ICMS 93/2015). A NT passou por quatorze versões de v1.10 a v1.94.
+
+## O que muda
+
+| Tema | Detalhe | Onde se reflete |
+|---|---|---|
+| Grupo NA — ICMS para UF destino | Novos campos: `vBCUFDest` (NA01), `vBCFCPUFDest` (NA02), `pFCPUFDest` (NA03), `pICMSUFDest` (NA04), `pICMSInter` (NA05), `pICMSInterPart` (NA06), `vFCPUFDest` (NA07), `vICMSUFDest` (NA08), `vICMSUFRemet` (NA09) | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/tributos) |
+| CEST (N23-10) | Campo `CEST` (N23) obrigatório quando houver ICMS ST (`vICMSST` > 0), exceto no grupo de Partilha do ICMS. Obrigatório também na NFC-e (v1.40 em diante) | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/tributos) |
+| FCP separado do ICMS interestadual | Valor do FCP (`vFCPUFDest`) não é somado ao `vICMSUFDest` | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/tributos) |
+| CFOP específicos | Novos CFOP de retorno (Anexo XIII.04), anulação de valor (XIII.05) e remessa (XIII.06) para operações interestaduais com consumidor final | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes) |
+| `idDest` como critério de UF | RVs E12-30, E12-40, N12-70, N12-80 e N16-20 passam a usar o endereço de entrega (`idDest`) em vez do CFOP para verificar se a operação é interestadual | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+| Validação IE isento (E16a-30) | Controles sobre contribuinte indicado como isento de IE em UF que não admite essa situação, com exceções para ICMS-ST e isenção/imunidade | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/identificacao-e-atores) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| EC 87/2015 — vigência | 01/01/2016 |
+| CEST obrigatório (N23-10) | 01/04/2016 (produção) |
+| Versão final 1.94 | junho de 2017 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2015.003 v1.94 |
+| Versão | v1.94 |
+| Data | junho de 2017 |
+| Páginas/capítulo | 28 páginas |
+| NT relacionada | NT 2016.002 (consolida no leiaute v4.00); Convênio ICMS 93/2015; EC 87/2015 |
+| Schema/tabela relacionada | PL_008h (v1.10); PL_008h1 (v1.20) |
+| Status | 🕒 histórico — conteúdo consolidado no leiaute v4.00 pela NT 2016.002 |
+
+### Registro de origem
+
+NT 2015.003 v1.94 (junho de 2017), `tmp/nfe/notas-tecnicas/Nota Técnica 2015.003 - v.1.94 - Publicada em 23-06-2017.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).

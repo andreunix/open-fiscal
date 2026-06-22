@@ -1,0 +1,51 @@
+---
+title: NT 2014.004 v1.10 — NCM obrigatório, novos países, fuso horário de evento e consulta situação
+description: Torna obrigatório o NCM completo (8 dígitos) em cada item da NF-e e NFC-e, adiciona Palestina e Sudão do Sul à tabela de países, amplia o schema de eventos para qualquer fuso horário UTC e corrige a consulta situação para compatibilidade retroativa com mensagens v2.01.
+---
+
+A **NT 2014.004** consolida quatro ajustes de schema e regra de validação publicados a partir de 2013: a obrigatoriedade do NCM completo (Ajuste SINIEF 22/13), a inclusão de dois novos códigos de país, a aceitação de qualquer fuso horário UTC nas datas de eventos e a correção da consulta situação para notas emitidas na versão 3.10.
+
+> 🕒 Histórico: v1.10 (agosto de 2014). Em vigor na NF-e (modelo 55) desde 01/08/2014 e na NFC-e (modelo 65) desde 01/01/2015.
+
+## O que muda
+
+| Tema | Detalhe | Onde se reflete |
+|---|---|---|
+| NCM obrigatório | Campo `NCM` (I05) passa a exigir o código completo de **8 dígitos** para todos os itens. Exceção: item de serviço ou item sem produto informa `"00"` (dois zeros); item que não se classifica na NCM informa `"00000000"` (oito zeros) | [Itens e produtos](/docs/leiaute-e-rejeicoes/itens-e-produtos) |
+| Novos códigos de país | Adicionados **5780 — Palestina** e **7600 — Sudão do Sul** ao schema | [Tabelas e códigos](/docs/referencia) |
+| Fuso horário de evento | Schema de eventos ampliado para aceitar qualquer offset UTC de **-11:00 a +12:00** (antes só fusos do Brasil) | [Arquitetura](/docs/emissao-e-comunicacao/arquitetura) |
+| Consulta situação | Schema de resposta ajustado para não acusar erro quando uma chave da versão 3.10 é consultada por aplicação que ainda usa a mensagem v2.01 | [Consulta protocolo](/docs/emissao-e-comunicacao/consulta-protocolo) |
+
+## Regras de validação
+
+| Campo-Seq | Regra | Msg | Descrição do erro |
+|---|---|---|---|
+| I05-10 | NCM obrigatório (8 posições) | `777` | Obrigatória a informação do NCM completo |
+| I05-20 | NCM inexistente na tabela MDIC | `778` | Informado NCM inexistente — implementação futura na época |
+| I05.24 | NCM=`"00"` indevido | `471` | Informado NCM=00 indevidamente |
+
+Regras desativadas por esta NT (antes verificavam situações cobertas pela obrigatoriedade geral): GI08.6 (`524` — CFOP exterior sem NCM), GO07 (`529` — IPI sem NCM), I05-40 (`779` — capítulo de NCM inválido).
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação | 15/07/2014 |
+| Produção — NF-e modelo 55 | 01/08/2014 |
+| Produção — NFC-e modelo 65 | 01/01/2015 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2014.004 v1.10 |
+| Versão | v1.10 |
+| Data | agosto de 2014 |
+| Páginas/capítulo | 7 páginas |
+| NT relacionada | Ajuste SINIEF 22/13 |
+| Schema/tabela relacionada | não indicado |
+| Status | 🕒 histórico — incorporado ao MOC 7.0 e ao schema vigente |
+
+### Registro de origem
+
+NT 2014.004 v1.10 (agosto de 2014), `tmp/nfe/notas-tecnicas/Nota Técnica 2014.004 - v.1.10 - Publicada em 11-08-2014.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).

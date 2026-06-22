@@ -1,0 +1,55 @@
+---
+title: NT 2018.004 v1.00 — Cancelamento por Substituição da NFC-e (tpEvento 110112)
+description: Cria o evento de Cancelamento por Substituição (tpEvento=110112) para a NFC-e, permitindo cancelar uma NFC-e emitida em duplicidade no prazo de 168 horas, com referência obrigatória à NFC-e que substituiu a cancelada.
+---
+
+A **NT 2018.004** implementa o evento de **Cancelamento por Substituição** (`tpEvento=110112`) para a **NFC-e (modelo 65)**, com base no Ajuste SINIEF 07/18. O evento permite que o contribuinte cancele uma NFC-e autorizada que foi emitida em duplicidade — situação típica quando o emissor não recebe a resposta da SEFAZ e emite uma segunda NFC-e em contingência para cobrir a mesma operação, descobrindo depois que ambas foram autorizadas.
+
+> 🔄 Vigente: v1.00 (dezembro de 2018). Em produção desde 29/04/2019. Aplica-se exclusivamente à **NFC-e modelo 65**; possível extensão à NF-e modelo 55 depende de alteração legislativa.
+
+## O que muda
+
+| Tema | Detalhe |
+|---|---|
+| `tpEvento=110112` | Novo evento de **Cancelamento por Substituição** (evento do contribuinte) |
+| Prazo | Até **168 horas** contadas da autorização da NFC-e cancelada (prazo pode ser reduzido a critério da UF) |
+| Referência obrigatória | O evento deve referenciar a **NFC-e substituta** (NFC-2) que efetivamente acoberta a operação |
+| Diferença do cancelamento normal | O cancelamento normal (`110111`) não exige referência; o cancelamento por substituição exige a chave da NFC-e que fica ativa |
+| Documentação do cancelamento normal | A NT inclui também a documentação completa do `110111` (sem alteração de especificação), para clareza comparativa |
+
+## Como interpretar
+
+O cenário típico:
+1. Emissor envia NFC-e 1 → sem resposta.
+2. Emite NFC-e 2 em contingência para cobrir a operação.
+3. Descobre que a NFC-e 1 também foi autorizada.
+4. Cancela a NFC-e 1 com `110112`, referenciando a NFC-e 2 como substituta.
+
+O cancelamento por substituição preserva a rastreabilidade: a SEFAZ sabe qual NFC-e substituiu a cancelada.
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação | até 25/02/2019 |
+| Produção | 29/04/2019 |
+
+## Implicação de implementação
+
+> **Implementação:** implemente o evento `110112` separadamente do `110111`; exija que o sistema do emissor informe a chave da NFC-e substituta. Ao reconciliar NFC-e em contingência, verifique se há duas NFC-e autorizadas para a mesma operação antes de tentar cancelar — o prazo de 168 horas corre da autorização. Ver [Cancelamento](/docs/eventos/cancelamento) e [NFC-e offline](/docs/contingencia/nfce-offline).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2018.004 v1.00 |
+| Versão | v1.00 |
+| Data | dezembro de 2018 |
+| Páginas/capítulo | 12 páginas |
+| NT relacionada | Ajuste SINIEF 07/18; NT que introduz `110111` (cancelamento normal) |
+| Schema/tabela relacionada | não indicado |
+| Status | 🔄 vigente — apenas para NFC-e modelo 65 |
+
+### Registro de origem
+
+NT 2018.004 v1.00 (dezembro de 2018), `tmp/nfe/notas-tecnicas/Nota Técnica 2018.004 - v.1.00 - Publicada em 21-12-2018.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Cancelamento](/docs/eventos/cancelamento).

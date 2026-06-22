@@ -1,0 +1,60 @@
+---
+title: NT 2018.003 v1.01 — Alteração da Tabela de Países
+description: Atualiza a Tabela de Códigos de Países usada na NF-e, harmonizando-a com o Portal de Comércio Exterior. Inclui o dígito verificador para Curaçao, renomeia Kuwait e, na v1.01, renomeia Macedonia do Norte, São Martinho (parte holandesa) e Eswatini.
+---
+
+A **NT 2018.003** atualiza a **Tabela de Países** (Anexo IX do MOC) para harmonizá-la com a tabela do Portal Único do Comércio Exterior, necessária para a Declaração Única de Exportação (DU-E). A validação do código de país deve considerar a data de emissão da NF-e.
+
+> 🕒 Histórico: v1.01 (abril de 2019). Tabela atualizada disponível em Portal da NF-e → Documentos → Diversos.
+
+## O que muda
+
+### v1.00 (maio de 2018)
+
+| Alteração | Código | Antes | Depois |
+|---|---|---|---|
+| DV Curaçao | 2003 | sem DV | código `2003` com DV `"3"` |
+| Nome Kuwait | 4591 | Coveite | Kuwait |
+| Inclusões e exclusões | Vários | — | conforme Ajuste na tabela do Portal |
+
+### v1.01 (junho de 2019)
+
+| Código | Nome anterior | Nome novo |
+|---|---|---|
+| 4499 | Macedonia, Ant. Rep. Iugoslava | Macedonia do Norte |
+| 6980 | Ilhas de São Martinho (Parte Francesa) | São Martilho, Ilha de Parte Francesa |
+| 6998 | São Martinho, Ilha de Parte Francesa | São Martinho, Ilha de Parte Holandesa |
+| 7544 | Suazilândia | Eswatini |
+
+## Como interpretar
+
+A tabela de países é publicada externamente no Portal da NF-e; o schema XML **não** lista os códigos válidos. A validação do código de país é feita pela SEFAZ com base na tabela vigente na data de emissão do documento.
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| v1.00 — homologação | 14/05/2018 |
+| v1.00 — produção | 01/06/2018 |
+| v1.01 — homologação | 03/06/2019 |
+| v1.01 — produção | 01/07/2019 |
+
+## Implicação de implementação
+
+> **Implementação:** não codifique a lista de países — use a tabela do Portal (versionada por data de emissão). Ao validar documentos históricos, aplique a tabela vigente na data da emissão. Ver também [NT 2014.004](/docs/notas-tecnicas/2014-004) (que adicionou Palestina e Sudão do Sul anteriormente).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2018.003 v1.01 |
+| Versão | v1.01 |
+| Data | abril de 2019 |
+| Páginas/capítulo | 2 páginas |
+| NT relacionada | NT 2014.004 v1.10 (Palestina, Sudão do Sul); NT 2015.002 v1.41 (Curaçao — menção) |
+| Schema/tabela relacionada | Tabela de Países — Portal da NF-e → Documentos → Diversos |
+| Status | 🔄 vigente — tabela de países é mantida externamente no Portal |
+
+### Registro de origem
+
+NT 2018.003 v1.01 (abril de 2019), `tmp/nfe/notas-tecnicas/Nota Técnica 2018.003 - v.1.01 - Publicada em 12-04-2019.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).

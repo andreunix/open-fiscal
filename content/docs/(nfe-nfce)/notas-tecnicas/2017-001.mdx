@@ -1,0 +1,55 @@
+---
+title: NT 2017.001 v1.50 — Validação GTIN e Cadastro Centralizado de GTIN (CCG)
+description: Institui a obrigatoriedade progressiva de informar o GTIN (código de barras) dos produtos na NF-e e NFC-e, cria o Cadastro Centralizado de GTIN (CCG) mantido pela GS1 Brasil e define regras de validação em cinco etapas por CNAE e NCM.
+---
+
+A **NT 2017.001** cria o **Cadastro Centralizado de GTIN (CCG)**, base de dados de produtos mantida pela GS1 Brasil e integrada à SEFAZ, e introduz a exigência de informar o **GTIN** (código de barras EAN-8, EAN-13, EAN-14 ou DUN-14) no campo `cEANTrib` (I04) para produtos que possuem código de barras cadastrado. A exigência foi implantada em etapas progressivas por CNAE e NCM, com o cronograma revisado diversas vezes.
+
+> 🔄 Vigente: v1.50 (dezembro de 2018). A v1.50 suspendeu as regras de validação das Etapas 04 e 05 (verificação e validação no CCG) que ainda não tinham sido implementadas. Ver [GTIN e CCG](/docs/fundamentos/gtin-e-ccg) para o estado atual.
+
+## O que muda
+
+| Etapa | Regra | Descrição |
+|---|---|---|
+| 01 | `I03-10` e `I12-10` | Validação do formato do GTIN: `cEANTrib` deve ter 8, 12, 13 ou 14 dígitos e dígito verificador correto |
+| 02 | `7I03-10` | Exigência do GTIN por cronograma de CNAE e NCM (Anexo I) |
+| 03 | `I03-30` e `I12-60` | Exigência do GTIN para **todos** os CNAE e NCM |
+| 04 | `9I03-10` e `9I12-10` | Verificação da **existência** do GTIN no CCG |
+| 05 | `9I0320` a `9I12-30` | Validação das informações de NCM, CEST e GTIN Contido contra o CCG |
+
+## Leiaute
+
+| Campo | ID | Descrição |
+|---|---|---|
+| `cEANTrib` | I04 | Código de barras do item (GTIN-8/12/13/14 ou `SEM GTIN`) |
+| `qTrib` | I12 | Quantidade tributável; validada em conjunto com `cEANTrib` |
+
+## Cronograma (resumo)
+
+| Marco | Data |
+|---|---|
+| Etapa 01 (formato) — homologação | 04/12/2017 |
+| Etapa 01 — produção | 02/01/2018 |
+| Etapa 02 (por CNAE/NCM) — produção | 04/02/2019 a 06/05/2019 (conforme Anexo I) |
+| Etapa 03 (todos CNAE/NCM) | Implementação futura na época da v1.50 |
+| Etapas 04–05 (CCG) | Implementação futura na época da v1.50 |
+
+## Implicação de implementação
+
+> **Implementação:** informe o GTIN no campo `cEANTrib` para produtos que possuem código de barras GS1. Quando o produto não possui código de barras, informe `"SEM GTIN"`. Não use o GTIN do embalagem mãe no campo de item unitário. Ver [GTIN e CCG](/docs/fundamentos/gtin-e-ccg) para o estado atual das etapas 04–05.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2017.001 v1.50 |
+| Versão | v1.50 |
+| Data | dezembro de 2018 |
+| Páginas/capítulo | 18 páginas |
+| NT relacionada | NT 2016.002 (leiaute v4.00 base) |
+| Schema/tabela relacionada | não indicado |
+| Status | 🔄 vigente — etapas 01 a 03 em produção; 04–05 com implementação futura |
+
+### Registro de origem
+
+NT 2017.001 v1.50 (dezembro de 2018), `tmp/nfe/notas-tecnicas/Nota Técnica 2017.001 - v.1.50 - Publicada em 07-12-2018.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas), [GTIN e CCG](/docs/fundamentos/gtin-e-ccg) e [Proveniência](/docs/referencia/proveniencia).

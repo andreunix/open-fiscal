@@ -1,0 +1,48 @@
+---
+title: NT 2016.002 v1.61 — Versão Nacional 2016 (leiaute NF-e v4.00)
+description: Publica a versão 4.00 do leiaute da NF-e e NFC-e (Versão Nacional 2016), consolidando as alterações das NTs 2015.002 e 2015.003. Define protocolo TLS, novos Web Services, rastreabilidade de produto, grupo de medicamentos, combustível com encerrante, ICMS para UF de destino, formas de pagamento com integração e QR Code como campos definitivos do schema.
+---
+
+A **NT 2016.002** é o marco de publicação do **leiaute versão 4.00** da NF-e e NFC-e ("Versão Nacional 2016"). Ela consolida em um único schema as mudanças introduzidas pelas NTs 2015.002 (QR Code, formas de pagamento, regras de validação) e 2015.003 (ICMS interestadual, CEST), além de introduzir mudanças próprias de protocolo, Web Services e leiaute.
+
+> 🕒 Histórico: v1.61 (setembro de 2018). Leiaute v4.00 em produção. A v1.61 contém apenas correções de documentação e schema sem impacto operacional para as empresas.
+
+## O que muda
+
+| Tema | Detalhe |
+|---|---|
+| **Leiaute v4.00** | Versão definitiva do schema; substitui v3.10. Campos consolidados: CEST, grupo NA (ICMS UF destino), grupo YA (formas de pagamento com `tpIntegra`), grupo ZX (`qrCode`) e grupos rastreabilidade (I80) e medicamentos/matérias-primas (K) |
+| **Protocolo TLS** | Migração de SSL para TLS nas conexões com os Web Services |
+| **SOAP/WSDL** | Nome dos Web Services e parâmetros de entrada/saída padronizados; variáveis no SOAP Header definidas formalmente |
+| **Rastreabilidade (I80)** | Novo grupo para informar lote de fabricação, validade, número de série e código de fabricante de produto rastreável |
+| **Medicamentos e matérias-primas (K)** | Detalhe específico de ANVISA/lote/validade/data de fabricação/autorização de isenção de registro |
+| **ICMS Tributação=00** | Novos campos `vBCFCPST`, `vFCPST`, `vFCPSTRet` para FCP retido anteriormente |
+| **Grupo de Repasse ICMS ST** | Grupo para repasse de ICMS-ST retido anteriormente em operação interestadual |
+| **Campos DANFE** | Seção 5 da NT traz campos adicionais de representação obrigatória no DANFE |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Desativação do leiaute v3.10 | 02/08/2018 |
+| v1.61 (somente documentação) | setembro de 2018 |
+
+## Implicação de implementação
+
+> **Implementação:** o schema vigente é o v4.00. Não aceite ou gere NF-e em schema v3.10 — o autorizador rejeita desde 02/08/2018. Valide todos os grupos novos (NA, I80, K, ZX) conforme as regras de validação desta NT.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2016.002 v1.61 |
+| Versão | v1.61 |
+| Data | setembro de 2018 |
+| Páginas/capítulo | 76 páginas |
+| NT relacionada | NT 2015.002; NT 2015.003; NT 2017.001 (GTIN); NT 2018.001 (CPF) |
+| Schema/tabela relacionada | PL_009d (NF-e v4.00) |
+| Status | 🔄 vigente — schema v4.00 é o schema atual da NF-e/NFC-e |
+
+### Registro de origem
+
+NT 2016.002 v1.61 (setembro de 2018), `tmp/nfe/notas-tecnicas/Nota Técnica 2016.002 - v.1.61 - Publicada em 10-09-2018.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).

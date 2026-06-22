@@ -1,0 +1,54 @@
+---
+title: NT 2018.002 v1.00 — Consumo Indevido (rejeição 656)
+description: Define regras facultativas para que a SEFAZ autorizadora bloqueie temporariamente contribuintes que abusam dos Web Services com requisições repetidas ou em looping, gerando a rejeição 656.
+---
+
+A **NT 2018.002** institui a rejeição **656 — Consumo indevido pelo aplicativo da empresa** como mecanismo de proteção dos ambientes autorizadores. Quando um contribuinte envia repetidamente a mesma NF-e ou evento com a mesma rejeição — comportamento típico de looping em sistemas mal implementados — a SEFAZ autorizadora pode, a seu critério, bloquear aquele contribuinte por até 1 hora. As regras são **facultativas** e os parâmetros são **configuráveis por ambiente autorizador**.
+
+> 🔄 Vigente: v1.00 (abril de 2018). Em produção desde 16/05/2018.
+
+## O que muda
+
+| Web Service | Critério de bloqueio | Rejeição |
+|---|---|---|
+| Autorização (`NfeAutorizacao`) | 30\* ou mais rejeições iguais com a mesma NF-e/NFC-e | `656` |
+| Eventos (`NFeRecepcaoEvento`) | 20\* ou mais rejeições iguais com o mesmo evento | `656` |
+| Inutilização (`NfeInutilizacao`) | 20\* ou mais rejeições iguais com a mesma inutilização | `656` |
+| Consulta Protocolo (`NfeConsultaProtocolo`) | 10\* consultas da mesma chave de acesso em 1 hora | `656` |
+
+(\*) Critérios preferenciais, parametrizáveis por ambiente autorizador.
+
+**Duração do bloqueio:** 1 hora (a partir do último envio com mesma rejeição).  
+**Identificação do contribuinte:** CNPJ do certificado de transmissão + IP, ou CNPJ do emitente.  
+**Bloqueio permanente:** após 50\* bloqueios acumulados, a critério da UF, o contribuinte pode ser bloqueado permanentemente até contato com a SEFAZ.
+
+## Como interpretar
+
+O bloqueio não cancela documentos nem altera o estado de nenhuma NF-e. É exclusivamente operacional: impede o envio até que o sistema da empresa corrija o erro subjacente. A rejeição 656 inclui no detalhe a quantidade de rejeições encontradas e o identificador do documento.
+
+## Implicação de implementação
+
+> **Implementação:** implemente exponential backoff e circuit breaker nos chamados aos Web Services. Não retente automaticamente um documento com a mesma rejeição sem tratar a causa — o sistema entrará em bloqueio. Monitore a rejeição 656 como indicador de loop não tratado. Ver [Recibo e uso indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido).
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação | 02/05/2018 |
+| Produção | 16/05/2018 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2018.002 v1.00 |
+| Versão | v1.00 |
+| Data | abril de 2018 |
+| Páginas/capítulo | 4 páginas |
+| NT relacionada | não indicada |
+| Schema/tabela relacionada | não indicado |
+| Status | 🔄 vigente |
+
+### Registro de origem
+
+NT 2018.002 v1.00 (abril de 2018), `tmp/nfe/notas-tecnicas/Nota Técnica 2018.002 - v.1.00 - Publicada em 23-04-2018.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Recibo e uso indevido](/docs/emissao-e-comunicacao/recibo-e-uso-indevido).

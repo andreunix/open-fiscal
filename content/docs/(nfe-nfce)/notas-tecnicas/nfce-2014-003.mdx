@@ -1,0 +1,53 @@
+---
+title: NT NFC-e 2014.003 v1.02 — Evento Prévio de Emissão em Contingência (EPEC) da NFC-e
+description: Especifica o evento EPEC (tpEvento=110140) para a NFC-e, que permite ao emissor registrar uma emissão em contingência antes de enviar a NFC-e ao autorizador principal, e define controles do ambiente de contingência EPEC, exceções de sincronismo e consulta pública.
+---
+
+A **NT NFC-e 2014.003** especifica o **Evento Prévio de Emissão em Contingência (EPEC)** para a NFC-e (`tpEvento=110140`). O EPEC é enviado para um ambiente de contingência da SEFAZ diverso do autorizador normal, com leiaute mínimo de dados, antes de a NFC-e ser emitida. Isso garante registro fiscal imediato mesmo quando o autorizador principal está indisponível. A adoção é **facultativa por UF** — cada unidade federada decide se e quando implementar o EPEC para a NFC-e.
+
+> 📍 Depende de UF: a implementação do EPEC é opcional por estado. Consulte o Portal da SEFAZ da UF antes de usar.
+
+## O que define
+
+| Item | Conteúdo |
+|---|---|
+| **Evento EPEC** (`110140`) | Registro prévio de contingência: campos mínimos da NFC-e para autorização offline enquanto o autorizador principal está fora |
+| **Ambiente de contingência EPEC** | Web Service separado do autorizador normal; recebe o evento antes da NFC-e |
+| **Serviços de Autorização** | Integração entre o fluxo de contingência e o fluxo normal de autorização |
+| **Sincronismo — exceções** | Situações em que o ambiente de contingência pode não sincronizar com o autorizador normal e como tratá-las |
+| **Consulta Pública** | API de consulta pública da NFC-e para o consumidor verificar a autenticidade do documento |
+
+## Motivação do EPEC
+
+O EPEC reduz a dependência do autorizador principal ao:
+- Eliminar custo do Formulário de Segurança em Contingência (FS-DA);
+- Prover rota alternativa mesmo em falha de infraestrutura de internet (linha discada, celular);
+- Garantir registro fiscal do evento gerador de ICMS no momento em que ocorre.
+
+## Regras de validação (v1.01 e v1.02)
+
+| Versão | Alteração |
+|---|---|
+| v1.01 | Destinatário, quando informado, exige CPF, CNPJ **ou** `idEstrangeiro` — CNPJ e idEstrangeiro eram anteriormente opcionais |
+| v1.01 | Rejeição 618 corrigida para referenciar o modelo 65 |
+| v1.02 | Nova validação `P23-30`: ANO-MÊS da data de emissão do EPEC deve corresponder ao ANO-MÊS da chave de acesso da NFC-e |
+
+## Implicação de implementação
+
+> **Implementação:** antes de usar o EPEC, verifique se a UF do emitente suporta o tpEmis=4 (EPEC). Implemente a validação `P23-30`: a data de emissão do EPEC deve ter o mesmo ANO-MÊS da chave de acesso. O EPEC usa o mesmo Web Service de eventos; somente o endpoint (URL) é diferente (ambiente de contingência EPEC). Ver [NFC-e offline](/docs/contingencia/nfce-offline).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT NFC-e 2014.003 v1.02 |
+| Versão | v1.02 |
+| Data | janeiro de 2015 |
+| Páginas/capítulo | 20 páginas |
+| NT relacionada | NT 2015.002 (tpEmis NFC-e); NT 2018.001 (EPEC com CPF emitente) |
+| Schema/tabela relacionada | não indicado (evento padrão do WS de eventos) |
+| Status | 📍 depende de UF — implementado apenas nas UF que adotaram o EPEC para NFC-e |
+
+### Registro de origem
+
+NT NFC-e 2014.003 v1.02 (janeiro de 2015), `tmp/nfe/notas-tecnicas/Nota Técnica NFC-e 2014.003 - v.1.02 - Publicada em 12-01-2015.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [NFC-e offline](/docs/contingencia/nfce-offline).

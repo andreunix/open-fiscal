@@ -1,0 +1,57 @@
+---
+title: NT 2017.002 v1.40 — Nova Tabela CFOP
+description: Remove a relação de CFOPs do schema XML e passa a validá-los por tabela externa publicada no Portal da NF-e, unifica as tabelas de entrada e saída, altera regras de validação (I08-04, I08-140) e incorpora novos CFOPs dos Ajustes SINIEF 11/18, 07/19, 20/19 e 27/19.
+---
+
+A **NT 2017.002** altera a forma de validar o CFOP na NF-e: antes codificado como lista de valores aceitos no próprio schema XML, o CFOP passa a ser validado por **tabela externa** publicada no Portal da NF-e (Documentos → Diversos). Isso permite atualizar a tabela sem publicar novo schema. A NT também unifica as tabelas de CFOP de saída, de entrada e de devolução em uma única tabela com indicadores de uso.
+
+> 🔄 Vigente: v1.40 (janeiro de 2020). Em produção desde 02/04/2018 (v1.00).
+
+## O que muda
+
+| Tema | Detalhe |
+|---|---|
+| Tabela CFOP externa | CFOPs saem do schema XML; passam a ser validados pela tabela no Portal (com indicadores `indNFe`, `indTransp`, `indDevol`) |
+| Unificação | Uma única tabela substitui "CFOP Possíveis" de saída/entrada/devolução |
+| `I08-04` (nova) | Verifica se o CFOP informado existe na tabela do Portal da NF-e |
+| `I08-140` (alterada) | Aceita CFOPs 1.949 e 2.949 em devolução de venda a consumidor final não contribuinte |
+| Novos CFOPs SINIEF 11/18 | CFOPs relacionados ao Regime Aduaneiro de Entreposto Industrial (Recof-Sped): 1.212, 2.212, 3.129, 3.212, 5.129, 6.129, 7.129, 7.212 |
+| CFOP 5.929 (v1.40) | Alteração do CFOP 5.929 conforme Ajuste SINIEF 27/19 |
+
+## Regras de validação alteradas
+
+| Campo-Seq | Regra | Descrição |
+|---|---|---|
+| I08-04 | CFOP deve existir na tabela do Portal | Nova regra; antes os CFOPs válidos estavam no schema |
+| I08-140 | CFOP de devolução para consumidor final | Aceita 1.949 e 2.949 somente em devolução de venda para consumidor final não contribuinte |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| v1.00 — homologação | 05/03/2018 |
+| v1.00 — produção | 02/04/2018 |
+| v1.10 (Recof-Sped) — produção | 01/09/2018 |
+| v1.20 (SINIEF 07/19) — produção | 01/05/2019 |
+| v1.30 (SINIEF 20/19) — produção | 01/12/2019 |
+| v1.40 (SINIEF 27/19) — produção | 03/02/2020 |
+
+## Implicação de implementação
+
+> **Implementação:** não valide CFOP contra lista fixa no código — use a tabela do Portal (ou mantenha cópia local versionada por data de emissão). Para CFOP de devolução, aplique as regras I08-140 e I08-180. Ao usar CFOPs do Recof-Sped (x.212, x.129), verifique os indicadores de uso da tabela.
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2017.002 v1.40 |
+| Versão | v1.40 |
+| Data | janeiro de 2020 |
+| Páginas/capítulo | 24 páginas |
+| NT relacionada | Ajuste SINIEF 11/18; 07/19; 20/19; 27/19 |
+| Schema/tabela relacionada | Tabela CFOP — Portal da NF-e → Documentos → Diversos |
+| Status | 🔄 vigente — tabela CFOP externa é o mecanismo de validação atual |
+
+### Registro de origem
+
+NT 2017.002 v1.40 (janeiro de 2020), `tmp/nfe/notas-tecnicas/Nota Técnica 2017.002 - v.1.40 - Publicada em 15-01-2020.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).

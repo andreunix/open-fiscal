@@ -1,0 +1,48 @@
+---
+title: NT 2018.001 v1.10 — Emitente Pessoa Física (CPF) com Inscrição Estadual
+description: Permite que pessoa física (CPF) com inscrição estadual emita NF-e e NFC-e, define a chave natural da NFC-e com CPF, reserva séries 920–969 para produtor rural pessoa física na NFC-e e amplia o evento de Manifestação do Destinatário para aceitar emitente com CPF.
+---
+
+A **NT 2018.001** viabiliza a emissão de NF-e (modelo 55) e NFC-e (modelo 65) por **pessoa física (CPF) com inscrição estadual**, caso típico do produtor rural. Ela define como o CPF entra na chave de acesso, atualiza o conceito de chave natural para a NFC-e e amplia os serviços de EPEC e Manifestação do Destinatário para aceitar emitente identificado por CPF.
+
+> 🔄 Vigente: v1.10 (fevereiro de 2020). A v1.00 (abril de 2018) publicou a NT; a v1.10 adicionou suporte a CPF na Manifestação do Destinatário e consolidou o conceito de chave natural da NFC-e.
+
+## O que muda
+
+| Tema | Detalhe | Onde se reflete |
+|---|---|---|
+| Emitente CPF | Campo `CPF` (C02a) no grupo de identificação do emitente; certificado `e-CPF` ou assinatura via SVRS (NFF) | [Credenciamento e ambientes](/docs/comece-aqui/credenciamento-e-ambientes) |
+| Chave natural NFC-e com CPF | A chave natural da NFC-e com emitente CPF usa o CPF precedido de zeros (14 posições); série reservada 920–969 | [Chave de acesso](/docs/fundamentos/chave-de-acesso) |
+| Séries 920–969 | Reservadas para **produtor rural Pessoa Física** na NFC-e; o autorizador usa série para distinguir do emitente CNPJ | [Séries e numeração](/docs/fundamentos/series-e-numeracao) |
+| Banco de Dados NF-e | Alteração no controle de duplicidade: distingue CNPJ de CPF na validação da chave natural |
+| EPEC com CPF | Evento EPEC passa a aceitar emitente identificado por CPF |
+| Manifestação do Destinatário | Evento 210 (Confirmação/Ciência/Desconhecimento/Operação Não Realizada) aceita emitente CPF a partir da v1.10 |
+| Consulta cadastro | Web Service de Consulta Cadastro atualizado para verificar contribuinte por CPF |
+| Inutilização | Serviço de inutilização aceita CPF na identificação do emitente |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| v1.00 — publicação | abril de 2018 |
+| v1.10 — produção (Manifestação com CPF) | fevereiro de 2020 |
+
+## Implicação de implementação
+
+> **Implementação:** ao receber uma NF-e com emitente CPF (C02a), não trate o campo como inválido — valide usando as mesmas regras do módulo 11 aplicadas ao CPF. Para a NFC-e de produtor rural, use séries 920–969 e garanta que a chave natural inclui o CPF precedido de zeros (14 posições). O e-CPF pode assinar tanto NF-e quanto NFC-e; a SVRS pode assinar NFF. Ver [Chave de acesso](/docs/fundamentos/chave-de-acesso).
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2018.001 v1.10 |
+| Versão | v1.10 |
+| Data | fevereiro de 2020 |
+| Páginas/capítulo | 25 páginas |
+| NT relacionada | NT 2023.002 v1.01 (produção rural PF na NFC-e — confirmar série na NT mais recente) |
+| Schema/tabela relacionada | não indicado |
+| Status | 🔄 vigente |
+
+### Registro de origem
+
+NT 2018.001 v1.10 (fevereiro de 2020), `tmp/nfe/notas-tecnicas/Nota Técnica 2018.001 - v.1.10 - Publicada em 27-02-2020.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas), [Chave de acesso](/docs/fundamentos/chave-de-acesso) e [Séries e numeração](/docs/fundamentos/series-e-numeracao).

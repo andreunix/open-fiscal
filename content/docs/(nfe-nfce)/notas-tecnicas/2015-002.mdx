@@ -1,0 +1,46 @@
+---
+title: NT 2015.002 v1.41 — Consulta situação, formas de pagamento NFC-e e QR Code
+description: Limita a consulta situação a 180 dias, define o grupo de formas de pagamento (YA) e o campo QR Code (ZX02) na NFC-e, introduz o grupo Encerrante para combustível, tabula o cEnq do IPI e altera diversas regras de validação para NF-e e NFC-e.
+---
+
+A **NT 2015.002** é uma das mais abrangentes do projeto NF-e. Ela consolida nove temas distintos: restrição temporal da consulta situação, definição da tabela de enquadramento legal do IPI, múltiplas correções em regras de validação, novos controles no ambiente de homologação da NFC-e, tolerância de 5 minutos na NFC-e, tributos ICMS vinculados a CFOP na NFC-e, venda de combustível pela NFC-e, formas de pagamento com tipo de integração e o campo QR Code no leiaute.
+
+> 🕒 Histórico: versão final 1.41 (agosto de 2016). Em produção desde 10/09/2016. Leiaute v3.10.
+
+## O que muda
+
+| Tema | Detalhe | Onde se reflete |
+|---|---|---|
+| Consulta situação — prazo | `NfeConsultaProtocolo` limitado a **180 dias** da data de emissão. A resposta retorna apenas eventos de cancelamento, CC-e e EPEC | [Consulta protocolo](/docs/emissao-e-comunicacao/consulta-protocolo) |
+| `cEnq` IPI (O06) | Tabela de **Código de Enquadramento Legal do IPI** definida formalmente (Anexo XIV); inclui códigos para Olimpíadas Rio 2016 e mantém `"999"` como opção transitória | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/tributos) |
+| `motDesICMS` — Olimpíadas | Novo valor **16** no campo N28 para desoneração ICMS ligada às Olimpíadas Rio 2016 | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/tributos) |
+| Validações NF-e | Verificação de município (IBGE), chave de acesso referenciada (BA02-10 a BA02-50), emissão adiante do credenciamento, destinatário estrangeiro com charset restrito, desconto > valor do produto (I17-10), regime tributário do emitente (7C21-10) e escritório de contabilidade (7GA01) | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes) |
+| NFC-e — contingência válida | `tpEmis=2` e `5` desativados para NFC-e; aceitos apenas **1** (normal), **4** (EPEC, a critério da UF) e **9** (offline) | [Contingência](/docs/contingencia/nfce-offline) |
+| NFC-e — tolerância | Mantida em **5 minutos** de atraso no envio; eliminada a tolerância anterior de 10 minutos | [Emissão e comunicação](/docs/emissao-e-comunicacao/autorizacao) |
+| NFC-e — ICMS/CFOP | Regras que verificam CST/CSOSN e CFOP possíveis na NFC-e (N12-30, N12-40, N12a-20, N12a-40) | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/tributos) |
+| NFC-e — combustível | Viabiliza venda de combustível para consumidor final pela NFC-e; inclui subgrupo **Encerrante** (LA11–LA16): `nBico`, `nBomba`, `nTanque`, `vEncIni`, `vEncFin` | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/itens-e-produtos) |
+| Formas de pagamento (YA) | Grupo `pag` obrigatório na NFC-e (a critério da UF); campo `tpIntegra` (YA04a): **1** = integrado com TEF/comércio eletrônico, **2** = não integrado (POS) | [Leiaute e rejeições](/docs/leiaute-e-rejeicoes/grupos-finais) |
+| QR Code (ZX02) | Novo grupo `infNFeSupl` (ZX01) com campo `qrCode` (ZX02, 100–600 chars) fora da assinatura; conteúdo deve usar `<![CDATA[…]]>` quando contiver `&` | [DANFE](/docs/danfe/danfe-nfce-qrcode) |
+
+## Cronograma
+
+| Marco | Data |
+|---|---|
+| Homologação | 01/09/2016 |
+| Produção | 10/09/2016 |
+
+## Fonte
+
+| Campo | Valor |
+|---|---|
+| Documento | NT 2015.002 v1.41 |
+| Versão | v1.41 |
+| Data | agosto de 2016 |
+| Páginas/capítulo | 46 páginas |
+| NT relacionada | NT 2014.004 (NCM); NT 2016.002 (consolida no leiaute v4.00) |
+| Schema/tabela relacionada | PL_008i (leiaute v3.10) |
+| Status | 🕒 histórico — conteúdo consolidado no leiaute v4.00 pela NT 2016.002 |
+
+### Registro de origem
+
+NT 2015.002 v1.41 (agosto de 2016), `tmp/nfe/notas-tecnicas/Nota Técnica 2015.002 - v.1.41 - Publicada em 26-08-2016.pdf`. Ver [Notas Técnicas](/docs/notas-tecnicas) e [Proveniência](/docs/referencia/proveniencia).
