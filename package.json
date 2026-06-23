@@ -10,6 +10,7 @@
     "generate-routes": "tsr generate",
     "nfe:download": "bun scripts/download-nfe.ts",
     "nfe:check": "bun scripts/check-nfe-updates.ts",
+    "nfe:unzip-xsd": "bun scripts/unzip-xsd.ts",
     "tabelas:build": "bun scripts/build-tabelas.ts",
     "tabelas:check": "bun scripts/check-tabelas.ts",
     "build": "vite build",

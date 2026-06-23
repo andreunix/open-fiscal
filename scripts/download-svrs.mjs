@@ -36,12 +36,12 @@ const TIPO_DIR = {
   16: 'informes-tecnicos',
 };
 
-// Rotas do portal. NFe/NFCe aqui são a versão hospedada na SVRS (vão para
-// tmp/nfe e tmp/nfce); a versão do portal federal nfe.fazenda.gov.br fica em
-// tmp/nfe-oficial, baixada por scripts/download-nfe.ts.
+// Rotas do portal. A NFe ficou fora deste downloader; a versão do portal
+// federal nfe.fazenda.gov.br fica em tmp/nfe-oficial, baixada por
+// scripts/download-nfe.ts.
 const ROUTES = process.argv.slice(2).length
   ? process.argv.slice(2)
-  : ['Nfe', 'Nfce', 'Bpe', 'Cte', 'Mdfe', 'Nf3e', 'Nfcom', 'Nff', 'One',
+  : ['Nfce', 'Bpe', 'Cte', 'Mdfe', 'Nf3e', 'Nfcom', 'Nff', 'One',
      'Dce', 'Nfag', 'Nfabi', 'Nfgas', 'Cff', 'Pes', 'Difal'];
 
 const CALL_RE = /download_arquivo_estatico\('([A-Z0-9]+)',\s*(\d+),\s*'([^']*)'\)/g;
