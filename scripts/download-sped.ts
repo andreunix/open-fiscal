@@ -16,9 +16,18 @@ import { fileURLToPath } from 'node:url';
 //   - historico-guias-pratico: versões antigas do Guia Prático, muito pesadas
 //
 // Uso:
-//   node scripts/download-sped.mjs
-//   SPED_DELAY_MS=500 node scripts/download-sped.mjs   # mais devagar
-//   SPED_DRY_RUN=1    node scripts/download-sped.mjs   # só lista, não baixa
+//   bun scripts/download-sped.ts
+//   SPED_DELAY_MS=500 bun scripts/download-sped.ts   # mais devagar
+//   SPED_DRY_RUN=1    bun scripts/download-sped.ts   # só lista, não baixa
+
+interface PloneItem {
+  '@id': string;
+  '@type': string;
+  file?: { 'content-type'?: string; download?: string };
+}
+interface PloneListing {
+  items?: PloneItem[];
+}
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const outRoot   = path.join(path.resolve(scriptDir, '..'), 'tmp', 'sped-fiscal');
@@ -38,13 +47,13 @@ const SKIP_FOLDERS = new Set([
 
 // Mapa de slug → nome local amigável.
 // Qualquer pasta não listada aqui usará o próprio slug como nome local.
-const FOLDER_NAMES = {
+const FOLDER_NAMES: Record<string, string> = {
   'manuais-e-documentos-tecnicos': 'manuais-e-notas-tecnicas',
   'downloads':                      'downloads',
 };
 
 // MIME → extensão de arquivo
-const EXT_BY_MIME = {
+const EXT_BY_MIME: Record<string, string> = {
   'application/pdf':  '.pdf',
   'application/zip':  '.zip',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
@@ -54,21 +63,21 @@ const EXT_BY_MIME = {
   'text/plain':                '.txt',
 };
 
-const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
-async function api(apiPath) {
+async function api<T = PloneListing>(apiPath: string): Promise<T> {
   const url = `${SITE}/++api++${apiPath}`;
   const res = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': UA } });
   if (!res.ok) throw new Error(`HTTP ${res.status} → ${url}`);
-  return res.json();
+  return res.json() as Promise<T>;
 }
 
-function localName(slug) {
+function localName(slug: string): string {
   return FOLDER_NAMES[slug] ?? slug;
 }
 
-function safeName(item) {
-  let name = decodeURIComponent(item['@id'].split('/').pop());
+function safeName(item: PloneItem): string {
+  let name = decodeURIComponent(item['@id'].split('/').pop() ?? '');
   const mime = item.file?.['content-type'] ?? '';
   const ext  = EXT_BY_MIME[mime];
   if (ext && !name.toLowerCase().endsWith(ext)) name += ext;
@@ -77,17 +86,17 @@ function safeName(item) {
 
 const counts = { ok: 0, skip: 0, err: 0, folders: 0 };
 
-async function processFolder(apiFolder, outDir, depth = 0) {
+async function processFolder(apiFolder: string, outDir: string, depth = 0): Promise<void> {
   if (depth > MAX_DEPTH) {
     console.warn(`${'  '.repeat(depth)}[aviso] profundidade máxima atingida em ${apiFolder}`);
     return;
   }
 
-  let listing;
+  let listing: PloneListing;
   try {
     listing = await api(apiFolder);
   } catch (err) {
-    console.error(`${'  '.repeat(depth)}[erro] ${apiFolder}: ${err.message}`);
+    console.error(`${'  '.repeat(depth)}[erro] ${apiFolder}: ${(err as Error).message}`);
     counts.err++;
     return;
   }
@@ -106,7 +115,7 @@ async function processFolder(apiFolder, outDir, depth = 0) {
   for (const item of files) {
     let full = item;
     try {
-      full = await api(item['@id'].replace(SITE, ''));
+      full = await api<PloneItem>(item['@id'].replace(SITE, ''));
       await delay(DELAY_MS);
     } catch { /* usa resumo da listagem */ }
 
@@ -122,7 +131,7 @@ async function processFolder(apiFolder, outDir, depth = 0) {
 
     try {
       const stat = await fs.stat(dest).catch(() => null);
-      if (stat?.size > 0) {
+      if (stat && stat.size > 0) {
         console.log(`${prefix}= ${nome}`);
         counts.skip++;
         continue;
@@ -135,7 +144,7 @@ async function processFolder(apiFolder, outDir, depth = 0) {
       counts.ok++;
       await delay(DELAY_MS);
     } catch (err) {
-      console.error(`${'  '.repeat(depth + 1)}! ${nome} — ${err.message}`);
+      console.error(`${'  '.repeat(depth + 1)}! ${nome} — ${(err as Error).message}`);
       counts.err++;
     }
   }
@@ -143,7 +152,7 @@ async function processFolder(apiFolder, outDir, depth = 0) {
   // Desce em subpastas, ignorando as da lista SKIP_FOLDERS
   for (const sub of folders) {
     const subPath = sub['@id'].replace(SITE, '');
-    const slug    = decodeURIComponent(subPath.split('/').pop());
+    const slug    = decodeURIComponent(subPath.split('/').pop() ?? '');
 
     if (SKIP_FOLDERS.has(slug)) {
       console.log(`${'  '.repeat(depth + 1)}↷ ${slug} (ignorada)`);
@@ -161,11 +170,11 @@ console.log(`SPED Fiscal — download${DRY_RUN ? ' (dry-run)' : ''}`);
 console.log(`Portal: ${SITE}`);
 console.log(`Destino: ${outRoot}\n`);
 
-let rootListing;
+let rootListing: PloneListing;
 try {
   rootListing = await api(ROOT);
 } catch (err) {
-  console.error(`[erro fatal] não foi possível listar a raiz ${ROOT}: ${err.message}`);
+  console.error(`[erro fatal] não foi possível listar a raiz ${ROOT}: ${(err as Error).message}`);
   console.error('Verifique se o portal está acessível e se o caminho ROOT está correto.');
   process.exit(1);
 }
@@ -180,7 +189,7 @@ if (rootFolders.length === 0) {
   console.log(`Subpastas encontradas: ${rootFolders.map((f) => f['@id'].split('/').pop()).join(', ')}\n`);
   for (const folder of rootFolders) {
     const subPath = folder['@id'].replace(SITE, '');
-    const slug    = decodeURIComponent(subPath.split('/').pop());
+    const slug    = decodeURIComponent(subPath.split('/').pop() ?? '');
 
     if (SKIP_FOLDERS.has(slug)) {
       console.log(`↷ ${slug} (ignorada)\n`);

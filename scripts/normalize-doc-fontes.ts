@@ -1,11 +1,18 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
+// Normaliza o bloco "## Fonte" das páginas MDX de docs/(nfe-nfce): reconstrói a
+// tabela de rastreabilidade (Documento, Versão, Data, NT etc.) a partir do
+// "Registro de origem" existente, mantendo o texto original e corrigindo
+// acentuação. Idempotente: roda quantas vezes precisar.
+//
+// Uso: bun scripts/normalize-doc-fontes.ts
+
 const root = process.cwd();
 const docsRoot = path.join(root, 'content/docs/(nfe-nfce)');
 
-async function walk(dir) {
-  const out = [];
+async function walk(dir: string): Promise<string[]> {
+  const out: string[] = [];
   for (const ent of await fs.readdir(dir, { withFileTypes: true })) {
     const file = path.join(dir, ent.name);
     if (ent.isDirectory()) out.push(...await walk(file));
@@ -14,11 +21,11 @@ async function walk(dir) {
   return out;
 }
 
-function frontmatter(text) {
+function frontmatter(text: string): Record<string, string> {
   const match = text.match(/^---\n([\s\S]*?)\n---\n/);
   if (!match) return {};
 
-  const data = {};
+  const data: Record<string, string> = {};
   for (const line of match[1].split('\n')) {
     const field = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
     if (field) data[field[1]] = field[2].replace(/^['"]|['"]$/g, '');
@@ -26,22 +33,22 @@ function frontmatter(text) {
   return data;
 }
 
-function clean(value) {
+function clean(value: string): string {
   return String(value || 'não especificado')
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/\|/g, '\\|');
 }
 
-function firstSentence(text) {
+function firstSentence(text: string): string {
   const value = text.replace(/\n+/g, ' ').trim();
   if (!value) return '';
   const index = value.search(/(?<!\bp)\.\s/);
   return index >= 0 ? value.slice(0, index + 1) : value;
 }
 
-function extractVersions(text, title) {
-  const values = new Set();
+function extractVersions(text: string, title: string): string {
+  const values = new Set<string>();
   for (const source of [title || '', text || '']) {
     for (const match of source.matchAll(/\bv\d+(?:\.\d+){0,2}[a-z]?\b/gi)) values.add(match[0]);
     for (const match of source.matchAll(/\b\d+\.\d{2}[a-z]?\b/g)) values.add(match[0]);
@@ -49,8 +56,8 @@ function extractVersions(text, title) {
   return [...values].slice(0, 4).join('; ') || 'ver fonte original';
 }
 
-function extractDates(text, title) {
-  const values = new Set();
+function extractDates(text: string, title: string): string {
+  const values = new Set<string>();
   for (const source of [title || '', text || '']) {
     for (const match of source.matchAll(/\b\d{2}\/\d{2}\/\d{4}\b/g)) values.add(match[0]);
     for (const match of source.matchAll(/\b\d{4}-\d{2}-\d{2}\b/g)) values.add(match[0]);
@@ -60,16 +67,16 @@ function extractDates(text, title) {
   return [...values].slice(0, 4).join('; ') || 'ver fonte original';
 }
 
-function extractChapters(text) {
-  const values = new Set();
+function extractChapters(text: string): string {
+  const values = new Set<string>();
   for (const match of (text || '').matchAll(/§\s*[^.;\n]+/g)) values.add(match[0].trim());
   for (const match of (text || '').matchAll(/p\.\s*\d+(?:[–-]\d+)?/gi)) values.add(match[0].trim());
   for (const match of (text || '').matchAll(/cap[ií]tulos?\s*[^.;\n]+/gi)) values.add(match[0].trim());
   return [...values].slice(0, 5).join('; ') || 'ver fonte original';
 }
 
-function extractNT(text, rel, title) {
-  const values = new Set();
+function extractNT(text: string, rel: string, title: string): string {
+  const values = new Set<string>();
   for (const match of (text || '').matchAll(/NT(?: Conjunta)?\s+\d{4}\.\d{3}(?:-[A-Z]+)?(?:\s+v\d+(?:\.\d+){0,2}[a-z]?)?/gi)) {
     values.add(match[0]);
   }
@@ -80,8 +87,8 @@ function extractNT(text, rel, title) {
   return [...values].slice(0, 6).join('; ') || 'não indicada';
 }
 
-function extractSchemaOrTable(text, rel) {
-  const values = new Set();
+function extractSchemaOrTable(text: string, rel: string): string {
+  const values = new Set<string>();
   const lower = rel.toLowerCase();
   if (lower.includes('/schemas/')) values.add('pacote XSD indicado nesta página');
   if (lower.includes('/informes-tecnicos/')) values.add('tabela externa do Informe Técnico');
@@ -91,7 +98,7 @@ function extractSchemaOrTable(text, rel) {
   return [...values].slice(0, 8).join('; ') || 'não indicada';
 }
 
-function documentFromPath(rel, title, oldSource) {
+function documentFromPath(rel: string, title: string, oldSource: string): string {
   const source = oldSource.trim();
   if (rel.includes('/notas-tecnicas/')) return title.split(' — ')[0] || 'Nota Técnica da NF-e/NFC-e';
   if (rel.includes('/informes-tecnicos/')) return title.split(' — ')[0] || 'Informe Técnico da NF-e/NFC-e';
@@ -103,7 +110,7 @@ function documentFromPath(rel, title, oldSource) {
   return source ? firstSentence(source) : 'MOC 7.0, anexos, NT, IT e schemas oficiais relacionados ao tema';
 }
 
-function statusFrom(rel, oldSource) {
+function statusFrom(rel: string, oldSource: string): string {
   const text = oldSource.toLowerCase();
   if (path.basename(rel) === 'index.mdx' || rel.endsWith('/nfe-nfce.mdx')) return 'página índice; rastreabilidade detalhada nas páginas filhas';
   if (rel.includes('/notas-tecnicas/')) return 'revisão consolidada na página; verificar revisão posterior no Portal Nacional antes de implementar';
@@ -114,7 +121,7 @@ function statusFrom(rel, oldSource) {
   return 'base oficial mapeada; confrontar com NT, IT, XSD e regra estadual vigentes';
 }
 
-function fallbackSource(rel, title) {
+function fallbackSource(rel: string, title: string): string {
   if (rel.endsWith('/nfe-nfce.mdx')) return 'Página de entrada construída a partir da matriz de fontes oficiais em Referência, com detalhes nas páginas temáticas.';
   if (rel.includes('/comece-aqui/')) return 'Índice ou guia editorial baseado no MOC 7.0, manuais de credenciamento e páginas temáticas vinculadas.';
   if (rel.includes('/fundamentos/')) return 'Índice editorial baseado no MOC 7.0 e nas páginas de fundamentos vinculadas.';
@@ -129,7 +136,7 @@ function fallbackSource(rel, title) {
   return `Página editorial "${title}" baseada nas fontes oficiais das páginas vinculadas.`;
 }
 
-function originalSource(block) {
+function originalSource(block: string): string {
   const marker = '\n### Registro de origem\n\n';
   const index = block.indexOf(marker);
   const value = index >= 0 ? block.slice(index + marker.length) : block;
@@ -151,9 +158,9 @@ function originalSource(block) {
     .replace(/\bGlossario\b/g, 'Glossário');
 }
 
-function buildBlock(rel, title, oldSource) {
+function buildBlock(rel: string, title: string, oldSource: string): string {
   const source = originalSource(oldSource).trim() || fallbackSource(rel, title);
-  const fields = [
+  const fields: [string, string][] = [
     ['Documento', documentFromPath(rel, title, source)],
     ['Versão', extractVersions(source, title)],
     ['Data', extractDates(source, title)],
@@ -177,7 +184,7 @@ for (const file of files) {
   const { title = path.basename(file, '.mdx') } = frontmatter(original);
   const sourceBlock = /\n## Fonte\n\n([\s\S]*?)(?=\n## |\s*$)/;
   const match = original.match(sourceBlock);
-  let next;
+  let next: string;
 
   if (match) {
     next = original.replace(sourceBlock, `\n${buildBlock(rel, title, match[1])}`);

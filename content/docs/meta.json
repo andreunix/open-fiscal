@@ -3,6 +3,9 @@
   "pages": [
     "index",
     "(nfe-nfce)",
+    "nfe-abi",
+    "nfag",
+    "nfgas",
     "reforma-tributaria"
   ]
 }

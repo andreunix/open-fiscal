@@ -2,7 +2,7 @@
 
 Open Fiscal e uma base operacional de documentacao e dados para documentos fiscais eletronicos brasileiros. O objetivo e transformar fontes oficiais dispersas - manuais, notas tecnicas, informes, schemas XML, tabelas auxiliares e endpoints - em conteudo navegavel, indices auditaveis e dados versionados.
 
-O foco atual esta no ecossistema NF-e/NFC-e, incluindo os impactos da Reforma Tributaria e modelos relacionados publicados junto ao conjunto tecnico nacional.
+O foco atual esta no ecossistema NF-e/NFC-e, nos documentos com schema proprio publicados junto ao conjunto tecnico nacional e nos impactos da Reforma Tributaria.
 
 ## Escopo fiscal
 
@@ -14,7 +14,7 @@ O projeto cobre:
 - Schemas XML oficiais e pacotes de liberacao.
 - Tabelas auxiliares usadas em validacao fiscal, como NCM, CFOP, meios de pagamento, combustiveis, classificacoes IBS/CBS e codigos relacionados.
 - Autorizadores, ambientes, endpoints de web services e regras por UF.
-- NFAg, NFGas e NF-e ABI quando aparecem no mesmo conjunto documental.
+- NF-e ABI, NFAg e NFGas como topicos proprios, com schemas e manuais especificos.
 
 O site nao substitui a fonte oficial. Ele organiza a fonte oficial, registra proveniencia e deixa claro quais arquivos locais ou dados versionados embasam cada pagina.
 
@@ -89,7 +89,10 @@ O conteudo fica em `content/docs/` e e organizado por `meta.json`.
 
 ```text
 content/docs/index.mdx                 Entrada da documentacao
-content/docs/(nfe-nfce)/               NF-e, NFC-e e modelos relacionados
+content/docs/(nfe-nfce)/               NF-e e NFC-e
+content/docs/nfe-abi/                  NF-e ABI, modelo 77
+content/docs/nfag/                     NFAg, modelo 75
+content/docs/nfgas/                    NFGas, modelo 76
 content/docs/reforma-tributaria/       IBS, CBS e Imposto Seletivo
 content/docs/(nfe-nfce)/referencia/    Fontes, tabelas, glossario e proveniencia
 content/docs/(nfe-nfce)/schemas/       Pacotes e leitura dos XSDs

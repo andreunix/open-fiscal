@@ -74,6 +74,50 @@ export function categoryOrder(category: string): number {
   return index === -1 ? CATEGORIES.length : index;
 }
 
+// Algumas seções do portal misturam documentos de famílias bem distintas. Para
+// não despejar tudo numa pasta só, cada item é classificado pelo título/arquivo
+// numa subpasta temática, p.ex. tmp/.../manuais/<familia>/.
+//
+// As regras são avaliadas em ordem (primeira que casar vence) e o texto avaliado
+// é "título do portal + nome do arquivo". Categorias sem regra ficam planas.
+// Ajuste à vontade.
+const SUBFOLDER_RULES: Record<string, Array<[string, RegExp]>> = {
+  // MOC NF-e/NFC-e e anexos, MOC NFAg, MOC NFGas, NF-e ABI, DANFE, contingência...
+  // Específicas de modelo (NFAg/NFGas/NF-e ABI) vêm antes do MOC genérico; os
+  // Anexos I–IV do MOC 7.0 ficam junto do MOC principal em "moc-nfe-nfce".
+  manuais: [
+    ["nfag", /nfag/i],
+    ["nfgas", /nfgas/i],
+    ["nfe-abi", /nf-?e[ _]?abi|nfeabi/i],
+    // \banexo (não ancorado) porque o texto começa pelo título do portal.
+    ["moc-nfe-nfce", /manual de orienta|orienta[cç][aã]o ao contribuinte|\bmoc\b|\banexo\s+(?:i{1,3}|iv)\b/i],
+    ["danfe", /danfe|qr ?code|c[oó]digo[ _-]?de[ _-]?barras|codigo-barras/i],
+    ["autorizadoras", /svrs|svan|svc[- ]?[ap]n|usu[aá]rios|autorizadora/i],
+    ["contingencia", /conting[eê]ncia|off-?line/i],
+    ["boas-praticas", /boas pr[aá]ticas/i],
+    ["emissor", /emissor/i],
+  ],
+  // Pacotes de schema (PL_*, Evento_*): por modelo (NFAg/NFGas), por eventos e
+  // por serviços (consulta situação/GTIN, distribuição DF-e).
+  "esquemas-xml": [
+    ["nfag", /nfag/i],
+    ["nfgas", /nfgas/i],
+    ["eventos", /evento/i],
+    ["servicos", /consit|consulta|distdfe|gtin|status|cadastro|inut/i],
+  ],
+};
+
+// Subpasta temática para um item. Categorias sem regras ficam planas (retorna "").
+export function subfolderFor(category: string, title: string, filename = ""): string {
+  const rules = SUBFOLDER_RULES[category];
+  if (!rules) return "";
+  const haystack = `${title} ${filename}`;
+  for (const [family, pattern] of rules) {
+    if (pattern.test(haystack)) return family;
+  }
+  return "outros";
+}
+
 export async function fetchPortalText(url: string): Promise<string> {
   const response = await fetch(url, {
     headers: {

@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 // documentação atual (produção) + RTC; leiautes antigos e produção restrita de
 // homologação ficam de fora.
 //
-// Uso: node scripts/download-nfse.mjs
+// Uso: bun scripts/download-nfse.ts
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const outRoot = path.join(path.resolve(scriptDir, '..'), 'tmp', 'nfse');
@@ -22,7 +22,7 @@ const RTC = 'https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/rtc';
 const PR = 'https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/producao-restrita';
 
 // categoria → [url, ...]
-const DOCS = {
+const DOCS: Record<string, string[]> = {
   manuais: [
     `${ATUAL}/guia-emissorpubliconacionalweb_snnfse-ern-v12.pdf`,
     `${ATUAL}/guia-do-painel-administrativo-municipal-nfs-e-v1-2-out2025.pdf`,
@@ -70,7 +70,7 @@ for (const [categoria, urls] of Object.entries(DOCS)) {
   const dir = path.join(outRoot, categoria);
   await fs.mkdir(dir, { recursive: true });
   for (const url of urls) {
-    const nome = decodeURIComponent(url.split('/').pop());
+    const nome = decodeURIComponent(url.split('/').pop() ?? '');
     const dest = path.join(dir, nome);
     try {
       const stat = await fs.stat(dest).catch(() => null);
@@ -86,7 +86,7 @@ for (const [categoria, urls] of Object.entries(DOCS)) {
       console.log(`  + [${categoria}] ${nome}`);
     } catch (err) {
       counts.err++;
-      console.error(`  ! [${categoria}] ${nome} — ${err.message}`);
+      console.error(`  ! [${categoria}] ${nome} — ${(err as Error).message}`);
     }
   }
 }
